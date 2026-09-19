@@ -1,0 +1,155 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JMB Aura — 10 Background Concepts</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--o:#FF6B1A;--od:#E8452A;--p:#8B5CF6;--pd:#6D28D9;--t:#14B8A6;--tl:#6EE7D6;--ink:#F5F6FA;--mut:#9AA0B4}
+  body{background:#07070c;color:var(--ink);font-family:'Inter',system-ui,sans-serif;padding:28px}
+  h1{font-size:26px;font-weight:900;letter-spacing:-.02em}
+  .sub{color:var(--mut);font-size:14px;margin:6px 0 24px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  .tile{border-radius:16px;overflow:hidden;background:#0d0d14;border:1px solid #20222e}
+  .stage{position:relative;height:230px;overflow:hidden;background:#08080e}
+  .stage>*{position:absolute}
+  .cap{display:flex;align-items:center;gap:9px;padding:12px 14px}
+  .num{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:13px;background:linear-gradient(135deg,var(--o),var(--od));color:#fff;flex:none}
+  .nm{font-weight:700;font-size:14px}
+  .tag{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:99px}
+  .anim{background:rgba(20,184,166,.16);color:var(--tl)}
+  .stat{background:rgba(139,92,246,.16);color:#c4b3ff}
+
+  /* 1 Aurora Drift */
+  .b1 .l{inset:-30%;filter:blur(60px);mix-blend-mode:screen}
+  .b1 .a{background:radial-gradient(circle at 30% 35%,var(--o),transparent 60%);animation:d1 14s ease-in-out infinite}
+  .b1 .b{background:radial-gradient(circle at 70% 30%,var(--p),transparent 60%);animation:d2 18s ease-in-out infinite}
+  .b1 .c{background:radial-gradient(circle at 50% 80%,var(--t),transparent 60%);animation:d3 20s ease-in-out infinite}
+  @keyframes d1{50%{transform:translate(12%,8%) scale(1.15)}}
+  @keyframes d2{50%{transform:translate(-10%,10%) scale(.9)}}
+  @keyframes d3{50%{transform:translate(8%,-10%) scale(1.15)}}
+
+  /* 3 Mesh gradient */
+  .b3{background:#0a0a12}
+  .b3 .m{inset:-40%;filter:blur(50px);opacity:.9;mix-blend-mode:screen;border-radius:50%}
+  .b3 .m1{width:60%;height:60%;left:0;top:0;background:var(--od);animation:mesh1 12s ease-in-out infinite alternate}
+  .b3 .m2{width:55%;height:55%;right:0;top:5%;background:var(--p);animation:mesh2 15s ease-in-out infinite alternate}
+  .b3 .m3{width:55%;height:55%;left:20%;bottom:0;background:var(--t);animation:mesh3 17s ease-in-out infinite alternate}
+  @keyframes mesh1{to{transform:translate(40%,30%)}}@keyframes mesh2{to{transform:translate(-30%,25%)}}@keyframes mesh3{to{transform:translate(25%,-30%)}}
+
+  /* 4 Tech grid horizon */
+  .b4{background:radial-gradient(120% 90% at 50% 120%,rgba(255,107,26,.28),transparent 55%),#06060c;perspective:400px;overflow:hidden}
+  .b4 .grid4{inset:-10% -10% -40% -10%;top:45%;background:
+    linear-gradient(rgba(139,92,246,.5) 1px,transparent 1px) 0 0/100% 26px,
+    linear-gradient(90deg,rgba(139,92,246,.5) 1px,transparent 1px) 0 0/26px 100%;
+    transform:rotateX(70deg);animation:grid4 6s linear infinite;
+    mask:linear-gradient(#000,transparent 85%)}
+  @keyframes grid4{to{background-position:0 26px,0 0}}
+  .b4 .sun{left:50%;top:44%;width:120px;height:120px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,var(--o),var(--od) 60%,transparent 72%);filter:blur(2px)}
+
+  /* 5 Orbital rings */
+  .b5{background:radial-gradient(circle at 50% 50%,#12101a,#07070c)}
+  .b5 .ring{border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);border:1.5px solid transparent}
+  .b5 .r1{width:120px;height:120px;border-top-color:var(--o);border-right-color:var(--od);animation:spin 7s linear infinite}
+  .b5 .r2{width:190px;height:190px;border-bottom-color:var(--p);border-left-color:var(--pd);animation:spin 11s linear infinite reverse}
+  .b5 .r3{width:270px;height:270px;border-top-color:var(--t);animation:spin 16s linear infinite}
+  .b5 .core{left:50%;top:50%;width:40px;height:40px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,var(--o),var(--od));filter:blur(1px);box-shadow:0 0 40px var(--o)}
+  @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+  /* 6 Gradient wash (static) */
+  .b6{background:linear-gradient(135deg,#0a0a10 0%,#1a0f18 30%,#2a1220 55%,#101a20 100%)}
+  .b6::after{content:'';position:absolute;inset:0;background:radial-gradient(40% 50% at 20% 20%,rgba(255,107,26,.35),transparent 60%),radial-gradient(45% 55% at 85% 40%,rgba(139,92,246,.32),transparent 60%),radial-gradient(50% 50% at 60% 100%,rgba(20,184,166,.28),transparent 60%)}
+
+  /* 7 Starfield (canvas) */
+  .b7{background:radial-gradient(circle at 50% 40%,#12101c,#06060c)}
+
+  /* 8 Bokeh orbs */
+  .b8{background:#08080f;overflow:hidden}
+  .b8 .o{border-radius:50%;filter:blur(6px);opacity:.55}
+  .b8 .o1{width:70px;height:70px;left:12%;top:20%;background:var(--o);animation:f1 9s ease-in-out infinite}
+  .b8 .o2{width:46px;height:46px;left:60%;top:15%;background:var(--p);animation:f2 11s ease-in-out infinite}
+  .b8 .o3{width:90px;height:90px;left:70%;top:55%;background:var(--t);animation:f3 13s ease-in-out infinite}
+  .b8 .o4{width:38px;height:38px;left:30%;top:65%;background:var(--tl);animation:f1 10s ease-in-out infinite reverse}
+  .b8 .o5{width:56px;height:56px;left:45%;top:40%;background:var(--od);animation:f2 8s ease-in-out infinite}
+  @keyframes f1{50%{transform:translate(20px,-24px)}}@keyframes f2{50%{transform:translate(-24px,18px)}}@keyframes f3{50%{transform:translate(16px,20px)}}
+
+  /* 9 Flow waves */
+  .b9{background:#07070d}
+  .b9 svg{inset:0;width:100%;height:100%}
+
+  /* 10 Spotlight pulse */
+  .b10{background:#060609}
+  .b10 .spot{inset:0;background:radial-gradient(45% 55% at 50% 42%,rgba(255,107,26,.5),rgba(139,92,246,.18) 45%,transparent 70%);animation:pulse 6s ease-in-out infinite}
+  .b10 .base{inset:0;background:radial-gradient(70% 60% at 50% 120%,rgba(20,184,166,.22),transparent 60%)}
+  @keyframes pulse{50%{opacity:.65;transform:scale(1.06)}}
+
+  /* 2 Constellation + 7 star canvas fill */
+  .cvwrap{inset:0}
+  canvas{width:100%;height:100%;display:block}
+</style></head>
+<body>
+  <h1>10 background concepts</h1>
+  <div class="sub">JMB palette · orange · purple · blue-green · pick your winner by number</div>
+  <div class="grid">
+
+    <div class="tile"><div class="stage b1"><div class="l a"></div><div class="l b"></div><div class="l c"></div></div>
+      <div class="cap"><span class="num">1</span><span class="nm">Aurora Drift</span><span class="tag anim">Animated</span></div></div>
+
+    <div class="tile"><div class="stage b2"><div class="cvwrap"><canvas id="cv2"></canvas></div></div>
+      <div class="cap"><span class="num">2</span><span class="nm">Constellation Network</span><span class="tag anim">Animated</span></div></div>
+
+    <div class="tile"><div class="stage b3"><div class="m m1"></div><div class="m m2"></div><div class="m m3"></div></div>
+      <div class="cap"><span class="num">3</span><span class="nm">Liquid Mesh</span><span class="tag anim">Animated</span></div></div>
+
+    <div class="tile"><div class="stage b4"><div class="sun"></div><div class="grid4"></div></div>
+      <div class="cap"><span class="num">4</span><span class="nm">Grid Horizon</span><span class="tag anim">Animated</span></div></div>
+
+    <div class="tile"><div class="stage b5"><div class="ring r3"></div><div class="ring r2"></div><div class="ring r1"></div><div class="core"></div></div>
+      <div class="cap"><span class="num">5</span><span class="nm">Orbital Rings</span><span class="tag anim">Animated</span></div></div>
+
+    <div class="tile"><div class="stage b6"></div>
+      <div class="cap"><span class="num">6</span><span class="nm">Gradient Wash</span><span class="tag stat">Static</span></div></div>
+
+    <div class="tile"><div class="stage b7"><div class="cvwrap"><canvas id="cv7"></canvas></div></div>
+      <div class="cap"><span class="num">7</span><span class="nm">Starfield Glow</span><span class="tag anim">Animated</span></div></div>
+
+    <div class="tile"><div class="stage b8"><div class="o o1"></div><div class="o o2"></div><div class="o o3"></div><div class="o o4"></div><div class="o o5"></div></div>
+      <div class="cap"><span class="num">8</span><span class="nm">Bokeh Orbs</span><span class="tag anim">Animated</span></div></div>
+
+    <div class="tile"><div class="stage b9">
+      <svg viewBox="0 0 400 230" preserveAspectRatio="none">
+        <defs><linearGradient id="w1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF6B1A"/><stop offset=".5" stop-color="#8B5CF6"/><stop offset="1" stop-color="#14B8A6"/></linearGradient></defs>
+        <path fill="none" stroke="url(#w1)" stroke-width="2" opacity=".8"><animate attributeName="d" dur="8s" repeatCount="indefinite"
+          values="M0,150 C100,110 300,190 400,140;M0,140 C100,180 300,110 400,160;M0,150 C100,110 300,190 400,140"/></path>
+        <path fill="none" stroke="url(#w1)" stroke-width="2" opacity=".45"><animate attributeName="d" dur="10s" repeatCount="indefinite"
+          values="M0,110 C120,150 280,80 400,120;M0,120 C120,80 280,160 400,100;M0,110 C120,150 280,80 400,120"/></path>
+        <path fill="none" stroke="url(#w1)" stroke-width="2" opacity=".3"><animate attributeName="d" dur="12s" repeatCount="indefinite"
+          values="M0,180 C130,200 270,150 400,185;M0,185 C130,150 270,205 400,165;M0,180 C130,200 270,150 400,185"/></path>
+      </svg></div>
+      <div class="cap"><span class="num">9</span><span class="nm">Flow Waves</span><span class="tag anim">Animated</span></div></div>
+
+    <div class="tile"><div class="stage b10"><div class="base"></div><div class="spot"></div></div>
+      <div class="cap"><span class="num">10</span><span class="nm">Spotlight Pulse</span><span class="tag anim">Animated</span></div></div>
+
+  </div>
+
+<script>
+function net(id,link){var c=document.getElementById(id);if(!c)return;var x=c.getContext('2d'),W,H,P,DPR=Math.min(2,devicePixelRatio||1);
+ var COL=[[255,107,26],[139,92,246],[20,184,166]];
+ function sz(){var r=c.getBoundingClientRect();W=c.width=r.width*DPR;H=c.height=r.height*DPR;}
+ function init(){sz();var n=Math.round(W*H/26000/DPR);P=[];for(var i=0;i<n;i++){var col=COL[i%3];P.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3*DPR,vy:(Math.random()-.5)*.3*DPR,c:col,r:(Math.random()*1.4+.7)*DPR})}}
+ function t(){x.clearRect(0,0,W,H);var L=link*DPR;
+  for(var i=0;i<P.length;i++){var p=P[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;}
+  for(i=0;i<P.length;i++)for(var j=i+1;j<P.length;j++){var a=P[i],b=P[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);if(d<L){var o=(1-d/L)*.5;x.strokeStyle='rgba('+a.c[0]+','+a.c[1]+','+a.c[2]+','+o+')';x.lineWidth=DPR*.6;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();}}
+  for(i=0;i<P.length;i++){var p=P[i];x.fillStyle='rgba('+p.c[0]+','+p.c[1]+','+p.c[2]+',.9)';x.shadowBlur=8*DPR;x.shadowColor=x.fillStyle;x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill();x.shadowBlur=0;}
+  requestAnimationFrame(t);}
+ init();t();addEventListener('resize',init);}
+function stars(id){var c=document.getElementById(id);if(!c)return;var x=c.getContext('2d'),W,H,S,DPR=Math.min(2,devicePixelRatio||1);
+ var COL=['255,178,122','183,156,255','110,231,214','255,255,255'];
+ function sz(){var r=c.getBoundingClientRect();W=c.width=r.width*DPR;H=c.height=r.height*DPR;}
+ function init(){sz();S=[];var n=Math.round(W*H/9000/DPR);for(var i=0;i<n;i++)S.push({x:Math.random()*W,y:Math.random()*H,z:Math.random()*.8+.2,c:COL[i%4],ph:Math.random()*6})}
+ function t(){x.clearRect(0,0,W,H);var now=performance.now()/1000;
+  for(var i=0;i<S.length;i++){var s=S[i];s.y+=s.z*.25*DPR;if(s.y>H){s.y=0;s.x=Math.random()*W}var tw=.5+.5*Math.sin(now*1.5+s.ph);x.fillStyle='rgba('+s.c+','+(tw*s.z)+')';x.beginPath();x.arc(s.x,s.y,s.z*1.4*DPR,0,7);x.fill();}
+  requestAnimationFrame(t);}
+ init();t();addEventListener('resize',init);}
+setTimeout(function(){net('cv2',115);stars('cv7');},60);
+</script>
+</body></html>
