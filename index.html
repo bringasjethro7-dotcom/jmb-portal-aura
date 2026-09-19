@@ -4060,7 +4060,7 @@
     background:linear-gradient(100deg,#FF6B1A,#FF9440 20%,#6EE7D6 46%,#8B5CF6 70%,#FF6B1A) !important;
     background-size:230% auto !important; -webkit-background-clip:text !important; background-clip:text !important;
     color:transparent !important; -webkit-text-fill-color:transparent !important;
-    animation:au-shine 6s linear infinite, au-rise .8s .12s both !important; }
+    animation:au-shine 3.2s linear infinite, au-rise .8s .12s both !important; }
   @keyframes au-shine{ to{ background-position:230% center; } }
   @keyframes au-rise{ from{ opacity:0; transform:translateY(18px); } to{ opacity:1; transform:none; } }
   .au-left-p{ animation:au-rise .8s .2s both; }
@@ -4069,52 +4069,58 @@
   /* RIGHT sign-in */
   #login-screen .login-form-panel{ position:relative !important; z-index:2 !important; display:flex !important;
     align-items:center !important; justify-content:center !important; padding:5vh 6vw !important; background:transparent !important; border:none !important; }
+  /* ── BRAND-NEW card: no box · underline inputs · pill button · animated title ── */
   #login-screen .login-box{
-    position:relative !important; width:100% !important; max-width:400px !important;
-    background:linear-gradient(160deg, rgba(18,15,24,.42), rgba(12,10,18,.32) 55%, rgba(20,12,16,.40)) !important;
-    border:1px solid rgba(255,255,255,.14) !important; border-radius:26px !important;
-    padding:40px 34px 34px !important; overflow:visible !important;
-    -webkit-backdrop-filter:blur(26px) saturate(135%) !important; backdrop-filter:blur(26px) saturate(135%) !important;
-    box-shadow:0 40px 90px -30px rgba(0,0,0,.82), inset 0 1px 0 rgba(255,255,255,.12), 0 0 64px -26px rgba(232,69,42,.55) !important;
-    animation:au-card-in .8s cubic-bezier(.2,.8,.2,1) both !important;
+    position:relative !important; width:100% !important; max-width:372px !important;
+    background:transparent !important; border:none !important; border-radius:0 !important;
+    padding:0 !important; overflow:visible !important;
+    -webkit-backdrop-filter:none !important; backdrop-filter:none !important; box-shadow:none !important;
+    animation:au-card-in .85s cubic-bezier(.2,.8,.2,1) both !important;
   }
-  @keyframes au-card-in{ from{ opacity:0; transform:translateY(20px) scale(.98);} to{ opacity:1; } }
-  #login-screen .login-box::before{ content:''; position:absolute; inset:-1px; border-radius:inherit; padding:1px; z-index:0;
-    background:linear-gradient(135deg,var(--au-o2),var(--au-od) 50%,var(--au-p)); opacity:.5;
-    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
+  @keyframes au-card-in{ from{ opacity:0; transform:translateY(22px);} to{ opacity:1; } }
+  #login-screen .login-box::before{ display:none !important; }
   #login-screen .login-box > *{ position:relative; z-index:1; }
   #login-screen .login-box .au-sheen{ display:none !important; }
 
-  #login-screen .login-card-brand{ display:flex !important; align-items:center !important; gap:11px !important; margin-bottom:22px !important; }
-  #login-screen .brand-logo-badge{ display:inline-flex !important; align-items:center; justify-content:center; width:44px !important; height:44px !important; border-radius:0 !important; background:transparent !important; box-shadow:none !important; overflow:visible !important; filter:drop-shadow(0 4px 14px rgba(255,106,26,.6)); }
+  #login-screen .login-card-brand{ display:flex !important; align-items:center !important; gap:11px !important; margin-bottom:30px !important; }
+  #login-screen .brand-logo-badge{ display:inline-flex !important; align-items:center; justify-content:center; width:40px !important; height:40px !important; border-radius:0 !important; background:transparent !important; box-shadow:none !important; overflow:visible !important; filter:drop-shadow(0 4px 14px rgba(255,106,26,.6)); }
   #login-screen .login-card-logo{ width:100% !important; height:100% !important; object-fit:contain !important; }
-  #login-screen .login-card-wordmark{ display:inline !important; font-weight:800 !important; font-size:15px !important; letter-spacing:.16em !important; color:var(--au-ink) !important; font-family:inherit !important; }
+  #login-screen .login-card-wordmark{ display:inline !important; font-weight:800 !important; font-size:13px !important; letter-spacing:.2em !important; color:var(--au-ink2) !important; font-family:inherit !important; }
 
-  #login-screen .login-form-eyebrow{ font-size:11.5px !important; font-weight:700 !important; letter-spacing:.22em !important; text-transform:uppercase !important;
-    background:linear-gradient(90deg,var(--au-o2),var(--au-od)) !important; -webkit-background-clip:text !important; background-clip:text !important; -webkit-text-fill-color:transparent !important; color:transparent !important; margin-bottom:8px !important; display:block !important; }
+  #login-screen .login-form-eyebrow{ font-size:11px !important; font-weight:700 !important; letter-spacing:.28em !important; text-transform:uppercase !important; color:var(--au-ink3) !important; background:none !important; -webkit-text-fill-color:currentColor !important; margin-bottom:12px !important; display:block !important; }
   #login-screen .login-form-eyebrow::before, #login-screen .login-form-eyebrow::after{ content:none !important; display:none !important; }
-  #login-screen .login-form-title{ font-size:32px !important; font-weight:800 !important; line-height:1 !important; letter-spacing:-.02em !important; color:var(--au-ink) !important; text-transform:none !important; margin-bottom:6px !important; font-family:inherit !important; }
-  #login-screen .login-form-sub{ color:var(--au-ink2) !important; font-size:13.5px !important; margin-bottom:22px !important; }
+  /* animated shine on the card title too */
+  #login-screen .login-form-title{ font-size:44px !important; font-weight:900 !important; line-height:.98 !important; letter-spacing:-.03em !important; text-transform:none !important; margin-bottom:10px !important; font-family:inherit !important;
+    background:linear-gradient(100deg,#FF6B1A,#FF9440 20%,#6EE7D6 46%,#8B5CF6 70%,#FF6B1A) !important; background-size:230% auto !important;
+    -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important; -webkit-text-fill-color:transparent !important;
+    animation:au-shine 3.2s linear infinite !important; }
+  #login-screen .login-form-sub{ color:var(--au-ink2) !important; font-size:14px !important; margin-bottom:30px !important; }
 
-  #login-screen .field-label{ color:var(--au-ink2) !important; font-size:11.5px !important; font-weight:600 !important; letter-spacing:.1em !important; text-transform:uppercase !important; font-family:inherit !important; }
-  #login-screen .field-input{ background:rgba(255,255,255,.05) !important; border:1px solid rgba(255,255,255,.1) !important; color:var(--au-ink) !important; border-radius:13px !important; padding:14px 14px !important; font-size:15px !important; transition:border-color .2s, box-shadow .2s, background .2s !important; }
-  #login-screen .field-input.has-ico{ padding-left:44px !important; }
+  #login-screen .field-group{ margin-bottom:22px !important; }
+  #login-screen .field-label{ color:var(--au-ink3) !important; font-size:11px !important; font-weight:700 !important; letter-spacing:.14em !important; text-transform:uppercase !important; font-family:inherit !important; margin-bottom:4px !important; }
+  /* underline inputs — no box */
+  #login-screen .field-input{ background:transparent !important; border:none !important; border-bottom:2px solid rgba(255,255,255,.16) !important; border-radius:0 !important; color:var(--au-ink) !important; padding:12px 8px 12px 32px !important; font-size:16.5px !important; transition:border-color .25s, box-shadow .25s !important; box-shadow:none !important; }
+  #login-screen .field-input.has-ico{ padding-left:32px !important; }
   #login-screen .field-input::placeholder{ color:var(--au-ink3) !important; }
-  #login-screen .field-input:focus{ border-color:rgba(255,120,40,.9) !important; background:rgba(255,255,255,.07) !important; box-shadow:0 0 0 4px rgba(255,106,26,.16), 0 0 22px -4px rgba(255,106,26,.5) !important; outline:none !important; }
+  #login-screen .field-input:focus{ border-bottom-color:#FF6B1A !important; background:transparent !important; box-shadow:0 2px 12px -6px rgba(255,106,26,.9) !important; outline:none !important; }
+  #login-screen .field-ico-wrap .field-ico, #login-screen .pin-input-wrap .field-ico{ left:2px !important; color:var(--au-ink3) !important; }
   #login-screen .field-ico{ color:var(--au-ink3) !important; }
-  #login-screen .pin-toggle{ color:var(--au-ink3) !important; }
-  #login-screen .pin-toggle:hover{ color:var(--au-ink) !important; }
-  #login-screen #hcaptcha-container{ background:rgba(255,255,255,.05) !important; border:1px solid rgba(255,255,255,.1) !important; border-radius:14px !important; padding:11px !important; display:flex !important; justify-content:center !important; box-shadow:inset 0 1px 0 rgba(255,255,255,.06) !important; }
-  #login-screen #hcaptcha-container .h-captcha{ border-radius:6px; overflow:hidden; }
+  #login-screen .pin-input-wrap .field-input{ padding-right:40px !important; }
+  #login-screen .pin-toggle{ color:var(--au-ink3) !important; right:2px !important; }
+  #login-screen .pin-toggle:hover{ color:#FF6B1A !important; }
+  /* captcha: minimal, no box */
+  #login-screen #hcaptcha-container{ background:transparent !important; border:none !important; border-radius:12px !important; padding:0 !important; display:flex !important; justify-content:flex-start !important; box-shadow:none !important; margin:4px 0 8px !important; }
+  #login-screen #hcaptcha-container .h-captcha{ border-radius:8px; overflow:hidden; }
 
-  #login-screen .btn-primary{ position:relative !important; overflow:hidden !important; border-radius:13px !important; padding:15px !important; font-weight:700 !important; font-size:15px !important; letter-spacing:.02em !important;
-    text-transform:none !important; border:none !important; color:#fff !important;
+  /* pill button */
+  #login-screen .btn-primary{ position:relative !important; overflow:hidden !important; border-radius:999px !important; padding:17px !important; font-weight:800 !important; font-size:14.5px !important; letter-spacing:.12em !important;
+    text-transform:uppercase !important; border:none !important; color:#fff !important; width:100% !important;
     background:linear-gradient(135deg,var(--au-o2),var(--au-od) 60%,#ff7a1a) !important; background-size:200% 100% !important; background-position:0% 50% !important;
-    box-shadow:0 14px 34px -10px rgba(232,69,42,.8), 0 0 0 1px rgba(255,255,255,.08) inset !important; transition:background-position .5s, box-shadow .3s, transform .1s !important; }
-  #login-screen .btn-primary:hover{ background-position:100% 50% !important; box-shadow:0 18px 44px -10px rgba(255,106,26,.8) !important; }
+    box-shadow:0 16px 40px -12px rgba(232,69,42,.85) !important; transition:background-position .5s, box-shadow .3s, transform .12s !important; margin-top:6px !important; }
+  #login-screen .btn-primary:hover{ background-position:100% 50% !important; box-shadow:0 22px 52px -12px rgba(255,106,26,.9) !important; transform:translateY(-1px) !important; }
   #login-screen .btn-primary:active{ transform:translateY(1px) !important; }
-  #login-screen .btn-primary::after{ content:''; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent); transform:skewX(-18deg); animation:au-sheen 3.6s ease-in-out infinite; }
-  @keyframes au-sheen{ 0%,60%{ left:-60%;} 88%,100%{ left:130%;} }
+  #login-screen .btn-primary::after{ content:''; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent); transform:skewX(-18deg); animation:au-sheen 3.6s ease-in-out infinite; }
+  @keyframes au-sheen{ 0%,62%{ left:-60%;} 88%,100%{ left:150%;} }
 
   #login-screen #forgot-pin-wrap{ border-top-color:rgba(255,255,255,.1) !important; }
   #login-screen #forgot-pin-wrap p{ color:var(--au-ink2) !important; }
