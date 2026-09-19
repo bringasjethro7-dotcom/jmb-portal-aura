@@ -4043,55 +4043,94 @@
   }
   /* release the anti-FOUC opacity gate (old jmb-login-tunnel block used to do this) */
   #login-screen{ opacity:1 !important; }
-  /* full-bleed dark canvas */
+  /* full-bleed dark canvas — cursor drives --mx/--my (0..1, default centre) */
   #login-screen{
+    --mx:.5; --my:.5;
     display:flex !important; grid-template-columns:none !important;
     align-items:center !important; justify-content:center !important;
     min-height:100vh !important; padding:24px !important;
-    background:radial-gradient(120% 120% at 50% -10%, #12132a 0%, var(--au-bg2) 42%, var(--au-bg) 100%) !important;
+    background:#05060d !important;
     overflow:hidden !important; position:relative !important;
+    perspective:1400px !important;
   }
-  /* ── animated aurora blobs (transform/opacity only → GPU-cheap) ── */
-  .au-aurora{ position:absolute; inset:-20% -20% -20% -20%; z-index:0; pointer-events:none; filter:blur(60px); opacity:.9; }
-  .au-blob{ position:absolute; border-radius:50%; mix-blend-mode:screen; will-change:transform; }
-  .au-b1{ width:46vw; height:46vw; left:-6vw; top:-8vw; background:radial-gradient(circle at 30% 30%, var(--au-violet), transparent 62%); animation:au-drift1 18s ease-in-out infinite; }
-  .au-b2{ width:42vw; height:42vw; right:-8vw; top:-4vw; background:radial-gradient(circle at 60% 40%, var(--au-magenta), transparent 62%); animation:au-drift2 22s ease-in-out infinite; }
-  .au-b3{ width:40vw; height:40vw; left:22vw; bottom:-16vw; background:radial-gradient(circle at 50% 50%, var(--au-cyan), transparent 60%); animation:au-drift3 26s ease-in-out infinite; }
-  .au-b4{ width:34vw; height:34vw; right:12vw; bottom:-12vw; background:radial-gradient(circle at 50% 50%, var(--au-indigo), transparent 62%); animation:au-drift1 20s ease-in-out infinite reverse; }
-  @keyframes au-drift1{ 0%,100%{ transform:translate(0,0) scale(1);} 50%{ transform:translate(6vw,4vw) scale(1.12);} }
-  @keyframes au-drift2{ 0%,100%{ transform:translate(0,0) scale(1.05);} 50%{ transform:translate(-5vw,5vw) scale(.94);} }
-  @keyframes au-drift3{ 0%,100%{ transform:translate(0,0) scale(1);} 50%{ transform:translate(4vw,-5vw) scale(1.14);} }
-  /* fine star/grain veil + vignette */
+  /* ── LIQUID background: flowing colour field that fills the whole frame ── */
+  .au-aurora{ position:absolute; inset:-25%; z-index:0; pointer-events:none; will-change:transform;
+    transform:translate(calc((var(--mx) - .5) * -34px), calc((var(--my) - .5) * -34px)); }
+  .au-liquid{ position:absolute; inset:0;
+    background:
+      radial-gradient(38vw 38vw at 22% 26%, rgba(124,58,237,.85), transparent 60%),
+      radial-gradient(42vw 42vw at 82% 20%, rgba(219,39,119,.75), transparent 60%),
+      radial-gradient(46vw 46vw at 30% 88%, rgba(34,211,238,.62), transparent 62%),
+      radial-gradient(40vw 40vw at 92% 82%, rgba(99,102,241,.7), transparent 60%),
+      radial-gradient(30vw 30vw at 58% 52%, rgba(168,85,247,.5), transparent 66%);
+    filter:blur(58px) saturate(135%);
+    animation:au-liquid 24s ease-in-out infinite;
+  }
+  .au-liquid.b{ mix-blend-mode:screen; opacity:.9;
+    background:
+      radial-gradient(34vw 34vw at 70% 34%, rgba(56,189,248,.55), transparent 60%),
+      radial-gradient(38vw 38vw at 14% 62%, rgba(217,70,239,.5), transparent 62%),
+      radial-gradient(30vw 30vw at 50% 96%, rgba(124,58,237,.5), transparent 64%);
+    animation:au-liquid2 30s ease-in-out infinite; }
+  @keyframes au-liquid{ 0%,100%{ transform:translate(0,0) scale(1) rotate(0deg);} 33%{ transform:translate(3vw,-2vw) scale(1.08) rotate(4deg);} 66%{ transform:translate(-3vw,2vw) scale(1.05) rotate(-3deg);} }
+  @keyframes au-liquid2{ 0%,100%{ transform:translate(0,0) scale(1.05);} 50%{ transform:translate(-4vw,3vw) scale(.95);} }
+  /* slow conic caustic sweep for that refracted-light shimmer */
+  .au-caustic{ position:absolute; inset:-30%; z-index:1; pointer-events:none; opacity:.28; mix-blend-mode:screen;
+    background:conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(255,255,255,.5) 24deg, transparent 60deg, transparent 180deg, rgba(140,220,255,.4) 210deg, transparent 250deg, transparent 360deg);
+    filter:blur(40px); animation:au-spin 40s linear infinite; }
+  @keyframes au-spin{ to{ transform:rotate(360deg);} }
+  /* drifting starfield + vignette for depth */
   .au-grain{ position:absolute; inset:0; z-index:1; pointer-events:none;
-    background:radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.5), transparent 60%),
-              radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,.35), transparent 60%),
-              radial-gradient(1px 1px at 45% 80%, rgba(255,255,255,.3), transparent 60%),
-              radial-gradient(1px 1px at 85% 22%, rgba(255,255,255,.4), transparent 60%);
-    opacity:.5; }
+    background:radial-gradient(1.2px 1.2px at 18% 28%, rgba(255,255,255,.7), transparent 60%),
+              radial-gradient(1px 1px at 68% 58%, rgba(255,255,255,.45), transparent 60%),
+              radial-gradient(1.4px 1.4px at 44% 82%, rgba(255,255,255,.5), transparent 60%),
+              radial-gradient(1px 1px at 86% 24%, rgba(255,255,255,.55), transparent 60%),
+              radial-gradient(1px 1px at 34% 50%, rgba(255,255,255,.4), transparent 60%);
+    opacity:.55; transform:translate(calc((var(--mx) - .5) * 14px), calc((var(--my) - .5) * 14px)); }
   .au-vignette{ position:absolute; inset:0; z-index:1; pointer-events:none;
-    background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0,0,0,.55) 100%); }
+    background:radial-gradient(130% 100% at 50% 42%, transparent 42%, rgba(0,0,0,.62) 100%); }
 
-  /* ── the glass card ── */
-  #login-screen .login-form-panel{ background:transparent !important; border:none !important; padding:0 !important; position:relative !important; z-index:2 !important; width:100% !important; display:flex !important; justify-content:center !important; }
+  /* ── the LIQUID-GLASS card ── refraction, chromatic edge, specular, 3D tilt ── */
+  #login-screen .login-form-panel{ background:transparent !important; border:none !important; padding:0 !important; position:relative !important; z-index:2 !important; width:100% !important; display:flex !important; justify-content:center !important; transform-style:preserve-3d !important; }
   #login-screen .login-box{
-    position:relative !important; width:100% !important; max-width:410px !important;
-    background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.028)) !important;
-    border:1px solid var(--au-glass-brd) !important; border-radius:24px !important;
-    padding:38px 34px 34px !important; overflow:visible !important;
-    -webkit-backdrop-filter:blur(26px) saturate(150%) !important; backdrop-filter:blur(26px) saturate(150%) !important;
-    box-shadow:0 30px 80px -20px rgba(5,6,20,.85), inset 0 1px 0 rgba(255,255,255,.14) !important;
-    animation:au-card-in .8s cubic-bezier(.2,.8,.2,1) both !important;
+    position:relative !important; width:100% !important; max-width:428px !important;
+    background:linear-gradient(155deg, rgba(255,255,255,.11), rgba(255,255,255,.03) 46%, rgba(120,90,240,.06)) !important;
+    border:1px solid rgba(255,255,255,.14) !important; border-radius:26px !important;
+    padding:40px 36px 34px !important; overflow:visible !important;
+    -webkit-backdrop-filter:blur(30px) saturate(180%) brightness(1.06) !important; backdrop-filter:blur(30px) saturate(180%) brightness(1.06) !important;
+    box-shadow:
+      0 40px 90px -24px rgba(3,4,16,.9),
+      0 2px 0 rgba(255,255,255,.10) inset,
+      -14px 0 40px -30px rgba(56,189,248,.9),   /* cyan chromatic edge L */
+      14px 0 40px -30px rgba(236,72,153,.9) !important; /* magenta chromatic edge R */
+    transform:rotateX(calc((var(--my) - .5) * -7deg)) rotateY(calc((var(--mx) - .5) * 9deg)) !important;
+    transform-style:preserve-3d !important;
+    transition:transform .18s ease-out !important;
+    animation:au-card-in .9s cubic-bezier(.2,.8,.2,1) both !important;
   }
-  @keyframes au-card-in{ from{ opacity:0; transform:translateY(22px) scale(.98);} to{ opacity:1; transform:none;} }
-  /* glowing gradient ring around the card */
+  @keyframes au-card-in{ from{ opacity:0; transform:translateY(26px) scale(.97);} to{ opacity:1; } }
+  /* liquid gradient rim */
   #login-screen .login-box::before{
-    content:''; position:absolute; inset:-1px; border-radius:inherit; padding:1px; z-index:-1;
-    background:linear-gradient(135deg, var(--au-violet), var(--au-magenta), var(--au-cyan)); opacity:.55;
+    content:''; position:absolute; inset:-1px; border-radius:inherit; padding:1.4px; z-index:0;
+    background:linear-gradient(135deg, var(--au-cyan), var(--au-violet) 45%, var(--au-magenta) 75%, var(--au-cyan)); opacity:.75;
     -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite:xor; mask-composite:exclude;
+    -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none;
     display:block !important;
   }
-  #login-screen .login-box::after{ display:none !important; }
+  /* moving specular highlight — follows the cursor across the glass */
+  #login-screen .login-box::after{
+    content:''; position:absolute; inset:0; border-radius:inherit; z-index:0; pointer-events:none; display:block !important;
+    background:radial-gradient(180px 180px at calc(var(--mx) * 100%) calc(var(--my) * 100%), rgba(255,255,255,.16), rgba(255,255,255,.04) 40%, transparent 66%);
+    mix-blend-mode:screen;
+  }
+  /* keep real content above the glass pseudo-layers */
+  #login-screen .login-box > *{ position:relative; z-index:1; }
+  /* caustic light streak sweeping down the glass */
+  #login-screen .login-box .au-sheen{ position:absolute; top:0; left:0; right:0; height:150%; border-radius:inherit; z-index:0; pointer-events:none; overflow:hidden; }
+  #login-screen .login-box .au-sheen::before{ content:''; position:absolute; top:-40%; left:-30%; width:60%; height:200%;
+    background:linear-gradient(115deg, transparent, rgba(255,255,255,.14), transparent); transform:skewX(-16deg);
+    animation:au-glass-sheen 6.5s ease-in-out infinite; }
+  @keyframes au-glass-sheen{ 0%,70%{ left:-40%; } 92%,100%{ left:140%; } }
 
   /* brand row (logo + wordmark) — bring it back, Aura styled */
   #login-screen .login-card-brand{ display:flex !important; align-items:center !important; gap:11px !important; margin-bottom:22px !important; }
@@ -4431,13 +4470,27 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
 
   <!-- ═══ AURA animated aurora background ═══ -->
   <div class="au-aurora" aria-hidden="true">
-    <span class="au-blob au-b1"></span>
-    <span class="au-blob au-b2"></span>
-    <span class="au-blob au-b3"></span>
-    <span class="au-blob au-b4"></span>
+    <span class="au-liquid"></span>
+    <span class="au-liquid b"></span>
   </div>
+  <div class="au-caustic" aria-hidden="true"></div>
   <div class="au-grain" aria-hidden="true"></div>
   <div class="au-vignette" aria-hidden="true"></div>
+  <script>
+    (function(){
+      var scr=document.getElementById('login-screen'); if(!scr) return;
+      var raf=0, tx=.5, ty=.5;
+      function move(e){
+        var t=e.touches&&e.touches[0]; var cx=t?t.clientX:e.clientX, cy=t?t.clientY:e.clientY;
+        tx=Math.max(0,Math.min(1,cx/window.innerWidth)); ty=Math.max(0,Math.min(1,cy/window.innerHeight));
+        if(!raf) raf=requestAnimationFrame(function(){ raf=0; scr.style.setProperty('--mx',tx.toFixed(3)); scr.style.setProperty('--my',ty.toFixed(3)); });
+      }
+      window.addEventListener('mousemove',move,{passive:true});
+      window.addEventListener('touchmove',move,{passive:true});
+      // ease back to centre when the pointer leaves
+      window.addEventListener('mouseleave',function(){ scr.style.setProperty('--mx','.5'); scr.style.setProperty('--my','.5'); });
+    })();
+  </script>
 
   <!-- LEFT BRAND PANEL -->
   <!-- (old brand panel deleted — the tunnel artwork is the brand now) -->
@@ -4445,6 +4498,7 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
   <!-- RIGHT FORM PANEL -->
   <div class="login-form-panel">
     <div class="login-box">
+      <div class="au-sheen" aria-hidden="true"></div>
       <div class="login-card-brand">
         <span class="brand-logo-badge"><img id="login-card-logo" class="login-card-logo" alt="" /></span>
         <span class="brand-wordmark login-card-wordmark">JMB VIRTUALS</span>
@@ -4489,7 +4543,7 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
               + '<span style="font-size:7px;color:#9aa0a6;font-family:sans-serif;">Privacy · Terms</span>'
               + '</div></div>';
           } else {
-            container.innerHTML = '<div class="h-captcha" data-theme="light" data-sitekey="364885b2-799e-4e02-87e6-f5a20508d16e" data-callback="onHCaptchaSuccess" data-expired-callback="onHCaptchaExpired"></div>';
+            container.innerHTML = '<div class="h-captcha" data-theme="dark" data-sitekey="364885b2-799e-4e02-87e6-f5a20508d16e" data-callback="onHCaptchaSuccess" data-expired-callback="onHCaptchaExpired"></div>';
           }
         })();
       </script>
