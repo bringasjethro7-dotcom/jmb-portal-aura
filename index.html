@@ -4030,128 +4030,65 @@
 <!-- ═══════════ LOGIN REDESIGN · modern light SaaS (scoped, loads last) ═══════════ -->
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style id="login-redesign">
-  /* ═══════════════════════════════════════════════════════════════════════
-     LOGIN — AURA · dark-premium (animated aurora, glassmorphism, glow)
-     Auth wiring untouched: #emp-id #emp-pin #emp-pin-toggle #login-btn
-     doLogin() #login-error #forgot-pin-wrap — all preserved.
-     ═══════════════════════════════════════════════════════════════════════ */
+  /* ═══ LOGIN — WebGL nebula + soft glass · brand left, form right ═══ */
   :root{
-    --au-bg:#05060d; --au-bg2:#0a0b17;
-    --au-violet:#7c3aed; --au-magenta:#db2777; --au-cyan:#22d3ee; --au-indigo:#6366f1;
-    --au-ink:#f4f6ff; --au-ink2:#9aa2c0; --au-ink3:#5c6486;
-    --au-glass:rgba(255,255,255,.045); --au-glass-brd:rgba(255,255,255,.09);
+    --au-o:#FF6B1A; --au-od:#E8452A; --au-o2:#FF9440;
+    --au-p:#8B5CF6; --au-pd:#6D28D9; --au-t:#14B8A6; --au-tl:#6EE7D6;
+    --au-ink:#F6F7FC; --au-ink2:#c2c6da; --au-ink3:#8a90a8;
   }
-  /* release the anti-FOUC opacity gate (old jmb-login-tunnel block used to do this) */
   #login-screen{ opacity:1 !important; }
-  /* full-bleed dark canvas — cursor drives --mx/--my (0..1, default centre) */
   #login-screen{
-    --mx:.5; --my:.5;
-    display:flex !important; grid-template-columns:none !important;
-    align-items:center !important; justify-content:center !important;
-    min-height:100vh !important; padding:24px !important;
-    background:radial-gradient(55vw 44vw at 100% -8%, rgba(255,106,26,.22), transparent 60%),
-              radial-gradient(52vw 44vw at -6% 108%, rgba(124,58,237,.20), transparent 60%),
-              radial-gradient(40vw 30vw at 50% 50%, rgba(255,140,60,.06), transparent 70%),
-              #09090f !important;
-    overflow:hidden !important; position:relative !important;
-    perspective:1400px !important;
+    display:grid !important; grid-template-columns:1.05fr .95fr !important;
+    align-items:stretch !important; min-height:100vh !important; padding:0 !important;
+    position:relative !important; overflow:hidden !important; background:#0a0a10 !important;
   }
-  /* ── SILK background: flowing iridescent light ribbons (SVG turbulence) ── */
-  .au-aurora{ position:absolute; inset:-6%; z-index:0; pointer-events:none; will-change:transform;
-    transform:translate(calc((var(--mx) - .5) * -24px), calc((var(--my) - .5) * -24px)); }
-  .au-silk{ display:none !important; }
+  .au-neb{ position:absolute !important; inset:0; width:100%; height:100%; z-index:0; display:block; }
+  .au-glass{ position:absolute; inset:0; z-index:1; pointer-events:none;
+    -webkit-backdrop-filter:blur(17px) saturate(118%); backdrop-filter:blur(17px) saturate(118%);
+    background:linear-gradient(160deg,rgba(255,255,255,.035),rgba(255,255,255,.01) 50%,rgba(6,6,12,.045));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06); }
 
-  /* ── BOLD split layout: orange brand panel (left) + sign-in (right) ── */
-  #login-screen{ grid-template-columns:1.08fr .92fr !important; padding:0 !important; align-items:stretch !important; perspective:none !important; background:#0a0a10 !important; }
-  .au-bp{ position:relative; overflow:hidden; display:flex; align-items:center; padding:6vw 5vw;
-    background:linear-gradient(150deg,#e8452a 0%,#ff6a1a 52%,#ff9440 100%); }
-  .au-bp::after{ content:''; position:absolute; right:-120px; top:-140px; width:520px; height:520px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.22),transparent 62%); }
-  .au-bp::before{ content:''; position:absolute; left:-80px; bottom:-120px; width:360px; height:360px; border-radius:50%; background:radial-gradient(circle,rgba(124,58,237,.35),transparent 64%); mix-blend-mode:screen; }
-  .au-bp-in{ position:relative; z-index:1; max-width:460px; color:#fff; }
-  .au-bp-logo{ display:flex; align-items:center; gap:11px; font-weight:900; letter-spacing:.12em; font-size:15px; margin-bottom:52px; }
-  .au-bp-mark{ width:38px; height:38px; border-radius:11px; display:grid; place-items:center; background:rgba(255,255,255,.18); font-size:16px; }
-  .au-bp-h{ font-size:clamp(34px,4vw,58px) !important; font-weight:900; line-height:1.0; letter-spacing:-.03em; margin-bottom:20px; max-width:6.4em; text-transform:none; color:#fff; }
-  .au-bp-p{ font-size:16px; line-height:1.55; color:rgba(255,255,255,.92); max-width:400px; }
-  #login-screen .login-form-panel{ align-items:center !important; justify-content:center !important; padding:5vh 5vw !important; background:#0a0a10 !important; }
-  #login-screen .login-box{ max-width:400px !important; background:transparent !important; border:none !important; box-shadow:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; transform:none !important; padding:0 !important; }
-  #login-screen .login-box::before, #login-screen .login-box::after, #login-screen .login-box .au-sheen{ display:none !important; }
-  #login-screen .au-caustic, #login-screen .au-grain, #login-screen .au-vignette{ display:none !important; }
-  @media(max-width:900px){
-    #login-screen{ grid-template-columns:1fr !important; background:radial-gradient(70vw 46vw at 100% -8%, rgba(255,106,26,.22), transparent 60%), radial-gradient(60vw 46vw at -6% 108%, rgba(124,58,237,.18), transparent 60%), #09090f !important; }
-    .au-bp{ display:none !important; }
-    #login-screen .login-form-panel{ padding:8vh 24px !important; }
-    #login-screen .login-box{ max-width:420px !important; }
-  }
-  /* faint refracted-light shimmer sweeping across, very subtle */
-  .au-caustic{ position:absolute; inset:-30%; z-index:1; pointer-events:none; opacity:.07; mix-blend-mode:screen;
-    background:conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(255,255,255,.5) 20deg, transparent 54deg, transparent 200deg, rgba(150,225,255,.4) 226deg, transparent 262deg, transparent 360deg);
-    filter:blur(46px); animation:au-spin 46s linear infinite; }
-  @keyframes au-spin{ to{ transform:rotate(360deg);} }
-  /* drifting starfield + vignette for depth */
-  .au-grain{ position:absolute; inset:0; z-index:1; pointer-events:none;
-    background:radial-gradient(1.2px 1.2px at 18% 28%, rgba(255,255,255,.7), transparent 60%),
-              radial-gradient(1px 1px at 68% 58%, rgba(255,255,255,.45), transparent 60%),
-              radial-gradient(1.4px 1.4px at 44% 82%, rgba(255,255,255,.5), transparent 60%),
-              radial-gradient(1px 1px at 86% 24%, rgba(255,255,255,.55), transparent 60%),
-              radial-gradient(1px 1px at 34% 50%, rgba(255,255,255,.4), transparent 60%);
-    opacity:.55; transform:translate(calc((var(--mx) - .5) * 14px), calc((var(--my) - .5) * 14px)); }
-  .au-vignette{ position:absolute; inset:0; z-index:1; pointer-events:none;
-    background:radial-gradient(130% 100% at 50% 42%, transparent 42%, rgba(0,0,0,.62) 100%); }
+  /* LEFT brand text over the nebula */
+  .au-left{ position:relative; z-index:2; display:flex; align-items:center; padding:6vh 3vw 6vh 5vw; }
+  .au-left-in{ max-width:480px; color:#fff; }
+  .au-left-brand{ display:flex; align-items:center; gap:11px; font-weight:800; letter-spacing:.14em; font-size:14px; margin-bottom:46px; color:rgba(255,255,255,.92); }
+  .au-left-mark{ width:38px; height:38px; border-radius:11px; display:grid; place-items:center; font-size:16px; color:#fff;
+    background:linear-gradient(135deg,var(--au-o2),var(--au-od)); box-shadow:0 6px 20px -6px rgba(232,69,42,.8), inset 0 1px 0 rgba(255,255,255,.35); }
+  .au-left-h{ font-size:clamp(36px,4.2vw,62px) !important; font-weight:900; line-height:1.0; letter-spacing:-.03em; margin:0 0 18px;
+    text-transform:none; color:#fff; text-shadow:0 6px 40px rgba(0,0,0,.45); }
+  .au-left-p{ font-size:16px; line-height:1.55; color:rgba(255,255,255,.85); max-width:420px; text-shadow:0 2px 20px rgba(0,0,0,.4); }
 
-  /* ── the LIQUID-GLASS card ── refraction, chromatic edge, specular, 3D tilt ── */
-  #login-screen .login-form-panel{ background:transparent !important; border:none !important; padding:0 !important; position:relative !important; z-index:2 !important; width:100% !important; display:flex !important; justify-content:center !important; transform-style:preserve-3d !important; }
+  /* RIGHT sign-in */
+  #login-screen .login-form-panel{ position:relative !important; z-index:2 !important; display:flex !important;
+    align-items:center !important; justify-content:center !important; padding:5vh 6vw !important; background:transparent !important; border:none !important; }
   #login-screen .login-box{
-    position:relative !important; width:100% !important; max-width:428px !important;
-    background:linear-gradient(160deg, rgba(18,16,26,.62), rgba(14,12,22,.5) 55%, rgba(22,14,20,.58)) !important;
-    border:1px solid rgba(255,255,255,.16) !important; border-radius:28px !important;
-    padding:40px 36px 34px !important; overflow:visible !important;
-    -webkit-backdrop-filter:blur(34px) saturate(150%) !important; backdrop-filter:blur(34px) saturate(150%) !important;
-    box-shadow:
-      0 44px 100px -28px rgba(2,3,12,.92),
-      0 1px 0 rgba(255,255,255,.20) inset,
-      0 0 60px -20px rgba(124,58,237,.5) !important;
-    transform:rotateX(calc((var(--my) - .5) * -7deg)) rotateY(calc((var(--mx) - .5) * 9deg)) !important;
-    transform-style:preserve-3d !important;
-    transition:transform .18s ease-out !important;
-    animation:au-card-in .9s cubic-bezier(.2,.8,.2,1) both !important;
+    position:relative !important; width:100% !important; max-width:400px !important;
+    background:linear-gradient(160deg, rgba(18,15,24,.42), rgba(12,10,18,.32) 55%, rgba(20,12,16,.40)) !important;
+    border:1px solid rgba(255,255,255,.14) !important; border-radius:26px !important;
+    padding:40px 34px 34px !important; overflow:visible !important;
+    -webkit-backdrop-filter:blur(26px) saturate(135%) !important; backdrop-filter:blur(26px) saturate(135%) !important;
+    box-shadow:0 40px 90px -30px rgba(0,0,0,.82), inset 0 1px 0 rgba(255,255,255,.12), 0 0 64px -26px rgba(232,69,42,.55) !important;
+    animation:au-card-in .8s cubic-bezier(.2,.8,.2,1) both !important;
   }
-  @keyframes au-card-in{ from{ opacity:0; transform:translateY(26px) scale(.97);} to{ opacity:1; } }
-  /* liquid gradient rim */
-  #login-screen .login-box::before{
-    content:''; position:absolute; inset:-1px; border-radius:inherit; padding:1px; z-index:0;
-    background:linear-gradient(135deg, #ff9440, #e8452a 52%, var(--au-violet)); opacity:.6;
-    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none;
-    display:block !important;
-  }
-  /* moving specular highlight — follows the cursor across the glass */
-  #login-screen .login-box::after{
-    content:''; position:absolute; inset:0; border-radius:inherit; z-index:0; pointer-events:none; display:block !important;
-    background:radial-gradient(180px 180px at calc(var(--mx) * 100%) calc(var(--my) * 100%), rgba(255,255,255,.16), rgba(255,255,255,.04) 40%, transparent 66%);
-    mix-blend-mode:screen;
-  }
-  /* keep real content above the glass pseudo-layers */
+  @keyframes au-card-in{ from{ opacity:0; transform:translateY(20px) scale(.98);} to{ opacity:1; } }
+  #login-screen .login-box::before{ content:''; position:absolute; inset:-1px; border-radius:inherit; padding:1px; z-index:0;
+    background:linear-gradient(135deg,var(--au-o2),var(--au-od) 50%,var(--au-p)); opacity:.5;
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
   #login-screen .login-box > *{ position:relative; z-index:1; }
-  /* caustic light streak sweeping down the glass */
-  #login-screen .login-box .au-sheen{ position:absolute; top:0; left:0; right:0; height:150%; border-radius:inherit; z-index:0; pointer-events:none; overflow:hidden; }
-  #login-screen .login-box .au-sheen::before{ content:''; position:absolute; top:-40%; left:-30%; width:60%; height:200%;
-    background:linear-gradient(115deg, transparent, rgba(255,255,255,.14), transparent); transform:skewX(-16deg);
-    animation:au-glass-sheen 6.5s ease-in-out infinite; }
-  @keyframes au-glass-sheen{ 0%,70%{ left:-40%; } 92%,100%{ left:140%; } }
+  #login-screen .login-box .au-sheen{ display:none !important; }
 
-  /* brand row (logo + wordmark) — bring it back, Aura styled */
   #login-screen .login-card-brand{ display:flex !important; align-items:center !important; gap:11px !important; margin-bottom:22px !important; }
   #login-screen .brand-logo-badge{ display:inline-flex !important; align-items:center; justify-content:center; width:44px !important; height:44px !important; border-radius:0 !important; background:transparent !important; box-shadow:none !important; overflow:visible !important; filter:drop-shadow(0 4px 14px rgba(255,106,26,.6)); }
   #login-screen .login-card-logo{ width:100% !important; height:100% !important; object-fit:contain !important; }
-  #login-screen .login-card-wordmark{ display:inline !important; font-weight:800 !important; font-size:15px !important; letter-spacing:.16em !important; color:var(--au-ink) !important; }
+  #login-screen .login-card-wordmark{ display:inline !important; font-weight:800 !important; font-size:15px !important; letter-spacing:.16em !important; color:var(--au-ink) !important; font-family:inherit !important; }
 
   #login-screen .login-form-eyebrow{ font-size:11.5px !important; font-weight:700 !important; letter-spacing:.22em !important; text-transform:uppercase !important;
-    background:linear-gradient(90deg,#ff9d4d,#e8452a) !important; -webkit-background-clip:text !important; background-clip:text !important; -webkit-text-fill-color:transparent !important; color:transparent !important; margin-bottom:8px !important; display:block !important; }
+    background:linear-gradient(90deg,var(--au-o2),var(--au-od)) !important; -webkit-background-clip:text !important; background-clip:text !important; -webkit-text-fill-color:transparent !important; color:transparent !important; margin-bottom:8px !important; display:block !important; }
   #login-screen .login-form-eyebrow::before, #login-screen .login-form-eyebrow::after{ content:none !important; display:none !important; }
-  #login-screen .login-form-title{ font-size:32px !important; font-weight:800 !important; line-height:1 !important; letter-spacing:-.02em !important; color:var(--au-ink) !important; text-transform:none !important; margin-bottom:6px !important; }
+  #login-screen .login-form-title{ font-size:32px !important; font-weight:800 !important; line-height:1 !important; letter-spacing:-.02em !important; color:var(--au-ink) !important; text-transform:none !important; margin-bottom:6px !important; font-family:inherit !important; }
   #login-screen .login-form-sub{ color:var(--au-ink2) !important; font-size:13.5px !important; margin-bottom:22px !important; }
 
-  #login-screen .field-label{ color:var(--au-ink2) !important; font-size:11.5px !important; font-weight:600 !important; letter-spacing:.1em !important; text-transform:uppercase !important; }
+  #login-screen .field-label{ color:var(--au-ink2) !important; font-size:11.5px !important; font-weight:600 !important; letter-spacing:.1em !important; text-transform:uppercase !important; font-family:inherit !important; }
   #login-screen .field-input{ background:rgba(255,255,255,.05) !important; border:1px solid rgba(255,255,255,.1) !important; color:var(--au-ink) !important; border-radius:13px !important; padding:14px 14px !important; font-size:15px !important; transition:border-color .2s, box-shadow .2s, background .2s !important; }
   #login-screen .field-input.has-ico{ padding-left:44px !important; }
   #login-screen .field-input::placeholder{ color:var(--au-ink3) !important; }
@@ -4159,22 +4096,15 @@
   #login-screen .field-ico{ color:var(--au-ink3) !important; }
   #login-screen .pin-toggle{ color:var(--au-ink3) !important; }
   #login-screen .pin-toggle:hover{ color:var(--au-ink) !important; }
-  /* frame the (unavoidably white) hCaptcha widget in a dark glass inset so it reads as an intentional field */
   #login-screen #hcaptcha-container{ background:rgba(255,255,255,.05) !important; border:1px solid rgba(255,255,255,.1) !important; border-radius:14px !important; padding:11px !important; display:flex !important; justify-content:center !important; box-shadow:inset 0 1px 0 rgba(255,255,255,.06) !important; }
   #login-screen #hcaptcha-container .h-captcha{ border-radius:6px; overflow:hidden; }
 
-  #login-screen .btn-primary{
-    position:relative !important; overflow:hidden !important;
-    border-radius:13px !important; padding:15px !important; font-weight:700 !important; font-size:15px !important; letter-spacing:.02em !important;
+  #login-screen .btn-primary{ position:relative !important; overflow:hidden !important; border-radius:13px !important; padding:15px !important; font-weight:700 !important; font-size:15px !important; letter-spacing:.02em !important;
     text-transform:none !important; border:none !important; color:#fff !important;
-    background:linear-gradient(135deg,#ff9440,#e8452a 60%,#ff7a1a) !important;
-    background-size:200% 100% !important; background-position:0% 50% !important;
-    box-shadow:0 14px 34px -10px rgba(232,69,42,.8), 0 0 0 1px rgba(255,255,255,.08) inset !important;
-    transition:background-position .5s, box-shadow .3s, transform .1s !important;
-  }
+    background:linear-gradient(135deg,var(--au-o2),var(--au-od) 60%,#ff7a1a) !important; background-size:200% 100% !important; background-position:0% 50% !important;
+    box-shadow:0 14px 34px -10px rgba(232,69,42,.8), 0 0 0 1px rgba(255,255,255,.08) inset !important; transition:background-position .5s, box-shadow .3s, transform .1s !important; }
   #login-screen .btn-primary:hover{ background-position:100% 50% !important; box-shadow:0 18px 44px -10px rgba(255,106,26,.8) !important; }
   #login-screen .btn-primary:active{ transform:translateY(1px) !important; }
-  /* subtle sheen sweep on the button */
   #login-screen .btn-primary::after{ content:''; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent); transform:skewX(-18deg); animation:au-sheen 3.6s ease-in-out infinite; }
   @keyframes au-sheen{ 0%,60%{ left:-60%;} 88%,100%{ left:130%;} }
 
@@ -4182,35 +4112,33 @@
   #login-screen #forgot-pin-wrap p{ color:var(--au-ink2) !important; }
   #login-screen .login-form-panel button{ font-family:inherit; }
   #login-screen .login-error{ color:#ff8a9a !important; }
-  #login-screen .field-label, #login-screen .login-form-title, #login-screen .login-card-wordmark{ font-family:inherit !important; }
 
-  @media (max-width:560px){
-    #login-screen{ padding:16px !important; }
-    #login-screen .login-box{ padding:30px 24px 26px !important; }
-    #login-screen .login-form-title{ font-size:28px !important; }
+  @media (max-width:900px){
+    #login-screen{ grid-template-columns:1fr !important; }
+    .au-left{ display:none !important; }
+    #login-screen .login-form-panel{ padding:8vh 24px !important; }
+    #login-screen .login-box{ max-width:420px !important; }
   }
   @media (prefers-reduced-motion: reduce){
-    .au-blob, #login-screen .login-box, #login-screen .btn-primary::after{ animation:none !important; }
+    #login-screen .login-box, #login-screen .btn-primary::after{ animation:none !important; }
   }
 
-  /* ══ LOGIN → DASHBOARD reveal overlay (Donut-style, ~1.6s + chime) ══ */
+  /* ══ LOGIN → DASHBOARD reveal overlay (chime + ~1.6s) ══ */
   #au-reveal{ position:fixed; inset:0; z-index:2147483000; display:none; align-items:center; justify-content:center;
-    background:radial-gradient(120% 120% at 50% 40%, #12132a 0%, #0a0b17 55%, #05060d 100%); }
+    background:radial-gradient(120% 120% at 50% 40%, #17110c 0%, #0c0a12 55%, #06060a 100%); }
   #au-reveal.on{ display:flex; animation:au-reveal-out .55s ease .95s forwards; }
   @keyframes au-reveal-out{ to{ opacity:0; visibility:hidden; } }
   .au-reveal-core{ position:relative; display:flex; flex-direction:column; align-items:center; gap:22px; }
   .au-ring{ width:88px; height:88px; border-radius:50%; position:relative; }
   .au-ring::before{ content:''; position:absolute; inset:0; border-radius:50%; padding:3px;
-    background:conic-gradient(from 0deg, var(--au-cyan), var(--au-violet), var(--au-magenta), var(--au-cyan));
-    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude;
-    animation:au-spin 1s linear infinite; }
-  .au-ring::after{ content:''; position:absolute; inset:14px; border-radius:50%; background:linear-gradient(135deg,var(--au-violet),var(--au-magenta)); box-shadow:0 0 40px -4px var(--au-magenta); animation:au-pulse 1.2s ease-in-out infinite; }
+    background:conic-gradient(from 0deg, var(--au-o2), var(--au-od), var(--au-p), var(--au-o2));
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; animation:au-spin 1s linear infinite; }
+  .au-ring::after{ content:''; position:absolute; inset:14px; border-radius:50%; background:linear-gradient(135deg,var(--au-o2),var(--au-od)); box-shadow:0 0 40px -4px var(--au-od); animation:au-pulse 1.2s ease-in-out infinite; }
   @keyframes au-spin{ to{ transform:rotate(360deg);} }
   @keyframes au-pulse{ 0%,100%{ transform:scale(.92); opacity:.85;} 50%{ transform:scale(1.06); opacity:1;} }
   .au-reveal-word{ font-weight:800; letter-spacing:.04em; font-size:20px;
-    background:linear-gradient(90deg,#fff,var(--au-cyan),var(--au-violet),#fff); background-size:220% 100%;
-    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
-    animation:au-shimmer 1.6s linear infinite; }
+    background:linear-gradient(90deg,#fff,var(--au-o2),var(--au-od),#fff); background-size:220% 100%;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; animation:au-shimmer 1.6s linear infinite; }
   .au-reveal-sub{ color:var(--au-ink2); font-size:13px; letter-spacing:.02em; margin-top:-8px; }
   @keyframes au-shimmer{ to{ background-position:220% 50%; } }
 </style>
@@ -4478,62 +4406,89 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
 
 <div id="login-screen" style="position:relative;z-index:1;">
 
-  <!-- ═══ BOLD brand panel (left, desktop) ═══ -->
-  <div class="au-bp" aria-hidden="true">
-    <div class="au-bp-in">
-      <div class="au-bp-logo"><span class="au-bp-mark">◆</span> JMB VIRTUALS</div>
-      <h1 class="au-bp-h">Where your work comes together.</h1>
-      <p class="au-bp-p">Track your time, hit your targets, and get paid — one portal for the whole JMB team.</p>
+  <!-- ═══ WebGL nebula background + soft liquid-glass veil ═══ -->
+  <canvas id="login-neb" class="au-neb" aria-hidden="true"></canvas>
+  <div class="au-glass" aria-hidden="true"></div>
+
+  <!-- ═══ LEFT: brand text over the nebula ═══ -->
+  <div class="au-left" aria-hidden="true">
+    <div class="au-left-in">
+      <div class="au-left-brand"><span class="au-left-mark">◆</span> JMB VIRTUALS</div>
+      <h1 class="au-left-h">Where your work<br>comes together.</h1>
+      <p class="au-left-p">Track your time, hit your targets, and get paid — one portal for the whole JMB team.</p>
     </div>
   </div>
 
-  <!-- ═══ AURA animated aurora background ═══ -->
-  <div class="au-aurora" aria-hidden="true">
-    <svg class="au-silk" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <filter id="au-flow" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
-          <feTurbulence type="fractalNoise" baseFrequency="0.0016 0.006" numOctaves="3" seed="21" result="n">
-            <animate attributeName="baseFrequency" dur="34s" values="0.0016 0.006;0.0027 0.0092;0.0016 0.006" repeatCount="indefinite"/>
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" in2="n" scale="360" xChannelSelector="R" yChannelSelector="G"/>
-          <feGaussianBlur stdDeviation="7"/>
-        </filter>
-      </defs>
-      <rect width="1200" height="900" fill="#05060d"/>
-      <g filter="url(#au-flow)">
-        <rect x="-260" y="100"  width="1720" height="170" fill="#7c3aed" opacity="0.55"/>
-        <rect x="-260" y="250"  width="1720" height="110" fill="#6366f1" opacity="0.50"/>
-        <rect x="-260" y="360"  width="1720" height="150" fill="#db2777" opacity="0.50"/>
-        <rect x="-260" y="540"  width="1720" height="170" fill="#22d3ee" opacity="0.45"/>
-        <rect x="-260" y="700"  width="1720" height="150" fill="#a855f7" opacity="0.45"/>
-        <rect x="-260" y="196"  width="1720" height="7"  fill="#eafcff" opacity="0.85"/>
-        <rect x="-260" y="470"  width="1720" height="6"  fill="#ffe6fb" opacity="0.75"/>
-        <rect x="-260" y="640"  width="1720" height="7"  fill="#e6f0ff" opacity="0.75"/>
-        <rect x="-260" y="812"  width="1720" height="5"  fill="#f2e9ff" opacity="0.7"/>
-      </g>
-    </svg>
-  </div>
-  <div class="au-caustic" aria-hidden="true"></div>
-  <div class="au-grain" aria-hidden="true"></div>
-  <div class="au-vignette" aria-hidden="true"></div>
+  <!-- ═══ WebGL nebula shader (orange-led, slow) — renders into #login-neb ═══ -->
   <script>
-    (function(){
-      var scr=document.getElementById('login-screen'); if(!scr) return;
-      var raf=0, tx=.5, ty=.5;
-      function move(e){
-        var t=e.touches&&e.touches[0]; var cx=t?t.clientX:e.clientX, cy=t?t.clientY:e.clientY;
-        tx=Math.max(0,Math.min(1,cx/window.innerWidth)); ty=Math.max(0,Math.min(1,cy/window.innerHeight));
-        if(!raf) raf=requestAnimationFrame(function(){ raf=0; scr.style.setProperty('--mx',tx.toFixed(3)); scr.style.setProperty('--my',ty.toFixed(3)); });
+  (function(){
+    var cv=document.getElementById('login-neb'); if(!cv) return;
+    var gl=cv.getContext('webgl',{antialias:false,alpha:false,premultipliedAlpha:false});
+    if(!gl){ cv.style.background='radial-gradient(60vw 50vw at 60% 20%,#e8452a,transparent 60%),#0a0a10'; return; }
+    var VERT='attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+    var FRAG=[
+    'precision highp float;',
+    'uniform vec2 u_res; uniform float u_time; uniform vec2 u_mouse;',
+    'float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}',
+    'float noise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);',
+    ' float a=hash(i),b=hash(i+vec2(1,0)),c=hash(i+vec2(0,1)),d=hash(i+vec2(1,1));',
+    ' return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);}',
+    'mat2 m2=mat2(1.6,1.2,-1.2,1.6);',
+    'float fbm(vec2 p){float v=0.,a=0.5;for(int i=0;i<6;i++){v+=a*noise(p);p=m2*p;a*=0.5;}return v;}',
+    'vec3 DARK=vec3(0.055,0.05,0.10);',
+    'vec3 ORANGE=vec3(1.0,0.42,0.10);',
+    'vec3 DEEP=vec3(0.88,0.20,0.11);',
+    'vec3 PURPLE=vec3(0.55,0.36,0.96);',
+    'vec3 TEAL=vec3(0.08,0.74,0.66);',
+    'void main(){',
+    ' vec2 p=(gl_FragCoord.xy*2.-u_res)/u_res.y;',
+    ' vec2 mo=(u_mouse*2.-u_res)/u_res.y;',
+    ' float md=length(p-mo);',
+    ' p+=0.06*normalize(p-mo+0.0001)*exp(-md*1.4);',
+    ' float t=u_time*0.026;',
+    ' vec2 q=vec2(fbm(p+vec2(0.0,t)), fbm(p+vec2(5.2,1.3)-t));',
+    ' vec2 r=vec2(fbm(p+3.5*q+vec2(1.7,9.2)+t*0.6), fbm(p+3.5*q+vec2(8.3,2.8)-t*0.4));',
+    ' float f=fbm(p+4.0*r);',
+    ' vec3 col=DARK;',
+    ' col=mix(col,DEEP,   smoothstep(0.24,0.9, f)*0.92);',
+    ' col=mix(col,ORANGE, smoothstep(0.26,0.95, q.x*r.y*2.0 + f*0.45));',
+    ' col=mix(col,PURPLE, smoothstep(0.52,0.95, r.x)*0.55);',
+    ' col=mix(col,TEAL,   smoothstep(0.5,0.92,  q.y)*0.6);',
+    ' col+=0.20*vec3(1.0,0.55,0.22)*pow(f,2.5);',
+    ' col+=0.05*vec3(0.3,1.0,0.85)*pow(q.y,3.2);',
+    ' col+=vec3(1.0,0.6,0.35)*0.30*exp(-md*3.0);',
+    ' col*=1.0-0.26*pow(length(p*vec2(0.58,0.74)),2.3);',
+    ' col+=(hash(gl_FragCoord.xy+u_time)-0.5)*0.03;',
+    ' col=pow(max(col,0.0),vec3(0.92));',
+    ' gl_FragColor=vec4(col,1.0);',
+    '}'].join('\n');
+    function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);return o;}
+    var prog=gl.createProgram();
+    gl.attachShader(prog,sh(gl.VERTEX_SHADER,VERT));
+    gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FRAG));
+    gl.linkProgram(prog);gl.useProgram(prog);
+    var b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+    var loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+    var uRes=gl.getUniformLocation(prog,'u_res'),uT=gl.getUniformLocation(prog,'u_time'),uM=gl.getUniformLocation(prog,'u_mouse');
+    var DPR=Math.min(1.6,window.devicePixelRatio||1),mx=0,my=0;
+    function resize(){ var w=cv.clientWidth||window.innerWidth, h=cv.clientHeight||window.innerHeight; cv.width=w*DPR; cv.height=h*DPR; gl.viewport(0,0,cv.width,cv.height); mx=cv.width*0.6; my=cv.height*0.6; }
+    window.addEventListener('resize',resize);
+    window.addEventListener('mousemove',function(e){ mx=e.clientX*DPR; my=(window.innerHeight-e.clientY)*DPR; });
+    var t0=performance.now();
+    function loop(){
+      var scr=document.getElementById('login-screen');
+      if(scr && scr.style.display!=='none'){
+        if(cv.width!==(cv.clientWidth*DPR|0)) resize();
+        var t=(performance.now()-t0)/1000;
+        gl.uniform2f(uRes,cv.width,cv.height);gl.uniform1f(uT,t);gl.uniform2f(uM,mx,my);
+        gl.drawArrays(gl.TRIANGLES,0,3);
       }
-      window.addEventListener('mousemove',move,{passive:true});
-      window.addEventListener('touchmove',move,{passive:true});
-      // ease back to centre when the pointer leaves
-      window.addEventListener('mouseleave',function(){ scr.style.setProperty('--mx','.5'); scr.style.setProperty('--my','.5'); });
-    })();
+      requestAnimationFrame(loop);
+    }
+    resize(); loop();
+  })();
   </script>
-
-  <!-- LEFT BRAND PANEL -->
-  <!-- (old brand panel deleted — the tunnel artwork is the brand now) -->
 
   <!-- RIGHT FORM PANEL -->
   <div class="login-form-panel">
