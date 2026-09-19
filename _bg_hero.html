@@ -51,7 +51,7 @@ float noise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);
 mat2 m2=mat2(1.6,1.2,-1.2,1.6);
 float fbm(vec2 p){float v=0.,a=0.5;for(int i=0;i<6;i++){v+=a*noise(p);p=m2*p;a*=0.5;}return v;}
 // brand palette
-vec3 DARK=vec3(0.015,0.015,0.035);
+vec3 DARK=vec3(0.055,0.05,0.10);
 vec3 ORANGE=vec3(1.0,0.42,0.10);
 vec3 DEEP=vec3(0.88,0.20,0.11);
 vec3 PURPLE=vec3(0.55,0.36,0.96);
@@ -73,12 +73,14 @@ void main(){
   float f=fbm(p+4.0*r);
 
   vec3 col=DARK;
-  if(u_mode==0){ // Nebula — airier, lighter
-    col=mix(col,PURPLE, smoothstep(0.34,1.02,f)*0.85);
-    col=mix(col,DEEP,   smoothstep(0.46,0.95,r.x)*0.85);
-    col=mix(col,ORANGE, smoothstep(0.42,1.0,q.x*r.y*2.2));
-    col=mix(col,TEAL,   smoothstep(0.6,1.0,q.y));
-    col+=0.12*vec3(1.0,0.6,0.32)*pow(f,3.2);
+  if(u_mode==0){ // Nebula — lighter, more blue-green
+    col=mix(col,PURPLE, smoothstep(0.20,0.95,f)*0.9);
+    col=mix(col,TEAL,   smoothstep(0.28,0.9, q.y)*0.95);
+    col=mix(col,TEAL,   smoothstep(0.34,0.92,r.y)*0.55);
+    col=mix(col,DEEP,   smoothstep(0.40,0.92,r.x)*0.8);
+    col=mix(col,ORANGE, smoothstep(0.38,0.98,q.x*r.y*2.0));
+    col+=0.12*vec3(0.35,1.0,0.85)*pow(q.y,2.4);
+    col+=0.10*vec3(1.0,0.6,0.32)*pow(f,3.2);
   } else if(u_mode==1){ // Aurora — banded, vertical flow
     float band=fbm(p*vec2(0.7,1.8)+vec2(t*1.2,0.0));
     col=mix(col,TEAL,   smoothstep(0.30,0.9,band));
@@ -96,7 +98,7 @@ void main(){
   // cursor glow
   col+=vec3(1.0,0.6,0.35)*0.35*exp(-md*3.0);
   // vignette
-  col*=1.0-0.40*pow(length(p*vec2(0.6,0.78)),2.2);
+  col*=1.0-0.26*pow(length(p*vec2(0.58,0.74)),2.3);
   // subtle film grain
   col+=(hash(gl_FragCoord.xy+u_time)-0.5)*0.03;
   col=pow(max(col,0.0),vec3(0.92)); // gentle gamma
