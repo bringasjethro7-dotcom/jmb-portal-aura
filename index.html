@@ -4053,31 +4053,14 @@
     overflow:hidden !important; position:relative !important;
     perspective:1400px !important;
   }
-  /* ── LIQUID background: flowing colour field that fills the whole frame ── */
-  .au-aurora{ position:absolute; inset:-25%; z-index:0; pointer-events:none; will-change:transform;
-    transform:translate(calc((var(--mx) - .5) * -34px), calc((var(--my) - .5) * -34px)); }
-  .au-liquid{ position:absolute; inset:0;
-    background:
-      radial-gradient(38vw 38vw at 22% 26%, rgba(124,58,237,.85), transparent 60%),
-      radial-gradient(42vw 42vw at 82% 20%, rgba(219,39,119,.75), transparent 60%),
-      radial-gradient(46vw 46vw at 30% 88%, rgba(34,211,238,.62), transparent 62%),
-      radial-gradient(40vw 40vw at 92% 82%, rgba(99,102,241,.7), transparent 60%),
-      radial-gradient(30vw 30vw at 58% 52%, rgba(168,85,247,.5), transparent 66%);
-    filter:blur(58px) saturate(135%);
-    animation:au-liquid 24s ease-in-out infinite;
-  }
-  .au-liquid.b{ mix-blend-mode:screen; opacity:.9;
-    background:
-      radial-gradient(34vw 34vw at 70% 34%, rgba(56,189,248,.55), transparent 60%),
-      radial-gradient(38vw 38vw at 14% 62%, rgba(217,70,239,.5), transparent 62%),
-      radial-gradient(30vw 30vw at 50% 96%, rgba(124,58,237,.5), transparent 64%);
-    animation:au-liquid2 30s ease-in-out infinite; }
-  @keyframes au-liquid{ 0%,100%{ transform:translate(0,0) scale(1) rotate(0deg);} 33%{ transform:translate(3vw,-2vw) scale(1.08) rotate(4deg);} 66%{ transform:translate(-3vw,2vw) scale(1.05) rotate(-3deg);} }
-  @keyframes au-liquid2{ 0%,100%{ transform:translate(0,0) scale(1.05);} 50%{ transform:translate(-4vw,3vw) scale(.95);} }
-  /* slow conic caustic sweep for that refracted-light shimmer */
-  .au-caustic{ position:absolute; inset:-30%; z-index:1; pointer-events:none; opacity:.28; mix-blend-mode:screen;
-    background:conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(255,255,255,.5) 24deg, transparent 60deg, transparent 180deg, rgba(140,220,255,.4) 210deg, transparent 250deg, transparent 360deg);
-    filter:blur(40px); animation:au-spin 40s linear infinite; }
+  /* ── SILK background: flowing iridescent light ribbons (SVG turbulence) ── */
+  .au-aurora{ position:absolute; inset:-6%; z-index:0; pointer-events:none; will-change:transform;
+    transform:translate(calc((var(--mx) - .5) * -24px), calc((var(--my) - .5) * -24px)); }
+  .au-silk{ position:absolute; inset:0; width:100%; height:100%; display:block; filter:saturate(140%); }
+  /* faint refracted-light shimmer sweeping across, very subtle */
+  .au-caustic{ position:absolute; inset:-30%; z-index:1; pointer-events:none; opacity:.14; mix-blend-mode:screen;
+    background:conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(255,255,255,.5) 20deg, transparent 54deg, transparent 200deg, rgba(150,225,255,.4) 226deg, transparent 262deg, transparent 360deg);
+    filter:blur(46px); animation:au-spin 46s linear infinite; }
   @keyframes au-spin{ to{ transform:rotate(360deg);} }
   /* drifting starfield + vignette for depth */
   .au-grain{ position:absolute; inset:0; z-index:1; pointer-events:none;
@@ -4094,15 +4077,14 @@
   #login-screen .login-form-panel{ background:transparent !important; border:none !important; padding:0 !important; position:relative !important; z-index:2 !important; width:100% !important; display:flex !important; justify-content:center !important; transform-style:preserve-3d !important; }
   #login-screen .login-box{
     position:relative !important; width:100% !important; max-width:428px !important;
-    background:linear-gradient(155deg, rgba(255,255,255,.11), rgba(255,255,255,.03) 46%, rgba(120,90,240,.06)) !important;
-    border:1px solid rgba(255,255,255,.14) !important; border-radius:26px !important;
+    background:linear-gradient(160deg, rgba(12,14,28,.46), rgba(10,12,24,.36) 55%, rgba(14,12,30,.44)) !important;
+    border:1px solid rgba(255,255,255,.16) !important; border-radius:28px !important;
     padding:40px 36px 34px !important; overflow:visible !important;
-    -webkit-backdrop-filter:blur(30px) saturate(180%) brightness(1.06) !important; backdrop-filter:blur(30px) saturate(180%) brightness(1.06) !important;
+    -webkit-backdrop-filter:blur(34px) saturate(150%) !important; backdrop-filter:blur(34px) saturate(150%) !important;
     box-shadow:
-      0 40px 90px -24px rgba(3,4,16,.9),
-      0 2px 0 rgba(255,255,255,.10) inset,
-      -14px 0 40px -30px rgba(56,189,248,.9),   /* cyan chromatic edge L */
-      14px 0 40px -30px rgba(236,72,153,.9) !important; /* magenta chromatic edge R */
+      0 44px 100px -28px rgba(2,3,12,.92),
+      0 1px 0 rgba(255,255,255,.20) inset,
+      0 0 60px -20px rgba(124,58,237,.5) !important;
     transform:rotateX(calc((var(--my) - .5) * -7deg)) rotateY(calc((var(--mx) - .5) * 9deg)) !important;
     transform-style:preserve-3d !important;
     transition:transform .18s ease-out !important;
@@ -4111,8 +4093,8 @@
   @keyframes au-card-in{ from{ opacity:0; transform:translateY(26px) scale(.97);} to{ opacity:1; } }
   /* liquid gradient rim */
   #login-screen .login-box::before{
-    content:''; position:absolute; inset:-1px; border-radius:inherit; padding:1.4px; z-index:0;
-    background:linear-gradient(135deg, var(--au-cyan), var(--au-violet) 45%, var(--au-magenta) 75%, var(--au-cyan)); opacity:.75;
+    content:''; position:absolute; inset:-1px; border-radius:inherit; padding:1px; z-index:0;
+    background:linear-gradient(135deg, var(--au-cyan), var(--au-violet) 45%, var(--au-magenta) 75%, var(--au-cyan)); opacity:.5;
     -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none;
     display:block !important;
@@ -4473,8 +4455,29 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
 
   <!-- ═══ AURA animated aurora background ═══ -->
   <div class="au-aurora" aria-hidden="true">
-    <span class="au-liquid"></span>
-    <span class="au-liquid b"></span>
+    <svg class="au-silk" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <filter id="au-flow" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.0016 0.006" numOctaves="3" seed="21" result="n">
+            <animate attributeName="baseFrequency" dur="34s" values="0.0016 0.006;0.0027 0.0092;0.0016 0.006" repeatCount="indefinite"/>
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="360" xChannelSelector="R" yChannelSelector="G"/>
+          <feGaussianBlur stdDeviation="7"/>
+        </filter>
+      </defs>
+      <rect width="1200" height="900" fill="#05060d"/>
+      <g filter="url(#au-flow)">
+        <rect x="-260" y="100"  width="1720" height="170" fill="#7c3aed" opacity="0.55"/>
+        <rect x="-260" y="250"  width="1720" height="110" fill="#6366f1" opacity="0.50"/>
+        <rect x="-260" y="360"  width="1720" height="150" fill="#db2777" opacity="0.50"/>
+        <rect x="-260" y="540"  width="1720" height="170" fill="#22d3ee" opacity="0.45"/>
+        <rect x="-260" y="700"  width="1720" height="150" fill="#a855f7" opacity="0.45"/>
+        <rect x="-260" y="196"  width="1720" height="7"  fill="#eafcff" opacity="0.85"/>
+        <rect x="-260" y="470"  width="1720" height="6"  fill="#ffe6fb" opacity="0.75"/>
+        <rect x="-260" y="640"  width="1720" height="7"  fill="#e6f0ff" opacity="0.75"/>
+        <rect x="-260" y="812"  width="1720" height="5"  fill="#f2e9ff" opacity="0.7"/>
+      </g>
+    </svg>
   </div>
   <div class="au-caustic" aria-hidden="true"></div>
   <div class="au-grain" aria-hidden="true"></div>
