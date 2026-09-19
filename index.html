@@ -4041,6 +4041,8 @@
     --au-ink:#f4f6ff; --au-ink2:#9aa2c0; --au-ink3:#5c6486;
     --au-glass:rgba(255,255,255,.045); --au-glass-brd:rgba(255,255,255,.09);
   }
+  /* release the anti-FOUC opacity gate (old jmb-login-tunnel block used to do this) */
+  #login-screen{ opacity:1 !important; }
   /* full-bleed dark canvas */
   #login-screen{
     display:flex !important; grid-template-columns:none !important;
