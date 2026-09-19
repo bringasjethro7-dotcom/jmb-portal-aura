@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JMB Aura — WebGL Background</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;background:#050508;font-family:'Inter',system-ui,sans-serif}
+  #gl{position:fixed;inset:0;width:100%;height:100%;display:block}
+  .cap{position:fixed;left:26px;bottom:22px;z-index:5;color:rgba(255,255,255,.85);font-size:13px;letter-spacing:.04em;
+    background:rgba(0,0,0,.25);backdrop-filter:blur(8px);padding:8px 14px;border-radius:99px;border:1px solid rgba(255,255,255,.12)}
+  .cap b{color:#fff;font-weight:800}
+  .switch{position:fixed;right:26px;bottom:22px;z-index:5;display:flex;gap:8px}
+  .switch button{font-family:inherit;cursor:pointer;color:#fff;font-size:12.5px;font-weight:700;letter-spacing:.03em;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:99px;padding:9px 15px;backdrop-filter:blur(8px);transition:.15s}
+  .switch button:hover{background:rgba(255,255,255,.16)}
+  .switch button.on{background:linear-gradient(135deg,#FF6B1A,#E8452A);border-color:transparent}
+  .fb{position:fixed;left:0;right:0;top:38%;z-index:4;text-align:center;pointer-events:none;color:#fff;
+    text-shadow:0 4px 40px rgba(0,0,0,.5);opacity:.96}
+  .fb .k{font-size:13px;font-weight:800;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.8)}
+  .fb .h{font-size:clamp(40px,7vw,92px);font-weight:900;letter-spacing:-.03em;line-height:.95;margin-top:10px}
+</style></head>
+<body>
+<canvas id="gl"></canvas>
+<div class="fb"><div class="k">JMB Virtuals</div><div class="h">Aura.</div></div>
+<div class="cap"><b>WebGL</b> · GPU shader · moves with your cursor</div>
+<div class="switch">
+  <button data-m="0" class="on">Nebula</button>
+  <button data-m="1">Aurora</button>
+  <button data-m="2">Plasma</button>
+</div>
+<script>
+const cv=document.getElementById('gl');
+const gl=cv.getContext('webgl',{antialias:false,alpha:false,premultipliedAlpha:false});
+if(!gl){document.body.innerHTML='<p style="color:#fff;padding:40px">WebGL not supported on this device.</p>';}
+const VERT=`attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}`;
+const FRAG=`
+precision highp float;
+uniform vec2 u_res; uniform float u_time; uniform vec2 u_mouse; uniform int u_mode;
+float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);
+  float a=hash(i),b=hash(i+vec2(1,0)),c=hash(i+vec2(0,1)),d=hash(i+vec2(1,1));
+  return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);}
+mat2 m2=mat2(1.6,1.2,-1.2,1.6);
+float fbm(vec2 p){float v=0.,a=0.5;for(int i=0;i<6;i++){v+=a*noise(p);p=m2*p;a*=0.5;}return v;}
+// brand palette
+vec3 DARK=vec3(0.015,0.015,0.035);
+vec3 ORANGE=vec3(1.0,0.42,0.10);
+vec3 DEEP=vec3(0.88,0.20,0.11);
+vec3 PURPLE=vec3(0.55,0.36,0.96);
+vec3 TEAL=vec3(0.08,0.74,0.66);
+void main(){
+  vec2 uv=gl_FragCoord.xy/u_res.xy;
+  vec2 p=(gl_FragCoord.xy*2.-u_res)/u_res.y;
+  vec2 mo=(u_mouse*2.-u_res)/u_res.y;
+  float t=u_time*0.05;
+  // cursor influence
+  float md=length(p-mo);
+  p+=0.10*normalize(p-mo+0.0001)*exp(-md*1.4);
+
+  float speed = (u_mode==2)?0.13:0.06;
+  t=u_time*speed;
+  // domain warping
+  vec2 q=vec2(fbm(p+vec2(0.0,t)), fbm(p+vec2(5.2,1.3)-t));
+  vec2 r=vec2(fbm(p+3.5*q+vec2(1.7,9.2)+t*0.6), fbm(p+3.5*q+vec2(8.3,2.8)-t*0.4));
+  float f=fbm(p+4.0*r);
+
+  vec3 col=DARK;
+  if(u_mode==0){ // Nebula
+    col=mix(col,PURPLE, smoothstep(0.15,0.95,f));
+    col=mix(col,DEEP,   smoothstep(0.30,0.85,r.x));
+    col=mix(col,ORANGE, smoothstep(0.35,0.98,q.x*r.y*2.2));
+    col=mix(col,TEAL,   smoothstep(0.55,0.98,q.y));
+    col+=0.16*vec3(1.0,0.55,0.28)*pow(f,3.0);
+  } else if(u_mode==1){ // Aurora — banded, vertical flow
+    float band=fbm(p*vec2(0.7,1.8)+vec2(t*1.2,0.0));
+    col=mix(col,TEAL,   smoothstep(0.30,0.9,band));
+    col=mix(col,PURPLE, smoothstep(0.45,0.95,r.x));
+    col=mix(col,ORANGE, smoothstep(0.6,1.0,q.x));
+    col+=0.12*vec3(0.4,1.0,0.8)*pow(band,3.0);
+  } else { // Plasma — hot, energetic
+    float e=f+0.5*q.x*r.y;
+    col=mix(col,DEEP,   smoothstep(0.2,0.8,e));
+    col=mix(col,ORANGE, smoothstep(0.35,0.95,f));
+    col=mix(col,PURPLE, smoothstep(0.55,0.98,r.x));
+    col=mix(col,TEAL,   smoothstep(0.7,1.0,q.y*r.x*2.0));
+    col+=0.22*vec3(1.0,0.6,0.25)*pow(f,4.0);
+  }
+  // cursor glow
+  col+=vec3(1.0,0.6,0.35)*0.35*exp(-md*3.0);
+  // vignette
+  col*=1.0-0.55*pow(length(p*vec2(0.65,0.8)),2.2);
+  // subtle film grain
+  col+=(hash(gl_FragCoord.xy+u_time)-0.5)*0.03;
+  col=pow(max(col,0.0),vec3(0.92)); // gentle gamma
+  gl_FragColor=vec4(col,1.0);
+}`;
+function sh(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);
+  if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(o));return o;}
+const prog=gl.createProgram();
+gl.attachShader(prog,sh(gl.VERTEX_SHADER,VERT));
+gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FRAG));
+gl.linkProgram(prog);gl.useProgram(prog);
+const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+const loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+const uRes=gl.getUniformLocation(prog,'u_res'),uT=gl.getUniformLocation(prog,'u_time'),
+      uM=gl.getUniformLocation(prog,'u_mouse'),uMode=gl.getUniformLocation(prog,'u_mode');
+let DPR=Math.min(1.75,window.devicePixelRatio||1),mode=0,mx=0,my=0;
+function resize(){cv.width=innerWidth*DPR;cv.height=innerHeight*DPR;gl.viewport(0,0,cv.width,cv.height);mx=cv.width*0.5;my=cv.height*0.5;}
+addEventListener('resize',resize);resize();
+addEventListener('mousemove',e=>{mx=e.clientX*DPR;my=(innerHeight-e.clientY)*DPR;});
+addEventListener('touchmove',e=>{const t=e.touches[0];mx=t.clientX*DPR;my=(innerHeight-t.clientY)*DPR;},{passive:true});
+document.querySelectorAll('.switch button').forEach(b=>b.onclick=()=>{
+  mode=+b.dataset.m;document.querySelectorAll('.switch button').forEach(x=>x.classList.remove('on'));b.classList.add('on');});
+const t0=performance.now();
+function loop(){const t=(performance.now()-t0)/1000;
+  gl.uniform2f(uRes,cv.width,cv.height);gl.uniform1f(uT,t);gl.uniform2f(uM,mx,my);gl.uniform1i(uMode,mode);
+  gl.drawArrays(gl.TRIANGLES,0,3);requestAnimationFrame(loop);}
+loop();
+</script>
+</body></html>
