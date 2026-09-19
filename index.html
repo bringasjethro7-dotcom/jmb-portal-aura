@@ -4030,48 +4030,138 @@
 <!-- ═══════════ LOGIN REDESIGN · modern light SaaS (scoped, loads last) ═══════════ -->
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style id="login-redesign">
-  /* ═══ LOGIN — clean editorial redesign (static, no animation) ═══ */
-  #login-screen{ grid-template-columns:1.05fr .95fr !important; background:#faf8f4 !important; }
-  /* (old photo panel styles deleted — 90KB base64 JPEG among them) */
- 55%,100%{ transform:skewX(-18deg) translateX(360%);} }
-  to{ opacity:1; transform:none;} }
-  to{ width:54px; opacity:1;} }
-  @media (prefers-reduced-motion: reduce){
+  /* ═══════════════════════════════════════════════════════════════════════
+     LOGIN — AURA · dark-premium (animated aurora, glassmorphism, glow)
+     Auth wiring untouched: #emp-id #emp-pin #emp-pin-toggle #login-btn
+     doLogin() #login-error #forgot-pin-wrap — all preserved.
+     ═══════════════════════════════════════════════════════════════════════ */
+  :root{
+    --au-bg:#05060d; --au-bg2:#0a0b17;
+    --au-violet:#7c3aed; --au-magenta:#db2777; --au-cyan:#22d3ee; --au-indigo:#6366f1;
+    --au-ink:#f4f6ff; --au-ink2:#9aa2c0; --au-ink3:#5c6486;
+    --au-glass:rgba(255,255,255,.045); --au-glass-brd:rgba(255,255,255,.09);
   }
-  /* Form panel — light editorial, no card */
-  #login-screen .login-form-panel{ background:#faf8f4 !important; border-left:none !important; padding:5vh 4vw !important; }
-  #login-screen .login-box{ max-width:380px !important; background:transparent !important; border:none !important; box-shadow:none !important; padding:0 !important; overflow:visible !important; border-radius:0 !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
-  #login-screen .login-box::before, #login-screen .login-box::after{ display:none !important; }
-  #login-screen .login-card-brand{ display:none !important; }
-  #login-screen .login-form-eyebrow{ font-family:'Oswald',sans-serif !important; font-size:12px !important; font-weight:600 !important; color:#e8452a !important; letter-spacing:.14em !important; text-transform:uppercase !important; font-variant:normal !important; font-variant-caps:normal !important; -webkit-font-feature-settings:normal !important; font-feature-settings:normal !important; text-indent:0 !important; padding-left:2px !important; overflow:visible !important; display:block !important; white-space:nowrap !important; }
+  /* full-bleed dark canvas */
+  #login-screen{
+    display:flex !important; grid-template-columns:none !important;
+    align-items:center !important; justify-content:center !important;
+    min-height:100vh !important; padding:24px !important;
+    background:radial-gradient(120% 120% at 50% -10%, #12132a 0%, var(--au-bg2) 42%, var(--au-bg) 100%) !important;
+    overflow:hidden !important; position:relative !important;
+  }
+  /* ── animated aurora blobs (transform/opacity only → GPU-cheap) ── */
+  .au-aurora{ position:absolute; inset:-20% -20% -20% -20%; z-index:0; pointer-events:none; filter:blur(60px); opacity:.9; }
+  .au-blob{ position:absolute; border-radius:50%; mix-blend-mode:screen; will-change:transform; }
+  .au-b1{ width:46vw; height:46vw; left:-6vw; top:-8vw; background:radial-gradient(circle at 30% 30%, var(--au-violet), transparent 62%); animation:au-drift1 18s ease-in-out infinite; }
+  .au-b2{ width:42vw; height:42vw; right:-8vw; top:-4vw; background:radial-gradient(circle at 60% 40%, var(--au-magenta), transparent 62%); animation:au-drift2 22s ease-in-out infinite; }
+  .au-b3{ width:40vw; height:40vw; left:22vw; bottom:-16vw; background:radial-gradient(circle at 50% 50%, var(--au-cyan), transparent 60%); animation:au-drift3 26s ease-in-out infinite; }
+  .au-b4{ width:34vw; height:34vw; right:12vw; bottom:-12vw; background:radial-gradient(circle at 50% 50%, var(--au-indigo), transparent 62%); animation:au-drift1 20s ease-in-out infinite reverse; }
+  @keyframes au-drift1{ 0%,100%{ transform:translate(0,0) scale(1);} 50%{ transform:translate(6vw,4vw) scale(1.12);} }
+  @keyframes au-drift2{ 0%,100%{ transform:translate(0,0) scale(1.05);} 50%{ transform:translate(-5vw,5vw) scale(.94);} }
+  @keyframes au-drift3{ 0%,100%{ transform:translate(0,0) scale(1);} 50%{ transform:translate(4vw,-5vw) scale(1.14);} }
+  /* fine star/grain veil + vignette */
+  .au-grain{ position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.5), transparent 60%),
+              radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,.35), transparent 60%),
+              radial-gradient(1px 1px at 45% 80%, rgba(255,255,255,.3), transparent 60%),
+              radial-gradient(1px 1px at 85% 22%, rgba(255,255,255,.4), transparent 60%);
+    opacity:.5; }
+  .au-vignette{ position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0,0,0,.55) 100%); }
+
+  /* ── the glass card ── */
+  #login-screen .login-form-panel{ background:transparent !important; border:none !important; padding:0 !important; position:relative !important; z-index:2 !important; width:100% !important; display:flex !important; justify-content:center !important; }
+  #login-screen .login-box{
+    position:relative !important; width:100% !important; max-width:410px !important;
+    background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.028)) !important;
+    border:1px solid var(--au-glass-brd) !important; border-radius:24px !important;
+    padding:38px 34px 34px !important; overflow:visible !important;
+    -webkit-backdrop-filter:blur(26px) saturate(150%) !important; backdrop-filter:blur(26px) saturate(150%) !important;
+    box-shadow:0 30px 80px -20px rgba(5,6,20,.85), inset 0 1px 0 rgba(255,255,255,.14) !important;
+    animation:au-card-in .8s cubic-bezier(.2,.8,.2,1) both !important;
+  }
+  @keyframes au-card-in{ from{ opacity:0; transform:translateY(22px) scale(.98);} to{ opacity:1; transform:none;} }
+  /* glowing gradient ring around the card */
+  #login-screen .login-box::before{
+    content:''; position:absolute; inset:-1px; border-radius:inherit; padding:1px; z-index:-1;
+    background:linear-gradient(135deg, var(--au-violet), var(--au-magenta), var(--au-cyan)); opacity:.55;
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+    display:block !important;
+  }
+  #login-screen .login-box::after{ display:none !important; }
+
+  /* brand row (logo + wordmark) — bring it back, Aura styled */
+  #login-screen .login-card-brand{ display:flex !important; align-items:center !important; gap:11px !important; margin-bottom:22px !important; }
+  #login-screen .brand-logo-badge{ display:inline-flex !important; align-items:center; justify-content:center; width:42px !important; height:42px !important; border-radius:13px !important; background:linear-gradient(135deg,var(--au-violet),var(--au-magenta)) !important; box-shadow:0 8px 22px -6px var(--au-magenta), inset 0 1px 0 rgba(255,255,255,.3) !important; overflow:hidden; }
+  #login-screen .login-card-logo{ width:100% !important; height:100% !important; object-fit:cover !important; }
+  #login-screen .login-card-wordmark{ display:inline !important; font-weight:800 !important; font-size:15px !important; letter-spacing:.16em !important; color:var(--au-ink) !important; }
+
+  #login-screen .login-form-eyebrow{ font-size:11.5px !important; font-weight:700 !important; letter-spacing:.22em !important; text-transform:uppercase !important;
+    background:linear-gradient(90deg,var(--au-cyan),var(--au-violet)) !important; -webkit-background-clip:text !important; background-clip:text !important; -webkit-text-fill-color:transparent !important; color:transparent !important; margin-bottom:8px !important; display:block !important; }
   #login-screen .login-form-eyebrow::before, #login-screen .login-form-eyebrow::after{ content:none !important; display:none !important; }
-  #login-screen .login-form-title{ font-family:'Oswald',sans-serif !important; text-transform:uppercase !important; color:#15130f !important; font-size:44px !important; font-weight:700 !important; line-height:.9 !important; letter-spacing:-.02em !important; }
-  #login-screen .login-form-sub{ color:#8b867c !important; font-size:13.5px !important; }
-  #login-screen .field-label{ font-family:'Oswald',sans-serif !important; color:#8b867c !important; letter-spacing:.16em !important; }
-  #login-screen .field-input{ background:#fff !important; border:1px solid #e7e3da !important; color:#15130f !important; border-radius:12px !important; padding:14px 14px !important; font-size:15px !important; }
+  #login-screen .login-form-title{ font-size:32px !important; font-weight:800 !important; line-height:1 !important; letter-spacing:-.02em !important; color:var(--au-ink) !important; text-transform:none !important; margin-bottom:6px !important; }
+  #login-screen .login-form-sub{ color:var(--au-ink2) !important; font-size:13.5px !important; margin-bottom:22px !important; }
+
+  #login-screen .field-label{ color:var(--au-ink2) !important; font-size:11.5px !important; font-weight:600 !important; letter-spacing:.1em !important; text-transform:uppercase !important; }
+  #login-screen .field-input{ background:rgba(255,255,255,.05) !important; border:1px solid rgba(255,255,255,.1) !important; color:var(--au-ink) !important; border-radius:13px !important; padding:14px 14px !important; font-size:15px !important; transition:border-color .2s, box-shadow .2s, background .2s !important; }
   #login-screen .field-input.has-ico{ padding-left:44px !important; }
-  #login-screen .field-input::placeholder{ color:#bdb8ac !important; }
-  #login-screen .field-input:focus{ border-color:#e8452a !important; box-shadow:0 0 0 4px rgba(232,61,0,.12) !important; }
-  #login-screen .field-ico{ color:#b6b1a6 !important; }
-  #login-screen .pin-toggle{ color:#b6b1a6 !important; }
-  #login-screen .btn-primary{ font-family:'Oswald',sans-serif !important; text-transform:uppercase !important; letter-spacing:.12em !important; border-radius:12px !important; padding:15px !important; font-weight:600 !important; background:linear-gradient(135deg,#ff6a3d,#e8452a) !important; color:#fff !important; box-shadow:0 12px 26px rgba(232,61,0,.28) !important; }
-  #login-screen .btn-primary:hover{ box-shadow:0 14px 32px rgba(232,61,0,.38) !important; }
+  #login-screen .field-input::placeholder{ color:var(--au-ink3) !important; }
+  #login-screen .field-input:focus{ border-color:rgba(124,58,237,.9) !important; background:rgba(255,255,255,.07) !important; box-shadow:0 0 0 4px rgba(124,58,237,.18), 0 0 22px -4px rgba(124,58,237,.5) !important; outline:none !important; }
+  #login-screen .field-ico{ color:var(--au-ink3) !important; }
+  #login-screen .pin-toggle{ color:var(--au-ink3) !important; }
+  #login-screen .pin-toggle:hover{ color:var(--au-ink) !important; }
+
+  #login-screen .btn-primary{
+    position:relative !important; overflow:hidden !important;
+    border-radius:13px !important; padding:15px !important; font-weight:700 !important; font-size:15px !important; letter-spacing:.02em !important;
+    text-transform:none !important; border:none !important; color:#fff !important;
+    background:linear-gradient(135deg,var(--au-violet),var(--au-magenta) 55%,var(--au-cyan)) !important;
+    background-size:200% 100% !important; background-position:0% 50% !important;
+    box-shadow:0 14px 34px -10px rgba(124,58,237,.7), 0 0 0 1px rgba(255,255,255,.08) inset !important;
+    transition:background-position .5s, box-shadow .3s, transform .1s !important;
+  }
+  #login-screen .btn-primary:hover{ background-position:100% 50% !important; box-shadow:0 18px 44px -10px rgba(219,39,119,.75) !important; }
+  #login-screen .btn-primary:active{ transform:translateY(1px) !important; }
+  /* subtle sheen sweep on the button */
+  #login-screen .btn-primary::after{ content:''; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent); transform:skewX(-18deg); animation:au-sheen 3.6s ease-in-out infinite; }
+  @keyframes au-sheen{ 0%,60%{ left:-60%;} 88%,100%{ left:130%;} }
+
+  #login-screen #forgot-pin-wrap{ border-top-color:rgba(255,255,255,.1) !important; }
+  #login-screen #forgot-pin-wrap p{ color:var(--au-ink2) !important; }
   #login-screen .login-form-panel button{ font-family:inherit; }
-  #login-screen #forgot-pin-wrap{ border-top-color:#e7e3da !important; }
-  #login-screen #forgot-pin-wrap p{ color:#8b867c !important; }
-  #login-screen .login-error{ color:#e5484d !important; }
-  /* kill ALL login animations (watermark, sheen, typing, card-in, etc.) */
-  #login-screen, #login-screen *, #login-screen *::before, #login-screen *::after{
-    animation:none !important; -webkit-animation:none !important;
+  #login-screen .login-error{ color:#ff8a9a !important; }
+  #login-screen .field-label, #login-screen .login-form-title, #login-screen .login-card-wordmark{ font-family:inherit !important; }
+
+  @media (max-width:560px){
+    #login-screen{ padding:16px !important; }
+    #login-screen .login-box{ padding:30px 24px 26px !important; }
+    #login-screen .login-form-title{ font-size:28px !important; }
   }
-  /* hide the duplicate wordmark on the form side (logo already lives on the brand panel) */
-  #login-screen .login-card-brand,
-  #login-screen .login-card-wordmark,
-  #login-screen .brand-logo-badge{ display:none !important; }
-  @media (max-width:860px){
-    #login-screen{ grid-template-columns:1fr !important; }
-    #login-screen .login-form-panel{ padding:8vh 30px !important; }
+  @media (prefers-reduced-motion: reduce){
+    .au-blob, #login-screen .login-box, #login-screen .btn-primary::after{ animation:none !important; }
   }
+
+  /* ══ LOGIN → DASHBOARD reveal overlay (Donut-style, ~1.6s + chime) ══ */
+  #au-reveal{ position:fixed; inset:0; z-index:2147483000; display:none; align-items:center; justify-content:center;
+    background:radial-gradient(120% 120% at 50% 40%, #12132a 0%, #0a0b17 55%, #05060d 100%); }
+  #au-reveal.on{ display:flex; animation:au-reveal-out .55s ease .95s forwards; }
+  @keyframes au-reveal-out{ to{ opacity:0; visibility:hidden; } }
+  .au-reveal-core{ position:relative; display:flex; flex-direction:column; align-items:center; gap:22px; }
+  .au-ring{ width:88px; height:88px; border-radius:50%; position:relative; }
+  .au-ring::before{ content:''; position:absolute; inset:0; border-radius:50%; padding:3px;
+    background:conic-gradient(from 0deg, var(--au-cyan), var(--au-violet), var(--au-magenta), var(--au-cyan));
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude;
+    animation:au-spin 1s linear infinite; }
+  .au-ring::after{ content:''; position:absolute; inset:14px; border-radius:50%; background:linear-gradient(135deg,var(--au-violet),var(--au-magenta)); box-shadow:0 0 40px -4px var(--au-magenta); animation:au-pulse 1.2s ease-in-out infinite; }
+  @keyframes au-spin{ to{ transform:rotate(360deg);} }
+  @keyframes au-pulse{ 0%,100%{ transform:scale(.92); opacity:.85;} 50%{ transform:scale(1.06); opacity:1;} }
+  .au-reveal-word{ font-weight:800; letter-spacing:.04em; font-size:20px;
+    background:linear-gradient(90deg,#fff,var(--au-cyan),var(--au-violet),#fff); background-size:220% 100%;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
+    animation:au-shimmer 1.6s linear infinite; }
+  .au-reveal-sub{ color:var(--au-ink2); font-size:13px; letter-spacing:.02em; margin-top:-8px; }
+  @keyframes au-shimmer{ to{ background-position:220% 50%; } }
 </style>
 <!-- ═══════════ DASHBOARD SHELL · modern light SaaS (header + tabs), scoped to light ═══════════ -->
 <style id="shell-redesign">
@@ -4337,6 +4427,16 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
 
 <div id="login-screen" style="position:relative;z-index:1;">
 
+  <!-- ═══ AURA animated aurora background ═══ -->
+  <div class="au-aurora" aria-hidden="true">
+    <span class="au-blob au-b1"></span>
+    <span class="au-blob au-b2"></span>
+    <span class="au-blob au-b3"></span>
+    <span class="au-blob au-b4"></span>
+  </div>
+  <div class="au-grain" aria-hidden="true"></div>
+  <div class="au-vignette" aria-hidden="true"></div>
+
   <!-- LEFT BRAND PANEL -->
   <!-- (old brand panel deleted — the tunnel artwork is the brand now) -->
 
@@ -4423,6 +4523,15 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
     </div><!-- end login-box -->
   </div><!-- end login-form-panel -->
 </div><!-- end login-screen -->
+
+<!-- ═══ AURA login→dashboard reveal (Donut-style chime + reveal) ═══ -->
+<div id="au-reveal" aria-hidden="true">
+  <div class="au-reveal-core">
+    <div class="au-ring"></div>
+    <div class="au-reveal-word" id="au-reveal-word">Welcome back</div>
+    <div class="au-reveal-sub">Preparing your workspace…</div>
+  </div>
+</div>
 
 <!-- ══════════ BIRTHDAY / ANNIVERSARY BANNER ══════════ -->
 <div class="celebration-banner" id="celebration-banner">
@@ -6877,9 +6986,47 @@ function renderProfile(data) {
 
 // ── Animated welcome intro (once per sign-in) ──
 
+// ── AURA sign-in reveal: short chime + ~1.6s aurora overlay before dashboard ──
+function auPlayChime(){
+  try{
+    // 1) if the user dropped their own audio, prefer it (assets/login-chime.*)
+    if (window.__AURA_CHIME_URL__){
+      var a = new Audio(window.__AURA_CHIME_URL__); a.volume = 0.5; a.play().catch(function(){}); return;
+    }
+    // 2) otherwise synthesize a soft ascending arpeggio (no file, no copyright)
+    var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+    var ctx = new AC(); var now = ctx.currentTime;
+    var master = ctx.createGain(); master.gain.value = 0.0001; master.connect(ctx.destination);
+    master.gain.exponentialRampToValueAtTime(0.28, now + 0.04);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 1.7);
+    var notes = [523.25, 659.25, 783.99, 1046.5]; // C5 E5 G5 C6
+    notes.forEach(function(f, i){
+      var t = now + i*0.11;
+      var o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = f;
+      var g = ctx.createGain(); g.gain.value = 0.0001;
+      g.gain.exponentialRampToValueAtTime(0.9, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.7);
+      o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.75);
+    });
+    // gentle shimmer tail
+    var o2 = ctx.createOscillator(); o2.type='triangle'; o2.frequency.value=1568;
+    var g2 = ctx.createGain(); g2.gain.value=0.0001; g2.gain.exponentialRampToValueAtTime(0.15, now+0.5); g2.gain.exponentialRampToValueAtTime(0.0001, now+1.7);
+    o2.connect(g2); g2.connect(master); o2.start(now+0.42); o2.stop(now+1.7);
+    setTimeout(function(){ try{ ctx.close(); }catch(e){} }, 2200);
+  }catch(e){}
+}
+function auLoginReveal(name){
+  var ov = document.getElementById('au-reveal'); if (!ov) return;
+  try{ var w = document.getElementById('au-reveal-word'); if (w && name) w.textContent = 'Welcome back, ' + String(name).split(' ')[0]; }catch(e){}
+  ov.classList.add('on');
+  auPlayChime();
+  setTimeout(function(){ ov.classList.remove('on'); }, 1600);
+}
+
 function renderDashboard(data) {
   document.getElementById('login-screen').style.display    = 'none';
   document.getElementById('dashboard-screen').style.display = 'flex';
+  try{ if (!window.__AURA_NO_REVEAL__) auLoginReveal(data && data.full_name); }catch(e){}
   document.body.classList.add('app-authed');   // reveal Ora + other signed-in-only UI
   try { startSessionGuard(); } catch(e){}   // enforce single active device while signed in
 
