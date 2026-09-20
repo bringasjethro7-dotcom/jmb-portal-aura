@@ -34288,12 +34288,14 @@ html body.app-authed #dashboard-hero::before{ content:''; position:absolute; ins
              radial-gradient(30% 50% at 60% 0%, rgba(20,184,166,.12) 0%, transparent 60%); }
 html body.app-authed #dashboard-hero > *{ position:relative; z-index:1; }
 /* layout: identity left · live stats middle · clock card right (no sliding deck) */
-html body.app-authed #dashboard-hero{ display:grid !important; grid-template-columns:minmax(0,1.25fr) auto !important; grid-template-areas:"info aside" "stats aside" !important; align-items:center !important; gap:18px 26px !important; padding:34px 36px 30px !important; min-height:0 !important; }
-html body.app-authed #dashboard-hero .hero-info{ grid-area:info; width:auto !important; flex:none !important; }
+html body.app-authed #dashboard-hero{ display:grid !important; grid-template-columns:minmax(0,1fr) 272px !important; grid-template-areas:"info aside" "stats aside" !important; align-items:center !important; gap:16px 28px !important; padding:32px 36px 30px !important; min-height:0 !important; width:auto !important; max-width:none !important; box-sizing:border-box !important; }
+html body.app-authed #dashboard-hero .hero-info{ grid-area:info; width:auto !important; max-width:none !important; flex:none !important; min-width:0; }
 html body.app-authed #dashboard-hero .hero-stats, html body.app-authed #hero-stats{ grid-area:stats; display:flex !important; gap:12px !important; flex-wrap:wrap !important; justify-content:flex-start !important; padding:0 !important; }
-html body.app-authed #dashboard-hero .hero-aside{ grid-area:aside; display:flex !important; align-self:center !important; min-width:250px; padding:18px 22px 20px !important; margin:0 !important; }
+html body.app-authed #dashboard-hero .hero-aside{ grid-area:aside; display:flex !important; flex-direction:column !important; align-items:center !important; align-self:center !important; justify-self:end !important; width:272px !important; max-width:100% !important; padding:20px 22px 22px !important; margin:0 !important; position:relative !important; top:auto !important; right:auto !important; left:auto !important; bottom:auto !important; transform:none !important; }
 html body.app-authed #dashboard-hero #hero-photo-wrap{ display:none !important; }
-html body.app-authed #dashboard-hero #jmb-share{ position:absolute !important; top:18px !important; right:18px !important; z-index:3 !important; background:rgba(255,255,255,.06) !important; border:1px solid var(--au-line2) !important; color:var(--au-ink2) !important; border-radius:999px !important; }
+html body.app-authed #dashboard-hero #jmb-share{ position:absolute !important; right:20px !important; bottom:18px !important; top:auto !important; z-index:3 !important; background:rgba(255,255,255,.06) !important; border:1px solid var(--au-line2) !important; color:var(--au-ink2) !important; border-radius:999px !important; font-size:12px !important; }
+/* the hero already shows hours · attendance · points — the duplicate KPI strip below it goes */
+html body.app-authed #kpi-row{ display:none !important; }
 @media(max-width:1150px){ html body.app-authed #dashboard-hero .hero-stats{ display:flex !important; } }
 @media(max-width:899px){ html body.app-authed #dashboard-hero{ grid-template-columns:1fr !important; grid-template-areas:"info" "stats" "aside" !important; padding:24px 22px !important; } html body.app-authed #dashboard-hero .hero-aside{ display:flex !important; } }
 html body.app-authed #dashboard-hero .hero-greet{ font-size:14px !important; letter-spacing:.18em !important; text-transform:uppercase !important; color:var(--au-ink3) !important; font-weight:800 !important; margin-bottom:6px !important; }
@@ -34303,6 +34305,8 @@ html body.app-authed #dashboard-hero .hero-name{
   -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important; -webkit-text-fill-color:transparent !important;
   animation:au-shine 2.2s linear infinite !important; text-shadow:none !important;
 }
+/* the letter-drop spans are inline-block layers, which stops the gradient text from painting → plain inline, no layers */
+html body.app-authed #dashboard-hero .hn-l, html body.app-authed #dashboard-hero .hero-name span{ display:inline !important; will-change:auto !important; animation:none !important; filter:none !important; transform:none !important; opacity:1 !important; }
 html body.app-authed #dashboard-hero .hero-role{ color:var(--au-ink2) !important; font-size:15px !important; font-weight:600 !important; }
 html body.app-authed #dashboard-hero .hero-id{ color:var(--au-ink3) !important; font-size:12.5px !important; letter-spacing:.08em !important; }
 html body.app-authed .hstat{ background:rgba(255,255,255,.04) !important; border:1px solid var(--au-line) !important; border-radius:18px !important; padding:14px 18px !important; box-shadow:none !important; }
@@ -34395,6 +34399,15 @@ html body.app-authed [style*="color:#5b6472"], html body.app-authed [style*="col
 html body.app-authed [style*="color:#98a1b0"], html body.app-authed [style*="color:#8a93a3"], html body.app-authed [style*="color:#999"], html body.app-authed [style*="color:#6b7280"]{ color:var(--au-ink3) !important; }
 html body.app-authed [style*="border:1px solid #e8eaef"], html body.app-authed [style*="border:1px solid #eef0f4"], html body.app-authed [style*="border:1px solid #e5e7eb"]{ border-color:var(--au-line) !important; }
 
+
+/* ── runtime-tagged light surfaces / dark text (see guard script) ──── */
+html body.app-authed #dashboard-screen [data-au-light]{ background-color:var(--au-s1) !important; background-image:none !important; border-color:var(--au-line) !important; color:var(--au-ink2); }
+html body.app-authed #dashboard-screen [data-au-light][data-au-ink], html body.app-authed #dashboard-screen [data-au-ink]{ color:var(--au-ink) !important; -webkit-text-fill-color:currentColor; }
+html body.app-authed #dashboard-screen [data-au-light] [data-au-light]{ background-color:rgba(255,255,255,.04) !important; }
+html body.app-authed #dashboard-screen .at-card, html body.app-authed #dashboard-screen .sc-card, html body.app-authed #dashboard-screen .lv-card,
+html body.app-authed #dashboard-screen .pf-card, html body.app-authed #dashboard-screen .ps-card, html body.app-authed #dashboard-screen .trk-card{
+  background:var(--au-s1) !important; border:1px solid var(--au-line) !important; border-radius:22px !important; color:var(--au-ink) !important; box-shadow:0 20px 50px -30px rgba(0,0,0,.8) !important; }
+
 /* ── scrollbars ──────────────────────────────────────────────────────── */
 html body.app-authed ::-webkit-scrollbar{ width:10px; height:10px; }
 html body.app-authed ::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.12); border-radius:99px; border:2px solid var(--au-bg); }
@@ -34421,11 +34434,29 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
     document.querySelectorAll(SHELL).forEach(strip);
     document.querySelectorAll('#dashboard-screen [style*="important"]').forEach(function(el){ var st=el.getAttribute('style')||''; if(LIGHT.test(st)) strip(el); });
     var hw=document.querySelector('#dashboard-hero .hero-weather'); if(hw && hw.style.display!=='none') hw.style.display='none'; }
+  /* Recolour pass: any surface the old light theme still paints light (class-based rules we don't know about)
+     gets tagged so the CSS below can darken it; near-black text on those surfaces gets tagged too. */
+  function lum(c){ var m=c&&c.match(/[\d.]+/g); if(!m||m.length<3) return -1; if(m.length>3&&parseFloat(m[3])<0.5) return -1; return (+m[0]*0.299 + +m[1]*0.587 + +m[2]*0.114); }
+  var recolourBusy=false;
+  function recolour(){
+    if(recolourBusy || !document.body.classList.contains('app-authed')) return; recolourBusy=true;
+    try{
+      var scope=document.querySelectorAll('#dashboard-screen .tab-panel.active, #dashboard-screen .tab-panel.active *, #dashboard-hero, #dashboard-hero *, #dashboard-screen > header *, #notif-panel *, .wl-warn-box, .wl-warn-box *');
+      for(var i=0;i<scope.length;i++){ var el=scope[i]; if(el.tagName==='CANVAS'||el.tagName==='IMG'||el.tagName==='SVG'||el.tagName==='PATH') continue;
+        var cs=getComputedStyle(el);
+        var lb=lum(cs.backgroundColor);
+        if(lb>190 && !el.hasAttribute('data-au-light')) el.setAttribute('data-au-light','');
+        var lc=lum(cs.color);
+        if(lc>=0 && lc<110 && !el.hasAttribute('data-au-ink')) el.setAttribute('data-au-ink','');
+      }
+    }catch(e){}
+    recolourBusy=false;
+  }
   var pending=false;
-  function schedule(){ if(pending) return; pending=true; requestAnimationFrame(function(){ pending=false; sweep(); }); }
+  function schedule(){ if(pending) return; pending=true; requestAnimationFrame(function(){ pending=false; sweep(); recolour(); }); }
   try{ new MutationObserver(function(muts){ for(var i=0;i<muts.length;i++){ var m=muts[i]; if(m.type==='attributes'&&m.target===document.body&&m.attributeName==='class'){ schedule(); return; } if(m.type==='attributes'&&m.attributeName==='style'){ if(document.body.classList.contains('app-authed')) { schedule(); return; } } if(m.type==='childList'){ schedule(); return; } } })
     .observe(document.documentElement,{attributes:true,attributeFilter:['style','class'],childList:true,subtree:true}); }catch(e){}
-  document.addEventListener('DOMContentLoaded',sweep); setInterval(sweep,1500); sweep();
+  document.addEventListener('DOMContentLoaded',function(){ sweep(); recolour(); }); setInterval(function(){ sweep(); recolour(); },1500); sweep(); recolour();
 
   /* sidebar footer: who's signed in + Sign out (the retired painter used to draw this) */
   function foot(){
@@ -34458,7 +34489,7 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
   var energy=0, boost=1, lx=null, ly=null;
   addEventListener('mousemove',function(e){ if(lx!==null){ energy=Math.min(1, energy+Math.hypot(e.clientX-lx,e.clientY-ly)/160); } lx=e.clientX; ly=e.clientY; },{passive:true});
   function draw(){
-    if(!document.body.classList.contains('app-authed') || document.hidden){ requestAnimationFrame(draw); return; }
+    if(!document.body.classList.contains('app-authed')){ requestAnimationFrame(draw); return; }
     if(Math.abs(innerWidth*DPR-W)>2) init();
     energy*=0.94; boost+=((1+energy*6)-boost)*0.12;
     var t=(performance.now()-t0)/1000;
