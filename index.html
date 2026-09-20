@@ -4055,14 +4055,25 @@
   @keyframes au-amb3{ 50%{ transform:translate(-5vw,6vw) scale(.94); } }
   /* luminous light strands (canvas) */
   .au-strands{ position:absolute !important; inset:0; width:100%; height:100%; z-index:1; display:block; opacity:1; pointer-events:none; }
-  .au-vig{ position:absolute; inset:0; z-index:1; pointer-events:none; background:radial-gradient(120% 100% at 50% 50%, transparent 46%, rgba(4,4,8,.6) 100%); }
+  .au-vig{ position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:radial-gradient(115% 95% at 42% 50%, transparent 40%, rgba(4,4,8,.55) 78%, rgba(4,4,8,.86) 100%),
+               linear-gradient(180deg, rgba(4,4,8,.55) 0%, transparent 18%, transparent 82%, rgba(4,4,8,.6) 100%); }
 
   /* LEFT brand text over the nebula */
-  .au-left{ position:relative; z-index:2; display:flex; align-items:center; padding:6vh 3vw 6vh 5vw; }
+  .au-left{ position:relative; z-index:2; display:flex; align-items:center; padding:6vh 3vw 6vh 6vw; }
   .au-left-in{ max-width:600px; color:#fff; }
-  .au-left-brand{ display:flex; align-items:center; gap:11px; font-weight:800; letter-spacing:.14em; font-size:14px; margin-bottom:46px; color:rgba(255,255,255,.92); animation:au-rise .7s .05s both; }
-  .au-left-mark{ width:42px; height:42px; display:grid; place-items:center; background:transparent; }
+  .au-left-brand{ display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.18em; font-size:13px; margin-bottom:52px; color:rgba(255,255,255,.92); animation:au-rise .7s .05s both; }
+  .au-left-mark{ width:46px; height:46px; display:grid; place-items:center; background:transparent; }
   .au-left-mark img{ width:100%; height:100%; object-fit:contain; display:block; }
+  /* feature chips under the headline — structure, not decoration */
+  .au-left-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:26px; animation:au-rise .8s .3s both; }
+  .au-left-chips span{ display:inline-flex; align-items:center; gap:7px; padding:8px 13px; border-radius:999px; font-size:12.5px; font-weight:600; letter-spacing:.02em;
+    color:rgba(255,255,255,.82); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); }
+  .au-left-chips span i{ width:6px; height:6px; border-radius:50%; background:var(--au-o); box-shadow:0 0 10px var(--au-o); }
+  .au-left-chips span:nth-child(2) i{ background:var(--au-tl); box-shadow:0 0 10px var(--au-t); }
+  .au-left-chips span:nth-child(3) i{ background:#C4B5FD; box-shadow:0 0 10px var(--au-p); }
+  .au-foot{ position:absolute; left:6vw; bottom:28px; z-index:2; font-size:12px; letter-spacing:.04em; color:rgba(255,255,255,.38); animation:au-rise .8s .5s both; }
+  .au-foot b{ color:rgba(255,255,255,.6); font-weight:600; }
   .au-left-h{ font-size:clamp(36px,4.2vw,60px) !important; font-weight:900; line-height:1.08; letter-spacing:-.03em; margin:0 0 18px; padding-bottom:.16em; text-transform:none; max-width:none !important;
     background:linear-gradient(90deg,#FF6B1A 0%,#FF6B1A 36%,#FFE3BC 43%,#6EE7D6 50%,#C4B5FD 57%,#FF6B1A 64%,#FF6B1A 100%) !important;
     background-size:300% auto !important; -webkit-background-clip:text !important; background-clip:text !important;
@@ -4078,38 +4089,44 @@
     align-items:center !important; justify-content:center !important; padding:5vh 6vw !important; background:transparent !important; border:none !important; }
   /* ── BRAND-NEW card: no box · underline inputs · pill button · animated title ── */
   #login-screen .login-box{
-    position:relative !important; width:100% !important; max-width:404px !important;
+    position:relative !important; width:100% !important; max-width:416px !important;
     /* solid panel (no backdrop-filter → no tile artifacts, and it reads as a real card) */
-    background:linear-gradient(165deg, #1a1620 0%, #14111a 55%, #171219 100%) !important;
-    border:1px solid rgba(255,255,255,.11) !important; border-radius:26px !important;
-    padding:38px 34px 32px !important; overflow:visible !important;
+    background:linear-gradient(168deg, #1b1721 0%, #15121b 52%, #181320 100%) !important;
+    border:1px solid rgba(255,255,255,.10) !important; border-radius:28px !important;
+    padding:36px 36px 30px !important; overflow:visible !important;
     -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
-    box-shadow:0 44px 100px -30px rgba(0,0,0,.95), 0 0 0 1px rgba(255,140,60,.12), 0 30px 90px -36px rgba(255,107,26,.5), inset 0 1px 0 rgba(255,255,255,.07) !important;
+    box-shadow:0 50px 110px -34px rgba(0,0,0,.95), 0 0 0 1px rgba(255,140,60,.10), 0 34px 100px -40px rgba(255,107,26,.55), inset 0 1px 0 rgba(255,255,255,.06) !important;
     animation:au-card-in .85s cubic-bezier(.2,.8,.2,1) both !important;
   }
+  /* small caption under the card */
+  #login-screen .au-card-note{ margin-top:18px; text-align:center; font-size:12px; letter-spacing:.03em; color:rgba(255,255,255,.38); animation:au-rise .8s .45s both; }
+  #login-screen .au-card-note i{ display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--au-tl); box-shadow:0 0 8px var(--au-t); margin:0 8px 2px 0; }
+  #login-screen .au-form-col{ width:100%; max-width:416px; }
   @keyframes au-card-in{ from{ opacity:0; transform:translateY(22px);} to{ opacity:1; } }
   #login-screen .login-box::before{ display:none !important; }
   #login-screen .login-box > *{ position:relative; z-index:1; }
   #login-screen .login-box .au-sheen{ display:none !important; }
 
-  #login-screen .login-card-brand{ display:flex !important; align-items:center !important; gap:11px !important; margin-bottom:30px !important; }
+  #login-screen .login-card-brand{ display:flex !important; align-items:center !important; gap:11px !important; margin-bottom:28px !important; }
   #login-screen .brand-logo-badge{ display:inline-flex !important; align-items:center; justify-content:center; width:40px !important; height:40px !important; border-radius:0 !important; background:transparent !important; box-shadow:none !important; overflow:visible !important; filter:none !important; }
   #login-screen .login-card-logo{ width:100% !important; height:100% !important; object-fit:contain !important; filter:none !important; }
-  #login-screen .login-card-wordmark{ display:inline !important; font-weight:800 !important; font-size:13px !important; letter-spacing:.2em !important; color:var(--au-ink2) !important; font-family:inherit !important; }
+  #login-screen .login-card-wordmark{ display:inline !important; font-weight:800 !important; font-size:13px !important; letter-spacing:.2em !important; color:var(--au-ink2) !important; -webkit-text-fill-color:var(--au-ink2) !important; background:none !important; font-family:inherit !important; }
 
   #login-screen .login-form-eyebrow{ font-size:11px !important; font-weight:700 !important; letter-spacing:.28em !important; text-transform:uppercase !important; color:var(--au-ink3) !important; background:none !important; -webkit-text-fill-color:currentColor !important; margin-bottom:12px !important; display:block !important; }
   #login-screen .login-form-eyebrow::before, #login-screen .login-form-eyebrow::after{ content:none !important; display:none !important; }
   /* animated shine on the card title too */
-  #login-screen .login-form-title{ font-size:44px !important; font-weight:900 !important; line-height:1.06 !important; padding-bottom:.14em !important; letter-spacing:-.03em !important; text-transform:none !important; margin-bottom:10px !important; font-family:inherit !important;
+  #login-screen .login-form-title{ font-size:40px !important; font-weight:900 !important; line-height:1.06 !important; padding-bottom:.14em !important; letter-spacing:-.03em !important; text-transform:none !important; margin-bottom:6px !important; font-family:inherit !important;
     background:linear-gradient(90deg,#FF6B1A 0%,#FF6B1A 36%,#FFE3BC 43%,#6EE7D6 50%,#C4B5FD 57%,#FF6B1A 64%,#FF6B1A 100%) !important; background-size:300% auto !important;
     -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important; -webkit-text-fill-color:transparent !important;
     animation:au-shine 1.4s linear infinite !important; }
-  #login-screen .login-form-sub{ color:var(--au-ink2) !important; font-size:14px !important; margin-bottom:30px !important; }
+  #login-screen .login-form-sub{ color:var(--au-ink2) !important; font-size:14px !important; line-height:1.5 !important; margin-bottom:26px !important; }
 
-  #login-screen .field-group{ margin-bottom:22px !important; }
-  #login-screen .field-label{ color:var(--au-ink3) !important; font-size:11px !important; font-weight:700 !important; letter-spacing:.14em !important; text-transform:uppercase !important; font-family:inherit !important; margin-bottom:4px !important; }
+  #login-screen .field-group{ margin-bottom:18px !important; }
+  #login-screen .field-label{ color:var(--au-ink3) !important; font-size:11px !important; font-weight:700 !important; letter-spacing:.14em !important; text-transform:uppercase !important; font-family:inherit !important; margin-bottom:7px !important; display:block !important; }
   /* soft glass inputs */
-  #login-screen .field-input{ background:rgba(255,255,255,.055) !important; border:1px solid rgba(255,255,255,.11) !important; border-radius:14px !important; color:var(--au-ink) !important; padding:14px 14px 14px 44px !important; font-size:15.5px !important; transition:border-color .25s, box-shadow .25s, background .25s !important; box-shadow:inset 0 1px 0 rgba(255,255,255,.05) !important; }
+  #login-screen .field-input{ background:rgba(255,255,255,.05) !important; border:1px solid rgba(255,255,255,.10) !important; border-radius:14px !important; color:var(--au-ink) !important; padding:0 14px 0 44px !important; height:52px !important; font-size:15px !important; font-family:inherit !important; transition:border-color .25s, box-shadow .25s, background .25s !important; box-shadow:inset 0 1px 0 rgba(255,255,255,.04) !important; }
+  #login-screen .field-input:hover{ border-color:rgba(255,255,255,.18) !important; }
+  #login-screen #forgot-pin-wrap .field-input{ padding-left:14px !important; }
   #login-screen .field-input.has-ico{ padding-left:44px !important; }
   #login-screen .field-input::placeholder{ color:var(--au-ink3) !important; }
   #login-screen .field-input:focus{ border-color:rgba(255,130,50,.85) !important; background:rgba(255,255,255,.08) !important; box-shadow:0 0 0 4px rgba(255,107,26,.14), 0 0 26px -6px rgba(255,107,26,.6) !important; outline:none !important; }
@@ -4119,14 +4136,16 @@
   #login-screen .pin-toggle{ color:var(--au-ink3) !important; }
   #login-screen .pin-toggle:hover{ color:#FF9440 !important; }
   /* captcha: glass inset */
-  #login-screen #hcaptcha-container{ background:transparent !important; border:none !important; border-radius:0 !important; padding:0 !important; display:flex !important; justify-content:center !important; box-shadow:none !important; margin:6px 0 14px !important; }
+  #login-screen #hcaptcha-container{ background:transparent !important; border:none !important; border-radius:0 !important; padding:0 !important; display:flex !important; justify-content:center !important; box-shadow:none !important; margin:4px 0 10px !important; min-height:78px; }
   #login-screen #hcaptcha-container .h-captcha{ border-radius:10px; overflow:hidden; box-shadow:0 8px 24px -12px rgba(0,0,0,.8); }
+  #login-screen #hcaptcha-container iframe{ border-radius:10px; }
 
   /* pill button */
-  #login-screen .btn-primary{ position:relative !important; overflow:hidden !important; border-radius:999px !important; padding:17px !important; font-weight:800 !important; font-size:14.5px !important; letter-spacing:.12em !important;
-    text-transform:uppercase !important; border:none !important; color:#fff !important; width:100% !important;
+  #login-screen .btn-primary{ position:relative !important; overflow:hidden !important; border-radius:999px !important; padding:0 !important; height:54px !important; font-weight:800 !important; font-size:14px !important; letter-spacing:.14em !important;
+    text-transform:uppercase !important; border:none !important; color:#fff !important; width:100% !important; font-family:inherit !important; cursor:pointer !important;
     background:linear-gradient(135deg,var(--au-o2),var(--au-od) 60%,#ff7a1a) !important; background-size:200% 100% !important; background-position:0% 50% !important;
-    box-shadow:0 16px 40px -12px rgba(232,69,42,.85) !important; transition:background-position .5s, box-shadow .3s, transform .12s !important; margin-top:6px !important; }
+    box-shadow:0 16px 40px -12px rgba(232,69,42,.85), inset 0 1px 0 rgba(255,255,255,.25) !important; transition:background-position .5s, box-shadow .3s, transform .12s !important; margin-top:8px !important; }
+  #login-screen .btn-primary:disabled{ opacity:.7 !important; cursor:progress !important; }
   #login-screen .btn-primary:hover{ background-position:100% 50% !important; box-shadow:0 22px 52px -12px rgba(255,106,26,.9) !important; transform:translateY(-1px) !important; }
   #login-screen .btn-primary:active{ transform:translateY(1px) !important; }
   #login-screen .btn-primary::after{ content:''; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent); transform:skewX(-18deg); animation:au-sheen 3.6s ease-in-out infinite; }
@@ -4135,13 +4154,28 @@
   #login-screen #forgot-pin-wrap{ border-top-color:rgba(255,255,255,.1) !important; }
   #login-screen #forgot-pin-wrap p{ color:var(--au-ink2) !important; }
   #login-screen .login-form-panel button{ font-family:inherit; }
-  #login-screen .login-error{ color:#ff8a9a !important; }
+  /* forgot link: quiet, orange on hover, no underline */
+  #login-screen .au-forgot{ display:inline-block; background:none; border:none; color:var(--au-ink3) !important; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none !important; padding:6px 10px; border-radius:8px; transition:color .2s, background .2s; }
+  #login-screen .au-forgot:hover{ color:#FF9440 !important; background:rgba(255,148,64,.08); }
+  #login-screen .au-forgot-row{ text-align:center; margin-top:10px; }
+  /* error: a real message box, not a red line */
+  #login-screen .login-error{ color:#ffb3bd !important; background:rgba(255,80,110,.10) !important; border:1px solid rgba(255,80,110,.28) !important; border-radius:12px !important; padding:11px 14px !important; font-size:13px !important; line-height:1.45 !important; margin-top:14px !important; text-align:left !important; }
+  #login-screen #forgot-pin-msg{ border-radius:12px !important; }
+  #login-screen #office-otp-req{ background:rgba(255,255,255,.08) !important; border:1px solid rgba(255,255,255,.12) !important; color:#fff !important; border-radius:999px !important; }
+  #login-screen #office-otp-hint{ color:var(--au-ink3) !important; }
 
+  /* mobile: compact brand header above the card (don't just hide the brand) */
+  .au-mob-brand{ display:none; }
   @media (max-width:900px){
     #login-screen{ grid-template-columns:1fr !important; }
-    .au-left{ display:none !important; }
-    #login-screen .login-form-panel{ padding:8vh 24px !important; }
-    #login-screen .login-box{ max-width:420px !important; }
+    .au-left, .au-foot{ display:none !important; }
+    #login-screen .login-form-panel{ padding:26px 20px 34px !important; align-items:flex-start !important; }
+    #login-screen .login-box{ max-width:440px !important; padding:30px 24px 26px !important; border-radius:24px !important; }
+    #login-screen .login-form-title{ font-size:34px !important; }
+    .au-mob-brand{ display:flex; align-items:center; gap:10px; justify-content:center; font-weight:800; letter-spacing:.18em; font-size:12px; color:rgba(255,255,255,.9); margin:8px 0 22px; animation:au-rise .7s both; }
+    .au-mob-brand img{ width:34px; height:34px; object-fit:contain; }
+    #login-screen .login-card-brand{ display:none !important; }
+    .au-amb .a1{ width:140vw; height:140vw; right:-60vw; top:-80vw; }
   }
   @media (prefers-reduced-motion: reduce){
     #login-screen .login-box, #login-screen .btn-primary::after{ animation:none !important; }
@@ -4150,17 +4184,21 @@
   /* ══ LOGIN → DASHBOARD reveal overlay (chime + ~1.6s) ══ */
   #au-reveal{ position:fixed; inset:0; z-index:2147483000; display:none; align-items:center; justify-content:center;
     background:radial-gradient(120% 120% at 50% 40%, #17110c 0%, #0c0a12 55%, #06060a 100%); }
-  #au-reveal.on{ display:flex; animation:au-reveal-out .55s ease .95s forwards; }
+  #au-reveal.on{ display:flex; animation:au-reveal-out .6s ease 1.7s forwards; }
   @keyframes au-reveal-out{ to{ opacity:0; visibility:hidden; } }
-  .au-reveal-core{ position:relative; display:flex; flex-direction:column; align-items:center; gap:22px; }
-  .au-ring{ width:88px; height:88px; border-radius:50%; position:relative; }
-  .au-ring::before{ content:''; position:absolute; inset:0; border-radius:50%; padding:3px;
-    background:conic-gradient(from 0deg, var(--au-o2), var(--au-od), var(--au-p), var(--au-o2));
-    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; animation:au-spin 1s linear infinite; }
-  .au-ring::after{ content:''; position:absolute; inset:14px; border-radius:50%; background:linear-gradient(135deg,var(--au-o2),var(--au-od)); box-shadow:0 0 40px -4px var(--au-od); animation:au-pulse 1.2s ease-in-out infinite; }
+  .au-reveal-halo{ position:absolute; width:70vmax; height:70vmax; border-radius:50%; left:50%; top:42%; transform:translate(-50%,-50%) scale(.4); opacity:0;
+    background:radial-gradient(circle, rgba(255,120,40,.38) 0%, rgba(139,92,246,.16) 38%, transparent 62%); animation:au-halo 1.9s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes au-halo{ 0%{ transform:translate(-50%,-50%) scale(.35); opacity:0; } 35%{ opacity:1; } 100%{ transform:translate(-50%,-50%) scale(1.15); opacity:.9; } }
+  .au-reveal-core{ position:relative; display:flex; flex-direction:column; align-items:center; gap:22px; animation:au-core-in .7s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes au-core-in{ from{ opacity:0; transform:translateY(14px) scale(.96);} to{ opacity:1; transform:none;} }
+  .au-ring{ width:104px; height:104px; border-radius:50%; position:relative; display:grid; place-items:center; }
+  .au-ring::before{ content:''; position:absolute; inset:0; border-radius:50%; padding:2px;
+    background:conic-gradient(from 0deg, var(--au-o2), var(--au-od), var(--au-p), var(--au-tl), var(--au-o2));
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; animation:au-spin 1.6s linear infinite; }
+  .au-ring img{ width:54px; height:54px; object-fit:contain; position:relative; z-index:1; animation:au-pulse 1.3s ease-in-out infinite; }
   @keyframes au-spin{ to{ transform:rotate(360deg);} }
-  @keyframes au-pulse{ 0%,100%{ transform:scale(.92); opacity:.85;} 50%{ transform:scale(1.06); opacity:1;} }
-  .au-reveal-word{ font-weight:800; letter-spacing:.04em; font-size:20px;
+  @keyframes au-pulse{ 0%,100%{ transform:scale(.94);} 50%{ transform:scale(1.06);} }
+  .au-reveal-word{ font-weight:800; letter-spacing:.04em; font-size:22px;
     background:linear-gradient(90deg,#fff,var(--au-o2),var(--au-od),#fff); background-size:220% 100%;
     -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; animation:au-shimmer 1.6s linear infinite; }
   .au-reveal-sub{ color:var(--au-ink2); font-size:13px; letter-spacing:.02em; margin-top:-8px; }
@@ -4431,7 +4469,7 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
 <div id="login-screen" style="position:relative;z-index:1;">
 
   <!-- ═══ refined atmosphere: ambient glows + luminous light strands ═══ -->
-  <div class="au-amb" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+  <!-- ambient glows are painted inside the canvas (no composited CSS layers → no tile seams) -->
   <canvas id="login-strands" class="au-strands" aria-hidden="true"></canvas>
   <div class="au-vig" aria-hidden="true"></div>
   <script>
@@ -4441,14 +4479,16 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
     var COL=[[255,122,47],[255,150,70],[139,92,246],[20,184,166],[255,107,26],[110,231,214],[168,85,247],[255,178,102]];
     var S=[]; var mx=.5,my=.5,tx=.5,ty=.5;
     function size(){ var r=cv.getBoundingClientRect(); W=cv.width=Math.max(1,r.width*DPR); H=cv.height=Math.max(1,r.height*DPR); }
-    function init(){ size(); S=[]; var n=13;
-      for(var i=0;i<n;i++){ var depth=Math.random(); // 0 = far/dim, 1 = near/bright
-        S.push({ y:(0.10+0.80*(i/(n-1)))*H+(Math.random()-.5)*H*0.07, drift:(Math.random()-.5)*0.35,
-          a1:(0.05+Math.random()*0.10)*H, k1:1.0+Math.random()*1.4, p1:Math.random()*6.28, s1:(0.10+Math.random()*0.14)*(Math.random()<.5?-1:1),
-          a2:(0.02+Math.random()*0.05)*H, k2:2.4+Math.random()*2.2, p2:Math.random()*6.28, s2:(0.14+Math.random()*0.18)*(Math.random()<.5?-1:1),
-          a3:(0.008+Math.random()*0.02)*H, k3:5+Math.random()*4, p3:Math.random()*6.28, s3:0.3+Math.random()*0.4,
-          c:COL[i%COL.length], depth:depth, w:(0.6+depth*1.6)*DPR, a:0.14+depth*0.34,
-          pulses:(function(d){ var arr=[{u:Math.random(),v:(0.022+Math.random()*0.03)*(Math.random()<.5?-1:1)}]; if(d>0.6) arr.push({u:Math.random(),v:(0.022+Math.random()*0.03)*(Math.random()<.5?-1:1)}); return arr; })(depth) }); }
+    function init(){ size(); S=[]; var n=10;
+      // depth is assigned deterministically so the scene always has 3 bright "hero" strands, the rest recede
+      var depths=[0.95,0.3,0.15,0.85,0.45,0.1,0.7,0.25,0.55,0.12];
+      for(var i=0;i<n;i++){ var depth=depths[i]; // 0 = far/dim, 1 = near/bright
+        S.push({ y:(0.18+0.64*(i/(n-1)))*H+(Math.random()-.5)*H*0.06, drift:(Math.random()-.5)*0.35,
+          a1:(0.05+Math.random()*0.09)*H, k1:0.9+Math.random()*1.2, p1:Math.random()*6.28, s1:(0.08+Math.random()*0.12)*(Math.random()<.5?-1:1),
+          a2:(0.02+Math.random()*0.04)*H, k2:2.2+Math.random()*2.0, p2:Math.random()*6.28, s2:(0.12+Math.random()*0.16)*(Math.random()<.5?-1:1),
+          a3:(0.006+Math.random()*0.016)*H, k3:5+Math.random()*4, p3:Math.random()*6.28, s3:0.3+Math.random()*0.4,
+          c:COL[i%COL.length], depth:depth, w:(0.5+depth*1.8)*DPR, a:0.08+depth*0.42,
+          pulses:(function(d){ var arr=[{u:Math.random(),v:(0.018+Math.random()*0.026)*(Math.random()<.5?-1:1)}]; if(d>0.8) arr.push({u:Math.random(),v:(0.018+Math.random()*0.026)*(Math.random()<.5?-1:1)}); return arr; })(depth) }); }
     }
     function Y(s,u,t){ var env=Math.sin(u*3.1416); return s.y + Math.sin(t*0.12+s.p1)*s.drift*H*0.06
       + Math.sin(u*s.k1*6.283+s.p1+t*s.s1)*s.a1*env
@@ -4462,7 +4502,17 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
       if(Math.abs(cv.clientWidth*DPR-W)>2) init();
       mx+=(tx-mx)*.04; my+=(ty-my)*.04;
       var t=(performance.now()-t0)/1000;
-      x.clearRect(0,0,W,H); x.globalCompositeOperation='lighter';
+      x.clearRect(0,0,W,H); x.globalCompositeOperation='source-over';
+      // ambient glows (orange-led, purple + teal accents) — painted, not composited
+      var orbs=[
+        {cx:0.86+Math.sin(t*0.05)*0.03, cy:0.08+Math.cos(t*0.04)*0.04, r:0.62, c:'255,107,26', a:0.42},
+        {cx:0.10+Math.cos(t*0.045)*0.03, cy:0.98+Math.sin(t*0.05)*0.03, r:0.50, c:'139,92,246', a:0.30},
+        {cx:0.48+Math.sin(t*0.035)*0.04, cy:-0.05, r:0.36, c:'20,184,166', a:0.18}];
+      for(var oi=0;oi<orbs.length;oi++){ var ob=orbs[oi]; var R=ob.r*Math.max(W,H);
+        var rg=x.createRadialGradient(ob.cx*W,ob.cy*H,0,ob.cx*W,ob.cy*H,R);
+        rg.addColorStop(0,'rgba('+ob.c+','+ob.a+')'); rg.addColorStop(0.35,'rgba('+ob.c+','+(ob.a*0.4)+')'); rg.addColorStop(0.7,'rgba('+ob.c+','+(ob.a*0.08)+')'); rg.addColorStop(1,'rgba('+ob.c+',0)');
+        x.fillStyle=rg; x.fillRect(0,0,W,H); }
+      x.globalCompositeOperation='lighter';
       x.lineCap='round'; x.lineJoin='round';
       for(var i=0;i<S.length;i++){ var s=S[i];
         var px=(mx-.5)*(18+s.depth*44)*DPR*(i%3-1), py=(my-.5)*(10+s.depth*22)*DPR;
@@ -4504,17 +4554,21 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
     <div class="au-left-in">
       <div class="au-left-brand"><span class="au-left-mark"><img id="au-left-logo" alt="" /></span> JMB VIRTUALS</div>
       <script>
-        (function(){ function sync(){ var s=document.getElementById('login-card-logo'), d=document.getElementById('au-left-logo'); if(s&&d&&s.src&&d.src!==s.src){ d.src=s.src; return true; } return false; }
+        (function(){ function sync(){ var s=document.getElementById('login-card-logo'); if(!s||!s.src) return false; var ok=false; ['au-left-logo','au-mob-logo'].forEach(function(id){ var d=document.getElementById(id); if(d&&d.src!==s.src){ d.src=s.src; ok=true; } }); return ok; }
           if(!sync()){ var n=0, iv=setInterval(function(){ if(sync()||++n>40) clearInterval(iv); },150); } })();
       </script>
       <h1 class="au-left-h">Where your work<br>comes together.</h1>
       <p class="au-left-p">Track your time, hit your targets, and get paid — one portal for the whole JMB team.</p>
+      <div class="au-left-chips"><span><i></i>Time tracking</span><span><i></i>Scorecards</span><span><i></i>Payslips</span></div>
     </div>
   </div>
+  <div class="au-foot" aria-hidden="true"><b>JMB Virtuals</b> · Contractor Portal · © 2026</div>
 
 
   <!-- RIGHT FORM PANEL -->
   <div class="login-form-panel">
+   <div class="au-form-col">
+    <div class="au-mob-brand" aria-hidden="true"><img id="au-mob-logo" alt="" /> JMB VIRTUALS</div>
     <div class="login-box">
       <div class="au-sheen" aria-hidden="true"></div>
       <div class="login-card-brand">
@@ -4578,9 +4632,9 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
         <span id="office-otp-hint" style="font-size:12px;color:var(--text-2);flex:1;min-width:160px;"></span>
       </div>
     </div>
-    <button class="btn-primary" id="login-btn" onclick="doLogin()">Sign in</button>
-    <div style="text-align:center;margin-top:12px;">
-      <button onclick="showForgotPIN()" style="background:none;border:none;color:var(--text-2);font-size:13px;cursor:pointer;font-family:inherit;text-decoration:underline;text-underline-offset:3px;">Forgot PIN?</button>
+    <button class="btn-primary" id="login-btn" onclick="try{auTick()}catch(e){};doLogin()">Sign in</button>
+    <div class="au-forgot-row">
+      <button type="button" class="au-forgot" onclick="showForgotPIN()">Forgot your PIN?</button>
     </div>
 
     <!-- FORGOT PIN FORM -->
@@ -4595,13 +4649,16 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
     </div>
     <div class="login-error" id="login-error">Incorrect Contractor ID or PIN. Please try again.</div>
     </div><!-- end login-box -->
+    <div class="au-card-note" aria-hidden="true"><i></i>Protected by hCaptcha · one active device per account</div>
+   </div><!-- end au-form-col -->
   </div><!-- end login-form-panel -->
 </div><!-- end login-screen -->
 
 <!-- ═══ AURA login→dashboard reveal (Donut-style chime + reveal) ═══ -->
 <div id="au-reveal" aria-hidden="true">
+  <div class="au-reveal-halo"></div>
   <div class="au-reveal-core">
-    <div class="au-ring"></div>
+    <div class="au-ring"><img id="au-reveal-logo" alt="" /></div>
     <div class="au-reveal-word" id="au-reveal-word">Welcome back</div>
     <div class="au-reveal-sub">Preparing your workspace…</div>
   </div>
@@ -7061,40 +7118,73 @@ function renderProfile(data) {
 // ── Animated welcome intro (once per sign-in) ──
 
 // ── AURA sign-in reveal: short chime + ~1.6s aurora overlay before dashboard ──
+// One shared AudioContext, unlocked on the first tap/click so the chime never gets muted by autoplay rules.
+var __auCtx = null;
+function auAudio(){
+  try{ var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
+    if (!__auCtx) __auCtx = new AC();
+    if (__auCtx.state === 'suspended') __auCtx.resume().catch(function(){});
+    return __auCtx; }catch(e){ return null; }
+}
+try{ ['pointerdown','keydown','touchstart'].forEach(function(ev){ document.addEventListener(ev, function(){ auAudio(); }, {passive:true}); }); }catch(e){}
+
+// Tiny UI tick on the Sign in press (feels responsive, like Donut's)
+function auTick(){
+  try{ var ctx = auAudio(); if (!ctx) return; var t = ctx.currentTime;
+    var o = ctx.createOscillator(), g = ctx.createGain(); o.type='sine'; o.frequency.setValueAtTime(1400,t); o.frequency.exponentialRampToValueAtTime(900,t+0.06);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.12,t+0.008); g.gain.exponentialRampToValueAtTime(0.0001,t+0.09);
+    o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t+0.1); }catch(e){}
+}
+
+// Cinematic sign-in chime: warm pad swell + bell arpeggio + soft sub + sparkle tail (~2.2s, no file, no copyright)
 function auPlayChime(){
   try{
-    // 1) if the user dropped their own audio, prefer it (assets/login-chime.*)
-    if (window.__AURA_CHIME_URL__){
-      var a = new Audio(window.__AURA_CHIME_URL__); a.volume = 0.5; a.play().catch(function(){}); return;
-    }
-    // 2) otherwise synthesize a soft ascending arpeggio (no file, no copyright)
-    var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
-    var ctx = new AC(); var now = ctx.currentTime;
+    if (window.__AURA_CHIME_URL__){ var a = new Audio(window.__AURA_CHIME_URL__); a.volume = 0.55; a.play().catch(function(){}); return; }
+    var ctx = auAudio(); if (!ctx) return; var now = ctx.currentTime + 0.02;
     var master = ctx.createGain(); master.gain.value = 0.0001; master.connect(ctx.destination);
-    master.gain.exponentialRampToValueAtTime(0.28, now + 0.04);
-    master.gain.exponentialRampToValueAtTime(0.0001, now + 1.7);
-    var notes = [523.25, 659.25, 783.99, 1046.5]; // C5 E5 G5 C6
-    notes.forEach(function(f, i){
-      var t = now + i*0.11;
-      var o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = f;
-      var g = ctx.createGain(); g.gain.value = 0.0001;
-      g.gain.exponentialRampToValueAtTime(0.9, t + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.7);
-      o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.75);
-    });
-    // gentle shimmer tail
-    var o2 = ctx.createOscillator(); o2.type='triangle'; o2.frequency.value=1568;
-    var g2 = ctx.createGain(); g2.gain.value=0.0001; g2.gain.exponentialRampToValueAtTime(0.15, now+0.5); g2.gain.exponentialRampToValueAtTime(0.0001, now+1.7);
-    o2.connect(g2); g2.connect(master); o2.start(now+0.42); o2.stop(now+1.7);
-    setTimeout(function(){ try{ ctx.close(); }catch(e){} }, 2200);
+    master.gain.exponentialRampToValueAtTime(0.42, now + 0.05);
+    master.gain.setValueAtTime(0.42, now + 1.4);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 2.4);
+    // reverb-ish: short feedback delay for air
+    var dl = ctx.createDelay(0.5); dl.delayTime.value = 0.16; var fb = ctx.createGain(); fb.gain.value = 0.28; var wet = ctx.createGain(); wet.gain.value = 0.35;
+    dl.connect(fb); fb.connect(dl); dl.connect(wet); wet.connect(master);
+    function bell(f, t, dur, vol){
+      [[1,1],[2,0.35],[3,0.16],[4.2,0.08]].forEach(function(h){
+        var o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = f*h[0];
+        var g = ctx.createGain(); g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(vol*h[1], t + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur/(1+h[0]*0.35));
+        o.connect(g); g.connect(master); g.connect(dl); o.start(t); o.stop(t + dur + 0.05);
+      });
+    }
+    // pad swell (two detuned triangles through a lowpass) — the "whoosh in"
+    var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(320, now); lp.frequency.exponentialRampToValueAtTime(2600, now + 0.9); lp.frequency.exponentialRampToValueAtTime(500, now + 2.2);
+    var pg = ctx.createGain(); pg.gain.setValueAtTime(0.0001, now); pg.gain.exponentialRampToValueAtTime(0.22, now + 0.5); pg.gain.exponentialRampToValueAtTime(0.0001, now + 2.3);
+    [261.63, 263.2, 392.0, 393.6].forEach(function(f){ var o = ctx.createOscillator(); o.type = 'triangle'; o.frequency.value = f; o.connect(lp); o.start(now); o.stop(now + 2.35); });
+    lp.connect(pg); pg.connect(master);
+    // soft sub thump at the moment the door opens
+    var sub = ctx.createOscillator(); sub.type = 'sine'; sub.frequency.setValueAtTime(110, now + 0.18); sub.frequency.exponentialRampToValueAtTime(55, now + 0.6);
+    var sg = ctx.createGain(); sg.gain.setValueAtTime(0.0001, now + 0.18); sg.gain.exponentialRampToValueAtTime(0.35, now + 0.21); sg.gain.exponentialRampToValueAtTime(0.0001, now + 0.75);
+    sub.connect(sg); sg.connect(master); sub.start(now + 0.18); sub.stop(now + 0.8);
+    // bell arpeggio: C5 · E5 · G5 · C6 · (E6 sparkle)
+    bell(523.25, now + 0.20, 1.2, 0.55);
+    bell(659.25, now + 0.34, 1.2, 0.50);
+    bell(783.99, now + 0.48, 1.3, 0.48);
+    bell(1046.5, now + 0.64, 1.6, 0.52);
+    bell(1318.5, now + 0.98, 1.4, 0.22);
+    // sparkle tail
+    var sp = ctx.createOscillator(); sp.type = 'sine'; sp.frequency.setValueAtTime(2093, now + 1.0); sp.frequency.exponentialRampToValueAtTime(3136, now + 1.8);
+    var spg = ctx.createGain(); spg.gain.setValueAtTime(0.0001, now + 1.0); spg.gain.exponentialRampToValueAtTime(0.06, now + 1.15); spg.gain.exponentialRampToValueAtTime(0.0001, now + 2.1);
+    sp.connect(spg); spg.connect(dl); sp.start(now + 1.0); sp.stop(now + 2.1);
   }catch(e){}
 }
 function auLoginReveal(name){
   var ov = document.getElementById('au-reveal'); if (!ov) return;
   try{ var w = document.getElementById('au-reveal-word'); if (w && name) w.textContent = 'Welcome back, ' + String(name).split(' ')[0]; }catch(e){}
-  ov.classList.add('on');
+  try{ var lg = document.getElementById('au-reveal-logo'), src = document.getElementById('login-card-logo'); if (lg && src && src.src) lg.src = src.src; }catch(e){}
+  ov.classList.remove('on'); void ov.offsetWidth; ov.classList.add('on');
   auPlayChime();
-  setTimeout(function(){ ov.classList.remove('on'); }, 1600);
+  setTimeout(function(){ ov.classList.remove('on'); }, 2350);
 }
 
 function renderDashboard(data) {
