@@ -6382,10 +6382,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (_la && (Date.now() - _la) > SESSION_STALE_MS) {
       sessionStorage.removeItem('emp_data');            // stale → back to the login screen
     } else {
-      /* session restore is not a sign-in: no chime/reveal (and browsers block audio before any click anyway) */
-      try { window.__AURA_NO_REVEAL__ = true; renderDashboard(JSON.parse(saved)); sessionStorage.setItem('jmb_last_active', String(Date.now())); }
+      /* session restore: show the welcome reveal (logo) but skip the chime — browsers block audio before the first click */
+      try { window.__AURA_SILENT_REVEAL__ = true; renderDashboard(JSON.parse(saved)); sessionStorage.setItem('jmb_last_active', String(Date.now())); }
       catch(e) { sessionStorage.removeItem('emp_data'); }
-      finally { window.__AURA_NO_REVEAL__ = false; }
+      finally { window.__AURA_SILENT_REVEAL__ = false; }
     }
   }
 });
@@ -7205,8 +7205,8 @@ function auPlayChime(){
 function auLoginReveal(name){
   var ov = document.getElementById('au-reveal'); if (!ov) return;
   try{ var w = document.getElementById('au-reveal-word'); if (w && name) w.textContent = 'Welcome back, ' + String(name).split(' ')[0]; }catch(e){}
-  try{ var lg = document.getElementById('au-reveal-logo'), src = document.getElementById('login-card-logo'); if (lg && src && src.src) lg.src = src.src; }catch(e){}
-  auPlayChime();
+  try{ var lg = document.getElementById('au-reveal-logo'), src = document.getElementById('login-card-logo') || document.getElementById('header-logo-img'); var u = (src && src.src) || (document.querySelector('link[rel*=icon]')||{}).href || ''; if (lg && u && lg.src !== u) lg.src = u; }catch(e){}
+  if (!window.__AURA_SILENT_REVEAL__) auPlayChime();
   ov.classList.remove('on'); void ov.offsetWidth; ov.classList.add('on');
   setTimeout(function(){ ov.classList.remove('on'); }, 2350);
 }
