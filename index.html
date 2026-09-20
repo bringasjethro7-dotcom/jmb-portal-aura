@@ -4145,8 +4145,10 @@
   #login-screen .pin-toggle{ color:var(--au-ink3) !important; }
   #login-screen .pin-toggle:hover{ color:#FF9440 !important; }
   /* captcha: glass inset */
-  #login-screen #hcaptcha-container{ background:transparent !important; border:none !important; border-radius:0 !important; padding:0 !important; display:flex !important; justify-content:center !important; box-shadow:none !important; margin:4px 0 10px !important; min-height:78px; }
-  #login-screen #hcaptcha-container .h-captcha{ border-radius:10px; overflow:hidden; }
+  /* captcha: hCaptcha's box is a fixed 303×78 iframe, so it's scaled down (still fully clickable) and kept quiet until hovered */
+  #login-screen #hcaptcha-container{ background:transparent !important; border:none !important; border-radius:0 !important; padding:0 !important; display:flex !important; justify-content:center !important; align-items:center !important; box-shadow:none !important; margin:0 0 6px !important; min-height:64px; height:64px; overflow:visible; }
+  #login-screen #hcaptcha-container .h-captcha{ border-radius:10px; overflow:hidden; transform:scale(.76); transform-origin:center; opacity:.72; transition:opacity .2s, transform .2s; }
+  #login-screen #hcaptcha-container .h-captcha:hover, #login-screen #hcaptcha-container .h-captcha:focus-within{ opacity:1; transform:scale(.8); }
   #login-screen #hcaptcha-container iframe{ border-radius:10px; }
 
   /* pill button */
@@ -4187,7 +4189,7 @@
   }
   @media (max-width:380px){
     #login-screen .login-box{ padding:28px 18px 24px !important; }
-    #login-screen #hcaptcha-container .h-captcha{ transform:scale(.93); transform-origin:center; }
+    #login-screen #hcaptcha-container .h-captcha{ transform:scale(.76); transform-origin:center; }
   }
   @media (prefers-reduced-motion: reduce){
     #login-screen .login-box, #login-screen .btn-primary::after{ animation:none !important; }
