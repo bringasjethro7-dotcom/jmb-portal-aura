@@ -34426,7 +34426,9 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
   html body.app-authed #dashboard-hero .hero-stats{ display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:8px !important; }
   html body.app-authed .hstat{ flex-direction:column !important; align-items:flex-start !important; gap:8px !important; padding:12px 12px !important; min-width:0 !important; }
   html body.app-authed .hstat-v{ font-size:20px !important; }
-  html body.app-authed .hstat-l{ font-size:9.5px !important; letter-spacing:.08em !important; }
+  html body.app-authed .hstat-l{ font-size:9px !important; letter-spacing:.04em !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
+  html body.app-authed .hstat-ic{ width:34px !important; height:34px !important; min-width:0 !important; }
+  html body.app-authed .hstat-ic svg{ width:16px !important; height:16px !important; }
   html body.app-authed #dashboard-hero .hero-aside{ width:100% !important; justify-self:stretch !important; margin:0 !important; }
   html body.app-authed #dashboard-hero #jmb-share{ position:static !important; margin:0 auto !important; display:inline-flex !important; grid-area:share; justify-self:center; }
   html body.app-authed #dashboard-hero .hero-name{ font-size:32px !important; }
