@@ -4199,6 +4199,11 @@
   #au-reveal{ position:fixed; inset:0; z-index:2147483000; display:none; align-items:center; justify-content:center;
     background:radial-gradient(120% 120% at 50% 40%, #17110c 0%, #0c0a12 55%, #06060a 100%); }
   #au-reveal.on{ display:flex; animation:au-reveal-out .6s ease 1.7s forwards; }
+  #au-reveal.on.hold{ animation:none; cursor:pointer; }
+  #au-reveal.hold .au-reveal-halo{ animation-duration:2.6s; animation-iteration-count:infinite; animation-direction:alternate; }
+  .au-reveal-hint{ display:none; margin-top:14px; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--au-ink3); font-weight:700; animation:au-hint 1.8s ease-in-out infinite; }
+  .au-reveal-hint.show{ display:block; }
+  @keyframes au-hint{ 0%,100%{ opacity:.35; } 50%{ opacity:1; } }
   @keyframes au-reveal-out{ to{ opacity:0; visibility:hidden; } }
   .au-reveal-halo{ position:absolute; width:70vmax; height:70vmax; border-radius:50%; left:50%; top:42%; transform:translate(-50%,-50%) scale(.4); opacity:0;
     background:radial-gradient(circle, rgba(255,120,40,.38) 0%, rgba(139,92,246,.16) 38%, transparent 62%); animation:au-halo 1.9s cubic-bezier(.2,.8,.2,1) both; }
@@ -4683,6 +4688,7 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
     <div class="au-ring"><img id="au-reveal-logo" alt="" /></div>
     <div class="au-reveal-word" id="au-reveal-word">Welcome back</div>
     <div class="au-reveal-sub">Preparing your workspace…</div>
+    <div class="au-reveal-hint" id="au-reveal-hint">Tap anywhere to enter</div>
   </div>
 </div>
 
@@ -7208,9 +7214,31 @@ function auLoginReveal(name){
   var ov = document.getElementById('au-reveal'); if (!ov) return;
   try{ var w = document.getElementById('au-reveal-word'); if (w && name) w.textContent = 'Welcome back, ' + String(name).split(' ')[0]; }catch(e){}
   try{ var lg = document.getElementById('au-reveal-logo'), src = document.getElementById('login-card-logo') || document.getElementById('header-logo-img'); var u = (src && src.src) || (document.querySelector('link[rel*=icon]')||{}).href || ''; if (lg && u && lg.src !== u) lg.src = u; }catch(e){}
-  if (!window.__AURA_SILENT_REVEAL__) auPlayChime();
-  ov.classList.remove('on'); void ov.offsetWidth; ov.classList.add('on');
-  setTimeout(function(){ ov.classList.remove('on'); }, 2350);
+  var hint = document.getElementById('au-reveal-hint');
+  function go(){
+    /* chime + animation start on the same frame, then fade into the dashboard */
+    ov.classList.remove('hold'); if (hint) hint.classList.remove('show');
+    auPlayChime();
+    ov.classList.remove('on'); void ov.offsetWidth; ov.classList.add('on');
+    setTimeout(function(){ ov.classList.remove('on'); }, 2350);
+  }
+  if (!window.__AURA_SILENT_REVEAL__){ go(); return; }
+  /* page refresh: browsers only allow sound after a click. If Chrome already trusts this site the
+     chime plays straight away; otherwise the logo holds on screen and the first tap starts it. */
+  var ctx = auAudio();
+  var canPlay = !!(ctx && ctx.state === 'running');
+  if (canPlay){ go(); return; }
+  ov.classList.add('on','hold'); if (hint) hint.classList.add('show');
+  var armed = true;
+  function unlock(){ if (!armed) return; armed = false;
+    ['pointerdown','keydown','touchstart'].forEach(function(ev){ document.removeEventListener(ev, unlock, true); });
+    try{ if (ctx && ctx.state !== 'running') ctx.resume(); }catch(e){}
+    go(); }
+  ['pointerdown','keydown','touchstart'].forEach(function(ev){ document.addEventListener(ev, unlock, true); });
+  /* if the browser flips to allowed on its own (media-engagement), don't make them wait */
+  var tries = 0, poll = setInterval(function(){ if (!armed){ clearInterval(poll); return; }
+    try{ if (ctx && ctx.state === 'running'){ clearInterval(poll); unlock(); } }catch(e){}
+    if (++tries > 40) clearInterval(poll); }, 250);
 }
 
 function renderDashboard(data) {
