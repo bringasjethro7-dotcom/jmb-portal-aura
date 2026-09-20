@@ -38,6 +38,7 @@
   }
 </script>
 <script>window.__AURA_DASH__=true;</script>
+<link rel="manifest" href="portal.webmanifest">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@500;600;700;800&family=Poppins:wght@700;800&family=Archivo+Black&display=swap');
   :root {
@@ -7223,22 +7224,17 @@ function auLoginReveal(name){
     setTimeout(function(){ ov.classList.remove('on'); }, 2350);
   }
   if (!window.__AURA_SILENT_REVEAL__){ go(); return; }
-  /* page refresh: browsers only allow sound after a click. If Chrome already trusts this site the
-     chime plays straight away; otherwise the logo holds on screen and the first tap starts it. */
+  /* page refresh: the animation always runs right away; the chime plays whenever the browser permits
+     sound without a click (installed app, or a site Chrome has learned to trust). No waiting, no tap. */
   var ctx = auAudio();
-  var canPlay = !!(ctx && ctx.state === 'running');
-  if (canPlay){ go(); return; }
-  ov.classList.add('on','hold'); if (hint) hint.classList.add('show');
-  var armed = true;
-  function unlock(){ if (!armed) return; armed = false;
-    ['pointerdown','keydown','touchstart'].forEach(function(ev){ document.removeEventListener(ev, unlock, true); });
-    try{ if (ctx && ctx.state !== 'running') ctx.resume(); }catch(e){}
-    go(); }
-  ['pointerdown','keydown','touchstart'].forEach(function(ev){ document.addEventListener(ev, unlock, true); });
-  /* if the browser flips to allowed on its own (media-engagement), don't make them wait */
-  var tries = 0, poll = setInterval(function(){ if (!armed){ clearInterval(poll); return; }
-    try{ if (ctx && ctx.state === 'running'){ clearInterval(poll); unlock(); } }catch(e){}
-    if (++tries > 40) clearInterval(poll); }, 250);
+  if (ctx && ctx.state === 'running'){ go(); return; }
+  ov.classList.remove('hold'); if (hint) hint.classList.remove('show');
+  ov.classList.remove('on'); void ov.offsetWidth; ov.classList.add('on');
+  setTimeout(function(){ ov.classList.remove('on'); }, 2350);
+  /* if permission lands within the first beat, still start the sound so it lines up with the ring */
+  var tries = 0, poll = setInterval(function(){ tries++;
+    try{ if (ctx && ctx.state === 'running'){ clearInterval(poll); auPlayChime(); return; } }catch(e){}
+    if (tries > 6) clearInterval(poll); }, 80);
 }
 
 function renderDashboard(data) {
