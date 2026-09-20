@@ -3525,7 +3525,7 @@
   /* ════ Polished login card ════ */
   .login-box { overflow:hidden; border-radius:20px !important; }
   .login-box::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--orange-1), var(--orange-2)); }
-  .login-box::after { content:''; position:absolute; top:-40%; right:-30%; width:60%; height:80%; background:radial-gradient(circle, rgba(255,107,26,.14), transparent 70%); pointer-events:none; }
+  /* (removed) .login-box::after glow box — it rendered as a hard-edged rectangle above the Aura card */
 
   /* ════ Card headers — small leading accent + hairline structure ════ */
   .card-head { display:flex; align-items:center; gap:10px; margin-bottom:1rem; }
@@ -4112,7 +4112,7 @@
   #login-screen .au-card-note i{ display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--au-tl); box-shadow:0 0 8px var(--au-t); margin:0 8px 2px 0; }
   #login-screen .au-form-col{ width:100%; max-width:416px; }
   @keyframes au-card-in{ from{ opacity:0; transform:translateY(22px);} to{ opacity:1; } }
-  #login-screen .login-box::before{ display:none !important; }
+  #login-screen .login-box::before, #login-screen .login-box::after{ display:none !important; content:none !important; }   /* old glow boxes — the ::after painted a clipped radial = hard-edged rectangle above the card */
   #login-screen .login-box > *{ position:relative; z-index:1; }
   #login-screen .login-box .au-sheen{ display:none !important; }
 
