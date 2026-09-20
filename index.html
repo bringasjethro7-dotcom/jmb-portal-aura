@@ -4175,7 +4175,10 @@
     .au-mob-brand{ display:flex; align-items:center; gap:10px; justify-content:center; font-weight:800; letter-spacing:.18em; font-size:12px; color:rgba(255,255,255,.9); margin:8px 0 22px; animation:au-rise .7s both; }
     .au-mob-brand img{ width:34px; height:34px; object-fit:contain; }
     #login-screen .login-card-brand{ display:none !important; }
-    .au-amb .a1{ width:140vw; height:140vw; right:-60vw; top:-80vw; }
+  }
+  @media (max-width:380px){
+    #login-screen .login-box{ padding:28px 18px 24px !important; }
+    #login-screen #hcaptcha-container .h-captcha{ transform:scale(.93); transform-origin:center; }
   }
   @media (prefers-reduced-motion: reduce){
     #login-screen .login-box, #login-screen .btn-primary::after{ animation:none !important; }
@@ -4482,11 +4485,12 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
     function init(){ size(); S=[]; var n=10;
       // depth is assigned deterministically so the scene always has 3 bright "hero" strands, the rest recede
       var depths=[0.95,0.3,0.15,0.85,0.45,0.1,0.7,0.25,0.55,0.12];
+      var kf=Math.min(1, (W/H)/1.5);   // portrait screens: fewer waves across the width so strands stay smooth, not jagged
       for(var i=0;i<n;i++){ var depth=depths[i]; // 0 = far/dim, 1 = near/bright
         S.push({ y:(0.18+0.64*(i/(n-1)))*H+(Math.random()-.5)*H*0.06, drift:(Math.random()-.5)*0.35,
-          a1:(0.05+Math.random()*0.09)*H, k1:0.9+Math.random()*1.2, p1:Math.random()*6.28, s1:(0.08+Math.random()*0.12)*(Math.random()<.5?-1:1),
-          a2:(0.02+Math.random()*0.04)*H, k2:2.2+Math.random()*2.0, p2:Math.random()*6.28, s2:(0.12+Math.random()*0.16)*(Math.random()<.5?-1:1),
-          a3:(0.006+Math.random()*0.016)*H, k3:5+Math.random()*4, p3:Math.random()*6.28, s3:0.3+Math.random()*0.4,
+          a1:(0.05+Math.random()*0.09)*H*kf, k1:(0.9+Math.random()*1.2)*kf, p1:Math.random()*6.28, s1:(0.08+Math.random()*0.12)*(Math.random()<.5?-1:1),
+          a2:(0.02+Math.random()*0.04)*H*kf, k2:(2.2+Math.random()*2.0)*kf, p2:Math.random()*6.28, s2:(0.12+Math.random()*0.16)*(Math.random()<.5?-1:1),
+          a3:(0.006+Math.random()*0.016)*H*kf, k3:(5+Math.random()*4)*kf, p3:Math.random()*6.28, s3:0.3+Math.random()*0.4,
           c:COL[i%COL.length], depth:depth, w:(0.5+depth*1.8)*DPR, a:0.08+depth*0.42,
           pulses:(function(d){ var arr=[{u:Math.random(),v:(0.018+Math.random()*0.026)*(Math.random()<.5?-1:1)}]; if(d>0.8) arr.push({u:Math.random(),v:(0.018+Math.random()*0.026)*(Math.random()<.5?-1:1)}); return arr; })(depth) }); }
     }
@@ -4494,18 +4498,25 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
       + Math.sin(u*s.k1*6.283+s.p1+t*s.s1)*s.a1*env
       + Math.sin(u*s.k2*6.283+s.p2-t*s.s2)*s.a2*env
       + Math.sin(u*s.k3*6.283+s.p3+t*s.s3)*s.a3; }
-    window.addEventListener('mousemove',function(e){ tx=e.clientX/window.innerWidth; ty=e.clientY/window.innerHeight; },{passive:true});
+    // cursor energy: streaks race (up to ~8×) while the mouse moves, ease back to normal when it rests
+    var boost=1, energy=0, lastMx=null, lastMy=null;
+    window.addEventListener('mousemove',function(e){ tx=e.clientX/window.innerWidth; ty=e.clientY/window.innerHeight;
+      if(lastMx!==null){ var d=Math.hypot(e.clientX-lastMx,e.clientY-lastMy); energy=Math.min(1, energy + d/140); }
+      lastMx=e.clientX; lastMy=e.clientY; },{passive:true});
+    window.addEventListener('touchmove',function(e){ var p=e.touches[0]; if(!p) return; tx=p.clientX/window.innerWidth; ty=p.clientY/window.innerHeight; energy=Math.min(1,energy+0.25); },{passive:true});
     var t0=performance.now();
     function draw(){
       var scr=document.getElementById('login-screen');
       if(!scr || scr.style.display==='none'){ requestAnimationFrame(draw); return; }
       if(Math.abs(cv.clientWidth*DPR-W)>2) init();
       mx+=(tx-mx)*.04; my+=(ty-my)*.04;
+      energy*=0.94;                                   // decays in ~1s once the cursor rests
+      boost+=((1+energy*7)-boost)*0.12;               // smooth ramp: 1× at rest → ~8× while moving
       var t=(performance.now()-t0)/1000;
       x.clearRect(0,0,W,H); x.globalCompositeOperation='source-over';
       // ambient glows (orange-led, purple + teal accents) — painted, not composited
       var orbs=[
-        {cx:0.86+Math.sin(t*0.05)*0.03, cy:0.08+Math.cos(t*0.04)*0.04, r:0.62, c:'255,107,26', a:0.42},
+        {cx:0.86+Math.sin(t*0.05)*0.03, cy:0.08+Math.cos(t*0.04)*0.04, r:0.66, c:'255,107,26', a:0.56},
         {cx:0.10+Math.cos(t*0.045)*0.03, cy:0.98+Math.sin(t*0.05)*0.03, r:0.50, c:'139,92,246', a:0.30},
         {cx:0.48+Math.sin(t*0.035)*0.04, cy:-0.05, r:0.36, c:'20,184,166', a:0.18}];
       for(var oi=0;oi<orbs.length;oi++){ var ob=orbs[oi]; var R=ob.r*Math.max(W,H);
@@ -4528,8 +4539,8 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
         x.lineWidth=s.w;    x.strokeStyle=g; x.stroke();
         if(s.depth>0.6){ x.lineWidth=s.w*0.42; x.strokeStyle='rgba(255,246,236,'+(s.a*0.85)+')'; x.stroke(); }
         // realistic light streaks traveling along the fiber (bright head, fading tail)
-        for(var q=0;q<s.pulses.length;q++){ var pu=s.pulses[q]; pu.u+=pu.v*0.016; if(pu.u>1.1)pu.u=-0.1; if(pu.u<-0.1)pu.u=1.1;
-          var dir=pu.v>0?1:-1, head=pu.u, len=0.08+s.depth*0.07, tail=head-len*dir;
+        for(var q=0;q<s.pulses.length;q++){ var pu=s.pulses[q]; pu.u+=pu.v*0.016*boost; if(pu.u>1.1)pu.u=-0.1; if(pu.u<-0.1)pu.u=1.1;
+          var dir=pu.v>0?1:-1, head=pu.u, len=(0.08+s.depth*0.07)*(1+(boost-1)*0.25), tail=head-len*dir;
           var cl=function(v){return Math.max(0,Math.min(1,v));};
           var u0=cl(Math.min(head,tail)), u1=cl(Math.max(head,tail)); if(u1-u0<0.003) continue;
           var fade=Math.sin(cl(head)*3.1416);
