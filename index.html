@@ -4057,7 +4057,13 @@
   @keyframes au-amb2{ 50%{ transform:translate(7vw,-5vw) scale(1.1); } }
   @keyframes au-amb3{ 50%{ transform:translate(-5vw,6vw) scale(.94); } }
   /* luminous light strands (canvas) */
-  .au-strands{ position:absolute !important; inset:0; width:100%; height:100%; z-index:1; display:block; opacity:1; pointer-events:none; }
+  /* own compositor layer: the cross-origin hCaptcha iframe otherwise slices the canvas beneath it into a culled column
+     (the "vertical rectangle shadow"). Diagnosed live in Chrome 153 / macOS — hiding the iframe removed it, promoting the canvas fixed it. */
+  .au-strands{ position:absolute !important; inset:0; width:100%; height:100%; z-index:1; display:block; opacity:1; pointer-events:none; will-change:transform; transform:translateZ(0); }
+  /* Chrome autofill paints inputs light blue — keep them on-theme */
+  #login-screen input:-webkit-autofill, #login-screen input:-webkit-autofill:hover, #login-screen input:-webkit-autofill:focus{
+    -webkit-text-fill-color:var(--au-ink) !important; -webkit-box-shadow:0 0 0 1000px #1e1a25 inset !important; box-shadow:0 0 0 1000px #1e1a25 inset !important;
+    caret-color:var(--au-ink); border-color:rgba(255,255,255,.14) !important; transition:background-color 99999s ease-in-out 0s; }
   .au-vig{ position:absolute; inset:0; z-index:1; pointer-events:none;
     background:radial-gradient(115% 95% at 42% 50%, transparent 40%, rgba(4,4,8,.55) 78%, rgba(4,4,8,.86) 100%),
                linear-gradient(180deg, rgba(4,4,8,.55) 0%, transparent 18%, transparent 82%, rgba(4,4,8,.6) 100%); }
@@ -6376,8 +6382,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (_la && (Date.now() - _la) > SESSION_STALE_MS) {
       sessionStorage.removeItem('emp_data');            // stale → back to the login screen
     } else {
-      try { renderDashboard(JSON.parse(saved)); sessionStorage.setItem('jmb_last_active', String(Date.now())); }
+      /* session restore is not a sign-in: no chime/reveal (and browsers block audio before any click anyway) */
+      try { window.__AURA_NO_REVEAL__ = true; renderDashboard(JSON.parse(saved)); sessionStorage.setItem('jmb_last_active', String(Date.now())); }
       catch(e) { sessionStorage.removeItem('emp_data'); }
+      finally { window.__AURA_NO_REVEAL__ = false; }
     }
   }
 });
@@ -7154,11 +7162,13 @@ function auTick(){
 function auPlayChime(){
   try{
     if (window.__AURA_CHIME_URL__){ var a = new Audio(window.__AURA_CHIME_URL__); a.volume = 0.55; a.play().catch(function(){}); return; }
-    var ctx = auAudio(); if (!ctx) return; var now = ctx.currentTime + 0.02;
+    var ctx = auAudio(); if (!ctx) return;
+    if (ctx.state !== 'running'){ ctx.resume().then(function(){ if (ctx.state === 'running') auPlayChime(); }).catch(function(){}); return; }
+    var now = ctx.currentTime;
     var master = ctx.createGain(); master.gain.value = 0.0001; master.connect(ctx.destination);
-    master.gain.exponentialRampToValueAtTime(0.42, now + 0.05);
-    master.gain.setValueAtTime(0.42, now + 1.4);
-    master.gain.exponentialRampToValueAtTime(0.0001, now + 2.4);
+    master.gain.exponentialRampToValueAtTime(0.42, now + 0.01);
+    master.gain.setValueAtTime(0.42, now + 1.2);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 2.1);
     // reverb-ish: short feedback delay for air
     var dl = ctx.createDelay(0.5); dl.delayTime.value = 0.16; var fb = ctx.createGain(); fb.gain.value = 0.28; var wet = ctx.createGain(); wet.gain.value = 0.35;
     dl.connect(fb); fb.connect(dl); dl.connect(wet); wet.connect(master);
@@ -7172,32 +7182,32 @@ function auPlayChime(){
       });
     }
     // pad swell (two detuned triangles through a lowpass) — the "whoosh in"
-    var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(320, now); lp.frequency.exponentialRampToValueAtTime(2600, now + 0.9); lp.frequency.exponentialRampToValueAtTime(500, now + 2.2);
-    var pg = ctx.createGain(); pg.gain.setValueAtTime(0.0001, now); pg.gain.exponentialRampToValueAtTime(0.22, now + 0.5); pg.gain.exponentialRampToValueAtTime(0.0001, now + 2.3);
+    var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(600, now); lp.frequency.exponentialRampToValueAtTime(2600, now + 0.45); lp.frequency.exponentialRampToValueAtTime(500, now + 2.2);
+    var pg = ctx.createGain(); pg.gain.setValueAtTime(0.0001, now); pg.gain.exponentialRampToValueAtTime(0.22, now + 0.18); pg.gain.exponentialRampToValueAtTime(0.0001, now + 2.3);
     [261.63, 263.2, 392.0, 393.6].forEach(function(f){ var o = ctx.createOscillator(); o.type = 'triangle'; o.frequency.value = f; o.connect(lp); o.start(now); o.stop(now + 2.35); });
     lp.connect(pg); pg.connect(master);
     // soft sub thump at the moment the door opens
-    var sub = ctx.createOscillator(); sub.type = 'sine'; sub.frequency.setValueAtTime(110, now + 0.18); sub.frequency.exponentialRampToValueAtTime(55, now + 0.6);
-    var sg = ctx.createGain(); sg.gain.setValueAtTime(0.0001, now + 0.18); sg.gain.exponentialRampToValueAtTime(0.35, now + 0.21); sg.gain.exponentialRampToValueAtTime(0.0001, now + 0.75);
-    sub.connect(sg); sg.connect(master); sub.start(now + 0.18); sub.stop(now + 0.8);
+    var sub = ctx.createOscillator(); sub.type = 'sine'; sub.frequency.setValueAtTime(110, now); sub.frequency.exponentialRampToValueAtTime(55, now + 0.42);
+    var sg = ctx.createGain(); sg.gain.setValueAtTime(0.0001, now); sg.gain.exponentialRampToValueAtTime(0.35, now + 0.02); sg.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
+    sub.connect(sg); sg.connect(master); sub.start(now); sub.stop(now + 0.6);
     // bell arpeggio: C5 · E5 · G5 · C6 · (E6 sparkle)
-    bell(523.25, now + 0.20, 1.2, 0.55);
-    bell(659.25, now + 0.34, 1.2, 0.50);
-    bell(783.99, now + 0.48, 1.3, 0.48);
-    bell(1046.5, now + 0.64, 1.6, 0.52);
-    bell(1318.5, now + 0.98, 1.4, 0.22);
+    bell(523.25, now,        1.2, 0.58);   /* first note on the very first frame */
+    bell(659.25, now + 0.11, 1.2, 0.50);
+    bell(783.99, now + 0.22, 1.3, 0.48);
+    bell(1046.5, now + 0.34, 1.6, 0.54);
+    bell(1318.5, now + 0.62, 1.4, 0.22);
     // sparkle tail
-    var sp = ctx.createOscillator(); sp.type = 'sine'; sp.frequency.setValueAtTime(2093, now + 1.0); sp.frequency.exponentialRampToValueAtTime(3136, now + 1.8);
-    var spg = ctx.createGain(); spg.gain.setValueAtTime(0.0001, now + 1.0); spg.gain.exponentialRampToValueAtTime(0.06, now + 1.15); spg.gain.exponentialRampToValueAtTime(0.0001, now + 2.1);
-    sp.connect(spg); spg.connect(dl); sp.start(now + 1.0); sp.stop(now + 2.1);
+    var sp = ctx.createOscillator(); sp.type = 'sine'; sp.frequency.setValueAtTime(2093, now + 0.7); sp.frequency.exponentialRampToValueAtTime(3136, now + 1.5);
+    var spg = ctx.createGain(); spg.gain.setValueAtTime(0.0001, now + 0.7); spg.gain.exponentialRampToValueAtTime(0.06, now + 0.85); spg.gain.exponentialRampToValueAtTime(0.0001, now + 1.9);
+    sp.connect(spg); spg.connect(dl); sp.start(now + 0.7); sp.stop(now + 1.9);
   }catch(e){}
 }
 function auLoginReveal(name){
   var ov = document.getElementById('au-reveal'); if (!ov) return;
   try{ var w = document.getElementById('au-reveal-word'); if (w && name) w.textContent = 'Welcome back, ' + String(name).split(' ')[0]; }catch(e){}
   try{ var lg = document.getElementById('au-reveal-logo'), src = document.getElementById('login-card-logo'); if (lg && src && src.src) lg.src = src.src; }catch(e){}
-  ov.classList.remove('on'); void ov.offsetWidth; ov.classList.add('on');
   auPlayChime();
+  ov.classList.remove('on'); void ov.offsetWidth; ov.classList.add('on');
   setTimeout(function(){ ov.classList.remove('on'); }, 2350);
 }
 
@@ -34203,7 +34213,7 @@ html body.app-authed, html body.light.app-authed{ background:var(--au-bg) !impor
 html body.app-authed #dashboard-screen, html body.app-authed #dashboard-screen .main-content,
 html body.light.app-authed #dashboard-screen, html body.light.app-authed #dashboard-screen .main-content{ background:transparent !important; background-color:transparent !important; background-image:none !important; }
 html body.app-authed #dashboard-screen .main-content{ padding:26px 34px 60px !important; max-width:1240px !important; margin:0 auto !important; }
-#aura-bg{ display:none; position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+#aura-bg{ display:none; position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; will-change:transform; transform:translateZ(0); }
 html body.app-authed #aura-bg{ display:block; }
 html body.app-authed #dashboard-screen{ position:relative; z-index:1; }
 
