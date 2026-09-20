@@ -4045,10 +4045,11 @@
   }
   /* ambient glows — orange-led, tasteful, slow drift */
   .au-amb{ position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
-  .au-amb i{ position:absolute; border-radius:50%; filter:blur(70px); mix-blend-mode:screen; will-change:transform; }
-  .au-amb .a1{ width:58vw; height:58vw; right:-12vw; top:-16vw; background:radial-gradient(circle at 40% 40%, rgba(255,107,26,.62), rgba(232,69,42,.28) 45%, transparent 68%); animation:au-amb1 22s ease-in-out infinite; }
-  .au-amb .a2{ width:46vw; height:46vw; left:-10vw; bottom:-14vw; background:radial-gradient(circle at 50% 50%, rgba(139,92,246,.42), transparent 66%); animation:au-amb2 28s ease-in-out infinite; }
-  .au-amb .a3{ width:36vw; height:36vw; left:34vw; top:-10vw; background:radial-gradient(circle at 50% 50%, rgba(20,184,166,.28), transparent 66%); animation:au-amb3 26s ease-in-out infinite; }
+  /* no filter:blur here on purpose — blurred boxes leave hard seams; pure radial falloff instead */
+  .au-amb i{ position:absolute; border-radius:50%; }
+  .au-amb .a1{ width:96vw; height:96vw; right:-40vw; top:-46vw; background:radial-gradient(circle at 50% 50%, rgba(255,107,26,.50) 0%, rgba(232,69,42,.22) 28%, rgba(232,69,42,.06) 46%, transparent 60%); animation:au-amb1 22s ease-in-out infinite; }
+  .au-amb .a2{ width:80vw; height:80vw; left:-36vw; bottom:-40vw; background:radial-gradient(circle at 50% 50%, rgba(139,92,246,.34) 0%, rgba(139,92,246,.10) 32%, transparent 58%); animation:au-amb2 28s ease-in-out infinite; }
+  .au-amb .a3{ width:60vw; height:60vw; left:22vw; top:-30vw; background:radial-gradient(circle at 50% 50%, rgba(20,184,166,.22) 0%, rgba(20,184,166,.06) 34%, transparent 58%); animation:au-amb3 26s ease-in-out infinite; }
   @keyframes au-amb1{ 50%{ transform:translate(-6vw,7vw) scale(1.08); } }
   @keyframes au-amb2{ 50%{ transform:translate(7vw,-5vw) scale(1.1); } }
   @keyframes au-amb3{ 50%{ transform:translate(-5vw,6vw) scale(.94); } }
@@ -4064,15 +4065,15 @@
 
   /* LEFT brand text over the nebula */
   .au-left{ position:relative; z-index:2; display:flex; align-items:center; padding:6vh 3vw 6vh 5vw; }
-  .au-left-in{ max-width:480px; color:#fff; }
+  .au-left-in{ max-width:600px; color:#fff; }
   .au-left-brand{ display:flex; align-items:center; gap:11px; font-weight:800; letter-spacing:.14em; font-size:14px; margin-bottom:46px; color:rgba(255,255,255,.92); animation:au-rise .7s .05s both; }
-  .au-left-mark{ width:38px; height:38px; border-radius:11px; display:grid; place-items:center; font-size:16px; color:#fff;
-    background:linear-gradient(135deg,var(--au-o2),var(--au-od)); box-shadow:0 6px 20px -6px rgba(232,69,42,.8), inset 0 1px 0 rgba(255,255,255,.35); }
-  .au-left-h{ font-size:clamp(36px,4.4vw,64px) !important; font-weight:900; line-height:1.0; letter-spacing:-.03em; margin:0 0 18px; text-transform:none;
+  .au-left-mark{ width:42px; height:42px; display:grid; place-items:center; background:transparent; filter:drop-shadow(0 4px 14px rgba(255,106,26,.6)); }
+  .au-left-mark img{ width:100%; height:100%; object-fit:contain; display:block; }
+  .au-left-h{ font-size:clamp(36px,4.2vw,60px) !important; font-weight:900; line-height:1.08; letter-spacing:-.03em; margin:0 0 18px; padding-bottom:.16em; text-transform:none; max-width:none !important;
     background:linear-gradient(100deg,#FF6B1A,#FF9440 20%,#6EE7D6 46%,#8B5CF6 70%,#FF6B1A) !important;
     background-size:230% auto !important; -webkit-background-clip:text !important; background-clip:text !important;
     color:transparent !important; -webkit-text-fill-color:transparent !important;
-    animation:au-shine 2.1s linear infinite, au-rise .8s .12s both !important; }
+    animation:au-shine 1.4s linear infinite, au-rise .8s .12s both !important; }
   @keyframes au-shine{ to{ background-position:230% center; } }
   @keyframes au-rise{ from{ opacity:0; transform:translateY(18px); } to{ opacity:1; transform:none; } }
   .au-left-p{ animation:au-rise .8s .2s both; }
@@ -4104,10 +4105,10 @@
   #login-screen .login-form-eyebrow{ font-size:11px !important; font-weight:700 !important; letter-spacing:.28em !important; text-transform:uppercase !important; color:var(--au-ink3) !important; background:none !important; -webkit-text-fill-color:currentColor !important; margin-bottom:12px !important; display:block !important; }
   #login-screen .login-form-eyebrow::before, #login-screen .login-form-eyebrow::after{ content:none !important; display:none !important; }
   /* animated shine on the card title too */
-  #login-screen .login-form-title{ font-size:44px !important; font-weight:900 !important; line-height:.98 !important; letter-spacing:-.03em !important; text-transform:none !important; margin-bottom:10px !important; font-family:inherit !important;
+  #login-screen .login-form-title{ font-size:44px !important; font-weight:900 !important; line-height:1.06 !important; padding-bottom:.14em !important; letter-spacing:-.03em !important; text-transform:none !important; margin-bottom:10px !important; font-family:inherit !important;
     background:linear-gradient(100deg,#FF6B1A,#FF9440 20%,#6EE7D6 46%,#8B5CF6 70%,#FF6B1A) !important; background-size:230% auto !important;
     -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important; -webkit-text-fill-color:transparent !important;
-    animation:au-shine 2.1s linear infinite !important; }
+    animation:au-shine 1.4s linear infinite !important; }
   #login-screen .login-form-sub{ color:var(--au-ink2) !important; font-size:14px !important; margin-bottom:30px !important; }
 
   #login-screen .field-group{ margin-bottom:22px !important; }
@@ -4478,7 +4479,11 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
   <!-- ═══ LEFT: brand text with animated gradient ═══ -->
   <div class="au-left" aria-hidden="true">
     <div class="au-left-in">
-      <div class="au-left-brand"><span class="au-left-mark">◆</span> JMB VIRTUALS</div>
+      <div class="au-left-brand"><span class="au-left-mark"><img id="au-left-logo" alt="" /></span> JMB VIRTUALS</div>
+      <script>
+        (function(){ function sync(){ var s=document.getElementById('login-card-logo'), d=document.getElementById('au-left-logo'); if(s&&d&&s.src&&d.src!==s.src){ d.src=s.src; return true; } return false; }
+          if(!sync()){ var n=0, iv=setInterval(function(){ if(sync()||++n>40) clearInterval(iv); },150); } })();
+      </script>
       <h1 class="au-left-h">Where your work<br>comes together.</h1>
       <p class="au-left-p">Track your time, hit your targets, and get paid — one portal for the whole JMB team.</p>
     </div>
