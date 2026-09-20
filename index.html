@@ -4072,7 +4072,7 @@
     background:linear-gradient(100deg,#FF6B1A,#FF9440 20%,#6EE7D6 46%,#8B5CF6 70%,#FF6B1A) !important;
     background-size:230% auto !important; -webkit-background-clip:text !important; background-clip:text !important;
     color:transparent !important; -webkit-text-fill-color:transparent !important;
-    animation:au-shine 3.2s linear infinite, au-rise .8s .12s both !important; }
+    animation:au-shine 2.1s linear infinite, au-rise .8s .12s both !important; }
   @keyframes au-shine{ to{ background-position:230% center; } }
   @keyframes au-rise{ from{ opacity:0; transform:translateY(18px); } to{ opacity:1; transform:none; } }
   .au-left-p{ animation:au-rise .8s .2s both; }
@@ -4088,13 +4088,11 @@
     border:1px solid rgba(255,255,255,.13) !important; border-radius:26px !important;
     padding:38px 34px 32px !important; overflow:visible !important;
     -webkit-backdrop-filter:blur(28px) saturate(150%) !important; backdrop-filter:blur(28px) saturate(150%) !important;
-    box-shadow:0 34px 80px -28px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.16), 0 0 70px -30px rgba(255,107,26,.55) !important;
+    box-shadow:0 34px 80px -28px rgba(0,0,0,.85), 0 0 70px -30px rgba(255,107,26,.5) !important;
     animation:au-card-in .85s cubic-bezier(.2,.8,.2,1) both !important;
   }
   @keyframes au-card-in{ from{ opacity:0; transform:translateY(22px);} to{ opacity:1; } }
-  #login-screen .login-box::before{ content:''; position:absolute; inset:-1px; border-radius:inherit; padding:1px; z-index:0; display:block !important;
-    background:linear-gradient(135deg, rgba(255,150,70,.7), rgba(255,255,255,.08) 40%, rgba(139,92,246,.5)); opacity:.7;
-    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
+  #login-screen .login-box::before{ display:none !important; }
   #login-screen .login-box > *{ position:relative; z-index:1; }
   #login-screen .login-box .au-sheen{ display:none !important; }
 
@@ -4109,7 +4107,7 @@
   #login-screen .login-form-title{ font-size:44px !important; font-weight:900 !important; line-height:.98 !important; letter-spacing:-.03em !important; text-transform:none !important; margin-bottom:10px !important; font-family:inherit !important;
     background:linear-gradient(100deg,#FF6B1A,#FF9440 20%,#6EE7D6 46%,#8B5CF6 70%,#FF6B1A) !important; background-size:230% auto !important;
     -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important; -webkit-text-fill-color:transparent !important;
-    animation:au-shine 3.2s linear infinite !important; }
+    animation:au-shine 2.1s linear infinite !important; }
   #login-screen .login-form-sub{ color:var(--au-ink2) !important; font-size:14px !important; margin-bottom:30px !important; }
 
   #login-screen .field-group{ margin-bottom:22px !important; }
