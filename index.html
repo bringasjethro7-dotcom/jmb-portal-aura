@@ -37,6 +37,7 @@
     window.__hcaptcha_passthrough = true;
   }
 </script>
+<script>window.__AURA_DASH__=true;</script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@500;600;700;800&family=Poppins:wght@700;800&family=Archivo+Black&display=swap');
   :root {
@@ -31793,7 +31794,7 @@ var PORTAL_BUILD='2026-08-25-A';
 .tab-btn svg, .navgroup svg{ transition:none !important; }
 .tabs, .tabs:hover, .navbar, .navbar:hover{ transform:none !important; animation:none !important; }
 </style>
-<script>
+<script type="text/plain" data-disabled="jmb-v2 sidebar painter — replaced by aura-dash">
 /* ══════════════════════════════════════════════════════════════════════════════
    JMB v2 — lab values on the real page. Gradient 220deg #262262 -> #f16623,
    width 226, radius 11, inset 0, bleed tab.
@@ -32401,6 +32402,7 @@ var PORTAL_BUILD='2026-08-25-A';
   }
   function imp(el,p,v){ el && el.style.setProperty(p,v,'important'); }
   function tint(){
+    if(window.__AURA_DASH__) return;   /* Aura: the hero keeps its own dark brand surface */
     var hero=document.getElementById('dashboard-hero'); if(!hero) return false;
     var p=palette();
     /* layered sky: a soft radial glow (the sun/moon's light) over the horizon gradient */
@@ -32684,6 +32686,7 @@ var PORTAL_BUILD='2026-08-25-A';
      Typography on the gradient instead of a white card on the photo. Colour
      follows the time-of-day palette so it never fights the background. */
   function clock(){
+    if(window.__AURA_DASH__) return true;   /* Aura styles the clock card in CSS */
     var c=document.getElementById('hero-clock'); if(!c) return false;
     var aside=c.closest('.hero-aside')||c.parentElement;
     var hero=document.getElementById('dashboard-hero');
@@ -34380,6 +34383,25 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
 }
 </style>
 <script>
+/* AURA · guard — older theme scripts paint light backgrounds INLINE with !important (hero sky, purple sidebar,
+   white canvas). CSS can't beat inline !important, so once signed in we strip those inline paint props and keep
+   stripping whenever they get re-applied. Layout props are left alone. */
+(function(){
+  var PAINT=['background','background-color','background-image','backdrop-filter','-webkit-backdrop-filter','--text-1','--text-2','--text-3','--jmb-muted','--jmb-body'];
+  var LIGHT=/rgb\(255, 255, 255\)|rgba\(255, 255, 255|#fff|#f[0-9a-f]{5}\b|rgb\(2[2-5][0-9], 2[2-5][0-9], 2[2-5][0-9]\)|linear-gradient\(220deg, rgb\(38, 34, 98\)|rgb\(255, 2[0-4][0-9], /i;
+  var SHELL='body,#dashboard-screen,.main-content,#dashboard-screen .tabs,#dashboard-hero,#dashboard-hero .hero-aside,#dashboard-screen > header,.hstat';
+  function strip(el){ var st=el.getAttribute('style'); if(!st) return; if(!LIGHT.test(st) && !/backdrop-filter/.test(st)) return;
+    PAINT.forEach(function(p){ el.style.removeProperty(p); }); }
+  function sweep(){ if(!document.body.classList.contains('app-authed')) return;
+    document.querySelectorAll(SHELL).forEach(strip);
+    document.querySelectorAll('#dashboard-screen [style*="important"]').forEach(function(el){ var st=el.getAttribute('style')||''; if(LIGHT.test(st)) strip(el); });
+    var hw=document.querySelector('#dashboard-hero .hero-weather'); if(hw && hw.style.display!=='none') hw.style.display='none'; }
+  var pending=false;
+  function schedule(){ if(pending) return; pending=true; requestAnimationFrame(function(){ pending=false; sweep(); }); }
+  try{ new MutationObserver(function(muts){ for(var i=0;i<muts.length;i++){ var m=muts[i]; if(m.type==='attributes'&&m.target===document.body&&m.attributeName==='class'){ schedule(); return; } if(m.type==='attributes'&&m.attributeName==='style'){ if(document.body.classList.contains('app-authed')) { schedule(); return; } } if(m.type==='childList'){ schedule(); return; } } })
+    .observe(document.documentElement,{attributes:true,attributeFilter:['style','class'],childList:true,subtree:true}); }catch(e){}
+  document.addEventListener('DOMContentLoaded',sweep); setInterval(sweep,1500); sweep();
+})();
 /* AURA · ambient strands behind the workspace (subtle, no filters, pauses when not signed in) */
 (function(){
   var cv=document.getElementById('aura-bg'); if(!cv) return;
