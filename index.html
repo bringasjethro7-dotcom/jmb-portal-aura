@@ -32039,6 +32039,7 @@ var PORTAL_BUILD='2026-08-25-A';
    writes into #hero-name, #hero-scgraph and friends keeps updating live.
    ══════════════════════════════════════════════════════════════════════════════ */
 (function(){
+  if(window.__AURA_DASH__) return;   /* Aura: static hero (name · role · stats), no sliding deck */
   var SLIDE_MS=6000, built=false;
   function el(t,css,html){var n=document.createElement(t);if(css)n.style.cssText=css;if(html!=null)n.innerHTML=html;return n;}
   function txt(id){var n=document.getElementById(id);return n?n.textContent.trim():'';}
@@ -34199,7 +34200,9 @@ html body.app-authed{
   color-scheme:dark;
 }
 html body.app-authed, html body.light.app-authed{ background:var(--au-bg) !important; color:var(--au-ink); }
-html body.app-authed .main-content, html body.light.app-authed .main-content{ background:transparent !important; }
+html body.app-authed #dashboard-screen, html body.app-authed #dashboard-screen .main-content,
+html body.light.app-authed #dashboard-screen, html body.light.app-authed #dashboard-screen .main-content{ background:transparent !important; background-color:transparent !important; background-image:none !important; }
+html body.app-authed #dashboard-screen .main-content{ padding:26px 34px 60px !important; max-width:1240px !important; margin:0 auto !important; }
 #aura-bg{ display:none; position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
 html body.app-authed #aura-bg{ display:block; }
 html body.app-authed #dashboard-screen{ position:relative; z-index:1; }
@@ -34237,11 +34240,24 @@ html body.app-authed .section-eyebrow::before{ background:linear-gradient(90deg,
   html body.app-authed #dashboard-screen .tabs .btn-logout, html body.app-authed #dashboard-screen .tabs button.side-logout{
     background:rgba(255,255,255,.05) !important; border:1px solid var(--au-line2) !important; color:var(--au-ink2) !important; border-radius:999px !important;
   }
+  /* footer chip pinned to the bottom of the rail */
+  html body.app-authed #dashboard-screen .tabs{ display:flex !important; flex-direction:column !important; }
+  html body.app-authed .au-side-foot{ margin-top:auto; display:flex; align-items:center; gap:10px; padding:14px 6px 4px; border-top:1px solid var(--au-line); }
+  html body.app-authed .au-sf-av{ width:36px; height:36px; border-radius:50%; flex:none; display:grid; place-items:center; font-weight:800; font-size:12.5px; color:#fff; overflow:hidden;
+    background:linear-gradient(135deg,var(--au-o2),var(--au-od)); box-shadow:0 0 0 2px var(--au-s2), 0 0 0 3px rgba(255,140,60,.35); }
+  html body.app-authed .au-sf-av img{ width:100%; height:100%; object-fit:cover; }
+  html body.app-authed .au-sf-tx{ min-width:0; flex:1; display:flex; flex-direction:column; line-height:1.2; }
+  html body.app-authed .au-sf-tx b{ font-size:13px; color:var(--au-ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  html body.app-authed .au-sf-tx span{ font-size:11px; color:var(--au-ink3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  html body.app-authed .au-sf-out{ width:34px; height:34px; border-radius:999px; flex:none; display:grid; place-items:center; cursor:pointer;
+    background:rgba(255,255,255,.05); border:1px solid var(--au-line2); color:var(--au-ink2); transition:.15s; }
+  html body.app-authed .au-sf-out:hover{ border-color:rgba(255,130,50,.7); color:var(--au-ot); background:rgba(255,107,26,.1); }
 }
+@media(max-width:999px){ html body.app-authed .au-side-foot{ display:none !important; } }
 
 /* ── header ─────────────────────────────────────────────────────────── */
 html body.app-authed #dashboard-screen > header{
-  background:rgba(10,10,16,.72) !important; border-bottom:1px solid var(--au-line) !important; box-shadow:none !important;
+  background:transparent !important; border-bottom:none !important; box-shadow:none !important; padding:14px 34px !important;
   -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
 }
 html body.app-authed .global-search-wrap{ background:rgba(255,255,255,.05) !important; border:1px solid var(--au-line) !important; color:var(--au-ink3) !important; border-radius:999px !important; padding:9px 14px !important; }
@@ -34271,6 +34287,15 @@ html body.app-authed #dashboard-hero::before{ content:''; position:absolute; ins
              radial-gradient(40% 70% at 6% 100%, rgba(139,92,246,.22) 0%, transparent 60%),
              radial-gradient(30% 50% at 60% 0%, rgba(20,184,166,.12) 0%, transparent 60%); }
 html body.app-authed #dashboard-hero > *{ position:relative; z-index:1; }
+/* layout: identity left · live stats middle · clock card right (no sliding deck) */
+html body.app-authed #dashboard-hero{ display:grid !important; grid-template-columns:minmax(0,1.25fr) auto !important; grid-template-areas:"info aside" "stats aside" !important; align-items:center !important; gap:18px 26px !important; padding:34px 36px 30px !important; min-height:0 !important; }
+html body.app-authed #dashboard-hero .hero-info{ grid-area:info; width:auto !important; flex:none !important; }
+html body.app-authed #dashboard-hero .hero-stats, html body.app-authed #hero-stats{ grid-area:stats; display:flex !important; gap:12px !important; flex-wrap:wrap !important; justify-content:flex-start !important; padding:0 !important; }
+html body.app-authed #dashboard-hero .hero-aside{ grid-area:aside; display:flex !important; align-self:center !important; min-width:250px; padding:18px 22px 20px !important; margin:0 !important; }
+html body.app-authed #dashboard-hero #hero-photo-wrap{ display:none !important; }
+html body.app-authed #dashboard-hero #jmb-share{ position:absolute !important; top:18px !important; right:18px !important; z-index:3 !important; background:rgba(255,255,255,.06) !important; border:1px solid var(--au-line2) !important; color:var(--au-ink2) !important; border-radius:999px !important; }
+@media(max-width:1150px){ html body.app-authed #dashboard-hero .hero-stats{ display:flex !important; } }
+@media(max-width:899px){ html body.app-authed #dashboard-hero{ grid-template-columns:1fr !important; grid-template-areas:"info" "stats" "aside" !important; padding:24px 22px !important; } html body.app-authed #dashboard-hero .hero-aside{ display:flex !important; } }
 html body.app-authed #dashboard-hero .hero-greet{ font-size:14px !important; letter-spacing:.18em !important; text-transform:uppercase !important; color:var(--au-ink3) !important; font-weight:800 !important; margin-bottom:6px !important; }
 html body.app-authed #dashboard-hero .hero-name{
   font-size:clamp(30px,3vw,44px) !important; font-weight:900 !important; letter-spacing:-.03em !important; line-height:1.05 !important; padding-bottom:.1em;
@@ -34401,6 +34426,22 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
   try{ new MutationObserver(function(muts){ for(var i=0;i<muts.length;i++){ var m=muts[i]; if(m.type==='attributes'&&m.target===document.body&&m.attributeName==='class'){ schedule(); return; } if(m.type==='attributes'&&m.attributeName==='style'){ if(document.body.classList.contains('app-authed')) { schedule(); return; } } if(m.type==='childList'){ schedule(); return; } } })
     .observe(document.documentElement,{attributes:true,attributeFilter:['style','class'],childList:true,subtree:true}); }catch(e){}
   document.addEventListener('DOMContentLoaded',sweep); setInterval(sweep,1500); sweep();
+
+  /* sidebar footer: who's signed in + Sign out (the retired painter used to draw this) */
+  function foot(){
+    if(!document.body.classList.contains('app-authed')) return;
+    var rail=document.querySelector('#dashboard-screen .tabs'); if(!rail) return;
+    var f=rail.querySelector('.au-side-foot');
+    if(!f){ f=document.createElement('div'); f.className='au-side-foot';
+      f.innerHTML='<div class="au-sf-av" id="au-sf-av">--</div><div class="au-sf-tx"><b id="au-sf-nm"></b><span id="au-sf-sb">Contractor</span></div><button type="button" class="au-sf-out" title="Sign out" aria-label="Sign out" onclick="try{doLogout()}catch(e){}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>';
+      rail.appendChild(f); }
+    var nm=(document.getElementById('header-emp-name')||{}).textContent||''; var role=(document.getElementById('header-role')||{}).textContent||'';
+    var av=document.getElementById('header-avatar');
+    var n=document.getElementById('au-sf-nm'); if(n && n.textContent!==nm) n.textContent=nm;
+    var sb=document.getElementById('au-sf-sb'); var want=role.trim()||'Contractor'; if(sb && sb.textContent!==want) sb.textContent=want;
+    var a=document.getElementById('au-sf-av'); if(a && av){ if(av.querySelector('img')){ if(!a.querySelector('img')) a.innerHTML='<img src="'+av.querySelector('img').src+'" alt="">'; } else if(a.textContent!==av.textContent) a.textContent=av.textContent; }
+  }
+  setInterval(foot,1200); foot();
 })();
 /* AURA · ambient strands behind the workspace (subtle, no filters, pauses when not signed in) */
 (function(){
