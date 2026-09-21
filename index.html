@@ -34507,10 +34507,10 @@ html body.app-authed [style*="border:1px solid #e8eaef"], html body.app-authed [
 }
 
 /* ── ORA · centre orb that dissolves into particles, possesses the border, and reforms ── */
-html body.app-authed #dashboard-hero.au-has-ora{ grid-template-columns:minmax(0,1fr) 150px 272px !important; grid-template-areas:"info ora aside" "stats ora aside" !important; overflow:visible !important; }
-html body.app-authed #dashboard-hero .au-ora{ grid-area:ora; position:relative; display:flex; align-items:center; justify-content:center; z-index:3; min-height:120px; }
+html body.app-authed #dashboard-hero.au-has-ora{ grid-template-columns:150px minmax(0,1fr) 272px !important; grid-template-areas:"ora info aside" "ora stats aside" !important; gap:14px 24px !important; overflow:visible !important; }
+html body.app-authed #dashboard-hero .au-ora{ grid-area:ora; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; z-index:3; min-height:150px; align-self:stretch; }
 html body.app-authed #dashboard-hero .au-ora #sprout-fab{
-  position:relative !important; inset:auto !important; margin:0 !important; display:block !important; width:76px !important; height:76px !important; z-index:3 !important; cursor:pointer;
+  position:relative !important; inset:auto !important; margin:0 !important; display:block !important; width:104px !important; height:104px !important; z-index:3 !important; cursor:pointer;
   box-shadow:0 0 0 1px rgba(255,255,255,.1) inset, 0 0 30px rgba(51,230,255,.7), 0 0 60px rgba(122,92,255,.5) !important;
   transition:opacity .4s ease, scale .5s cubic-bezier(.2,.8,.2,1); }
 html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-gone{ opacity:0; scale:1.12; pointer-events:none; transition:opacity 1.9s cubic-bezier(.4,0,.6,1), scale 2.4s ease-in-out; }
@@ -34531,13 +34531,13 @@ html body.app-authed #dashboard-hero .au-ora-fx{ position:absolute; inset:-30px;
 html body.app-authed #dashboard-hero{ transition:box-shadow .6s ease; }
 html body.app-authed #dashboard-hero.ora-charged{ box-shadow:0 18px 36px -24px rgba(0,0,0,.85), 0 0 34px -2px rgba(51,230,255,.55), 0 0 70px -6px rgba(122,92,255,.5) !important; }
 html body.app-authed #dashboard-hero.ora-charged::after{ padding:3px !important; animation-duration:2.2s !important; }
-html body.app-authed #dashboard-hero .au-ora-ask{ position:absolute; left:50%; bottom:-2px; transform:translateX(-50%); font-size:10px; font-weight:800; letter-spacing:.2em; text-transform:uppercase; color:#bff0ff; opacity:.8; cursor:pointer; user-select:none; white-space:nowrap; }
+html body.app-authed #dashboard-hero .au-ora-ask{ position:static; transform:none; margin-top:2px; font-size:10px; font-weight:800; letter-spacing:.2em; text-transform:uppercase; color:#bff0ff; opacity:.8; cursor:pointer; user-select:none; white-space:nowrap; }
 @media(max-width:1179px){ html body.app-authed #dashboard-hero .au-ora{ display:none !important; } }
 @media(max-width:899px){ html body.app-authed #dashboard-hero.au-has-ora{ grid-template-columns:1fr !important; grid-template-areas:"info" "stats" "aside" "share" !important; } }
 /* hero when the messages rail is open — tighter identity block, 3-up chips, name never clips */
 html body.app-authed #dashboard-hero .hero-name{ white-space:normal !important; overflow:visible !important; text-overflow:clip !important; max-width:none !important; }
 html body.app-authed.au-dock #dashboard-hero{ padding:26px 28px 24px !important; gap:14px 18px !important; }
-html body.app-authed.au-dock #dashboard-hero.au-has-ora{ grid-template-columns:minmax(0,1fr) 120px 236px !important; }
+html body.app-authed.au-dock #dashboard-hero.au-has-ora{ grid-template-columns:128px minmax(0,1fr) 236px !important; gap:12px 20px !important; }
 
 html body.app-authed.au-dock #dashboard-hero .hero-name{ font-size:clamp(26px,2.3vw,36px) !important; }
 html body.app-authed.au-dock #dashboard-hero .hero-info{ padding-right:0 !important; }
@@ -34549,7 +34549,7 @@ html body.app-authed.au-dock .hstat-v{ font-size:21px !important; }
 html body.app-authed.au-dock .hstat-l{ font-size:9.5px !important; letter-spacing:.06em !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
 html body.app-authed.au-dock #dashboard-hero .hero-aside{ width:236px !important; padding:16px 16px 18px !important; margin:30px 0 0 !important; }
 html body.app-authed.au-dock #dashboard-hero .hero-aside .hero-clock{ font-size:38px !important; }
-html body.app-authed.au-dock #dashboard-hero .au-ora #sprout-fab{ width:58px !important; height:58px !important; }
+html body.app-authed.au-dock #dashboard-hero .au-ora #sprout-fab{ width:92px !important; height:92px !important; }
 html body.app-authed.au-dock #dashboard-screen .main-content{ padding:22px 26px 60px !important; }
 
 /* career graph parked for now (Jeth: will find it a better home) */
@@ -34574,12 +34574,6 @@ html body.app-authed #sprout-fab::before, html body.app-authed #sprout-fab::afte
 html body.app-authed #sprout-fab:hover{ transform:scale(1.08) !important; }
 html body.app-authed #sprout-fab.sp-alert{ box-shadow:0 0 26px rgba(255,138,61,.75), 0 0 40px rgba(255,107,26,.5), inset 0 0 16px rgba(255,255,255,.3) !important; }
 html body.app-authed #dashboard-hero .au-ora-ask{ color:#bff0ff; }
-html body.app-authed #dashboard-hero .au-ora-mic{ position:absolute; left:50%; bottom:-24px; transform:translateX(-50%); display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:999px; border:1px solid rgba(191,240,255,.18); background:rgba(15,14,21,.7); color:#8fb9c9; font:800 9px/1 inherit; letter-spacing:.16em; text-transform:uppercase; cursor:pointer; white-space:nowrap; z-index:6; transition:color .25s, border-color .25s, box-shadow .25s; }
-html body.app-authed #dashboard-hero .au-ora-mic .au-mic-dot{ width:6px; height:6px; border-radius:50%; background:#4a5a66; transition:background .25s, box-shadow .25s; }
-html body.app-authed #dashboard-hero .au-ora-mic:hover{ color:#dff8ff; border-color:rgba(51,230,255,.45); }
-html body.app-authed #dashboard-hero .au-ora-mic.on{ color:#dff8ff; border-color:rgba(51,230,255,.55); box-shadow:0 0 14px -4px rgba(51,230,255,.7); }
-html body.app-authed #dashboard-hero .au-ora-mic.on .au-mic-dot{ background:#33e6ff; box-shadow:0 0 8px #33e6ff; animation:au-micpulse 1.4s ease-in-out infinite; }
-@keyframes au-micpulse{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
 /* Ora IS the hero card's border: a slow flowing aurora ring (mask trick — no filters, no blur layers) */
 html body.app-authed #dashboard-hero{ border-color:transparent !important; cursor:pointer;
   box-shadow:0 18px 36px -24px rgba(0,0,0,.85), 0 0 28px -6px rgba(51,230,255,.28), 0 0 44px -10px rgba(122,92,255,.28) !important; }
@@ -34707,7 +34701,6 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
       if (hero && !hero.__auClick){ hero.__auClick=true; hero.addEventListener('click', function(e){ if (e.target.closest('button,a,input,select,textarea,.hero-aside,#jmb-share,.au-ora')) return; try{ sproutToggle(); }catch(x){} }); }
       if (hero && fab && !hero.querySelector('.au-ora')){ var wrap=document.createElement('div'); wrap.className='au-ora'; wrap.appendChild(fab);
         var ask=document.createElement('div'); ask.className='au-ora-ask'; ask.textContent='Ask Ora'; ask.onclick=function(){ try{ sproutToggle(); }catch(e){} }; wrap.appendChild(ask);
-        auWake.mount(wrap, hero);
         fab.title='Ask Ora'; fab.classList.add('au-back'); hero.appendChild(wrap); hero.classList.add('au-has-ora'); auOraFx(hero, wrap, fab); }
     } else {
       if (document.body.classList.contains('au-dock')){ document.body.classList.remove('au-dock','au-dock-hidden'); try{ _cm(); }catch(e){} dockOpened=false; }
@@ -34716,34 +34709,6 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
   }
 
   /* ── ORA particle life-cycle: idle orb → dissolve to the borders → border charged → reform ── */
-  /* ── "Hey Ora" wake word · opt-in, Web Speech API (Chrome/Edge). Mic stays off until the VA switches it on. ── */
-  var auWake=(function(){
-    var SR=window.SpeechRecognition||window.webkitSpeechRecognition, rec=null, on=false, btn=null, heroEl=null, restartT=null;
-    var WAKE=/\b(hey|hi|hello|ok|okay)[,\s]+(ora|aura|aurora|laura|nora|ara)\b/i;
-    function say(t){ try{ if(typeof showToast==='function') showToast(t); }catch(e){} }
-    function wakeUp(rest){
-      try{ heroEl.classList.add('ora-alert'); setTimeout(function(){ heroEl.classList.remove('ora-alert'); },1600); }catch(e){}
-      try{ var pnl=document.getElementById('sprout-panel'); if(pnl && !pnl.classList.contains('open')) sproutToggle(); }catch(e){}
-      var inp=document.getElementById('sp-in'); if(!inp) return;
-      rest=(rest||'').trim();
-      if(rest.length>2){ inp.value=rest; try{ sproutSend(); }catch(e){} } else { inp.value=''; inp.placeholder='Listening… what do you need?'; inp.focus(); }
-    }
-    function handle(ev){
-      for(var i=ev.resultIndex;i<ev.results.length;i++){ var res=ev.results[i]; if(!res.isFinal) continue; var txt=res[0].transcript||''; var m=txt.match(WAKE);
-        if(m){ wakeUp(txt.slice(m.index+m[0].length)); } }
-    }
-    function start(){ if(!SR||rec) return; rec=new SR(); rec.continuous=true; rec.interimResults=false; rec.lang='en-US';
-      rec.onresult=handle; rec.onerror=function(e){ if(e.error==='not-allowed'||e.error==='service-not-allowed'){ say('Mic blocked — allow the microphone for this site to use "Hey Ora".'); stop(true); } };
-      rec.onend=function(){ if(on){ clearTimeout(restartT); restartT=setTimeout(function(){ try{ rec.start(); }catch(e){} },300); } };
-      try{ rec.start(); }catch(e){} }
-    function stop(silent){ on=false; clearTimeout(restartT); if(rec){ try{ rec.onend=null; rec.stop(); }catch(e){} rec=null; } paint(); try{ localStorage.setItem('au_wake','0'); }catch(e){} if(!silent) say('"Hey Ora" is off.'); }
-    function go(){ if(!SR){ say('Voice wake-up needs Chrome or Edge.'); return; } on=true; paint(); try{ localStorage.setItem('au_wake','1'); }catch(e){} start(); say('Listening for "Hey Ora"…'); }
-    function paint(){ if(!btn) return; btn.classList.toggle('on',on); btn.title=on?'Listening for "Hey Ora" — click to turn off':'Turn on "Hey Ora" voice wake-up (uses your mic)'; }
-    function mount(wrap, hero){ if(btn) return; heroEl=hero; btn=document.createElement('button'); btn.type='button'; btn.className='au-ora-mic'; btn.innerHTML='<span class="au-mic-dot"></span>Hey Ora';
-      btn.onclick=function(e){ e.stopPropagation(); on?stop():go(); }; wrap.appendChild(btn); paint();
-      var want=false; try{ want=localStorage.getItem('au_wake')==='1'; }catch(e){} if(want && SR){ on=true; paint(); start(); } }
-    return { mount:mount };
-  })();
   function auOraFx(hero, wrap, fab){
     if (hero.__auFx) return; hero.__auFx=true;
     var cv=document.createElement('canvas'); cv.className='au-ora-fx'; hero.appendChild(cv);
@@ -34844,6 +34809,37 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
   init(); draw(); addEventListener('resize',init);
 })();
 </script>
+
+<style id="aura-hero-remodel">
+/* ── HERO · details remodel: identity stacked tight, stats as one clean strip under a hairline ── */
+html body.app-authed #dashboard-hero .hero-info{ display:flex !important; flex-direction:column !important; justify-content:flex-end !important; gap:2px !important; align-self:end !important; }
+html body.app-authed #dashboard-hero .hero-greet{ font-size:12px !important; letter-spacing:.22em !important; margin-bottom:4px !important; opacity:.85; }
+html body.app-authed #dashboard-hero .hero-role{ font-size:14px !important; color:var(--au-ink2) !important; margin-top:2px !important; }
+html body.app-authed #dashboard-hero .hero-id{ font-size:11px !important; letter-spacing:.14em !important; text-transform:uppercase !important; color:var(--au-ink3) !important; font-weight:700 !important; margin-top:6px !important; }
+html body.app-authed #dashboard-hero .hero-id:empty{ display:none !important; }
+html body.app-authed #dashboard-hero .hero-stats, html body.app-authed.au-dock #dashboard-hero .hero-stats{
+  display:flex !important; flex-wrap:nowrap !important; gap:0 !important; align-self:start !important;
+  border-top:1px solid rgba(255,255,255,.08) !important; padding:14px 0 0 !important; margin-top:4px !important; }
+html body.app-authed .hstat, html body.app-authed.au-dock .hstat{
+  flex:1 1 0 !important; min-width:0 !important; display:flex !important; flex-direction:row !important; align-items:center !important; gap:12px !important;
+  background:transparent !important; border:0 !important; border-radius:0 !important; padding:2px 18px 2px 0 !important; margin:0 14px 0 0 !important;
+  border-right:1px solid rgba(255,255,255,.08) !important; box-shadow:none !important; }
+html body.app-authed .hstat:last-child{ border-right:0 !important; margin-right:0 !important; padding-right:0 !important; }
+html body.app-authed .hstat-ic, html body.app-authed.au-dock .hstat-ic{ width:38px !important; height:38px !important; min-width:38px !important; border-radius:12px !important; display:flex !important; align-items:center !important; justify-content:center !important; }
+html body.app-authed .hstat-ic svg, html body.app-authed.au-dock .hstat-ic svg{ width:17px !important; height:17px !important; }
+html body.app-authed .hstat-tx{ display:flex !important; flex-direction:column !important; gap:2px !important; min-width:0 !important; }
+html body.app-authed .hstat-v, html body.app-authed.au-dock .hstat-v{ font-size:22px !important; line-height:1.05 !important; font-weight:800 !important; letter-spacing:-.02em !important; }
+html body.app-authed .hstat-l, html body.app-authed.au-dock .hstat-l{ font-size:9.5px !important; letter-spacing:.14em !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
+html body.app-authed #dashboard-hero .hero-aside, html body.app-authed.au-dock #dashboard-hero .hero-aside{ margin:0 !important; align-self:center !important; }
+html body.app-authed #dashboard-hero #jmb-share{ top:14px !important; right:16px !important; }
+/* Share month sits top-right of the identity column, clear of the clock card */
+html body.app-authed #dashboard-hero.au-has-ora #jmb-share{ top:22px !important; right:332px !important; }
+html body.app-authed.au-dock #dashboard-hero.au-has-ora #jmb-share{ top:18px !important; right:284px !important; }
+@media(max-width:899px){
+  html body.app-authed #dashboard-hero .hero-stats{ flex-wrap:wrap !important; }
+  html body.app-authed .hstat{ flex:1 1 45% !important; border-right:0 !important; padding:8px 0 !important; margin:0 !important; }
+}
+</style>
 
 </body>
 </html>
