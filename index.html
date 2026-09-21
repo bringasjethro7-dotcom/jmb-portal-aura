@@ -34506,39 +34506,30 @@ html body.app-authed [style*="border:1px solid #e8eaef"], html body.app-authed [
   html body.app-authed.au-dock #sprout-panel{ right:392px !important; bottom:auto !important; top:92px !important; max-height:min(72vh,640px) !important; }
 }
 
-/* ── ORA lives ON the hero card: bottom-centre, straddling the border, tethered to the aurora ring ── */
-html body.app-authed #dashboard-hero.au-has-ora{ overflow:visible !important; padding-bottom:40px !important; margin-bottom:46px !important; }
+/* ── ORA · liquid light travelling around the hero card's border, dissolving behind her ── */
+html body.app-authed #dashboard-hero.au-has-ora{ overflow:visible !important; margin-bottom:36px !important; }
 html body.app-authed #dashboard-hero::before{ border-radius:inherit; }
-html body.app-authed #dashboard-hero .au-ora{ position:absolute; left:50%; bottom:-38px; transform:translateX(-50%); z-index:4; display:flex; flex-direction:column; align-items:center; gap:6px; width:120px; }
-/* the "pool" of light where she sits on the border — the ring seems to flow into her */
-html body.app-authed #dashboard-hero .au-ora::before{ content:''; position:absolute; left:50%; top:22px; width:260px; height:60px; transform:translateX(-50%); z-index:-1; pointer-events:none; border-radius:50%;
-  background:radial-gradient(50% 60% at 50% 55%, rgba(51,230,255,.45) 0%, rgba(122,92,255,.28) 40%, rgba(122,92,255,0) 72%); animation:au-pool 4.6s ease-in-out infinite; }
-@keyframes au-pool{ 0%,100%{ transform:translateX(-50%) scaleX(1); opacity:.75; } 50%{ transform:translateX(-50%) scaleX(1.18); opacity:1; } }
-html body.app-authed #dashboard-hero .au-ora #sprout-fab{
-  position:relative !important; inset:auto !important; display:block !important; z-index:3 !important; width:66px !important; height:66px !important;
-  box-shadow:0 0 0 1px rgba(255,255,255,.08) inset, 0 0 26px rgba(51,230,255,.6), 0 0 44px rgba(122,92,255,.45), 0 14px 30px -10px rgba(0,0,0,.8) !important; }
-html body.app-authed #dashboard-hero .au-ora-ask{ font-size:10.5px; font-weight:800; letter-spacing:.2em; text-transform:uppercase; color:#bff0ff; cursor:pointer; user-select:none; text-shadow:0 0 12px rgba(51,230,255,.6); }
-
-/* ── ORA · alive & connected: the ring loops around her (cradle), sparks orbit, a pulse ripples out ── */
-html body.app-authed #dashboard-hero .au-ora .au-ora-cradle{ position:absolute; left:50%; top:33px; width:104px; height:104px; transform:translate(-50%,-50%); border-radius:50%; padding:2px; z-index:0; pointer-events:none;
-  background:conic-gradient(from calc(90deg + var(--au-ang)), var(--ora1), var(--ora2) 35%, var(--ora3) 62%, var(--ora1));
-  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude;
-  animation:au-hue 7s linear infinite; box-shadow:0 0 18px rgba(51,230,255,.25); }
-html body.app-authed #dashboard-hero .au-ora .au-ora-cradle::after{ content:''; position:absolute; inset:-14px; border-radius:50%;
-  background:radial-gradient(circle, rgba(51,230,255,.22) 0%, rgba(122,92,255,.14) 45%, rgba(122,92,255,0) 72%); }
-html body.app-authed #dashboard-hero .au-ora .au-ora-orbit{ position:absolute; left:50%; top:33px; width:118px; height:118px; margin:-59px 0 0 -59px; pointer-events:none; z-index:2; animation:au-orbit 6.5s linear infinite; }
-html body.app-authed #dashboard-hero .au-ora .au-ora-orbit.o2{ width:92px; height:92px; margin:-46px 0 0 -46px; animation-duration:4.2s; animation-direction:reverse; }
-html body.app-authed #dashboard-hero .au-ora .au-ora-orbit i{ position:absolute; left:50%; top:-3px; width:6px; height:6px; margin-left:-3px; border-radius:50%; background:#eaffff; box-shadow:0 0 10px 2px rgba(51,230,255,.9); }
-html body.app-authed #dashboard-hero .au-ora .au-ora-orbit.o2 i{ width:4px; height:4px; background:#e6dcff; box-shadow:0 0 8px 2px rgba(122,92,255,.9); }
-@keyframes au-orbit{ to{ transform:rotate(360deg); } }
-html body.app-authed #dashboard-hero .au-ora .au-ora-pulse{ position:absolute; left:50%; top:33px; width:66px; height:66px; margin:-33px 0 0 -33px; border-radius:50%; border:1.5px solid rgba(51,230,255,.7); pointer-events:none; z-index:1; animation:au-ripple 3.2s ease-out infinite; }
-@keyframes au-ripple{ 0%{ transform:scale(.9); opacity:.8; } 100%{ transform:scale(2.6); opacity:0; } }
-html body.app-authed #dashboard-hero .au-ora #sprout-fab{ animation:au-morph 7s ease-in-out infinite, au-breathe 4.6s ease-in-out infinite, au-float 5.2s ease-in-out infinite !important; }
-@keyframes au-float{ 0%,100%{ translate:0 0; } 50%{ translate:0 -4px; } }
-
-/* the ring's brightest point starts at the bottom, where she sits */
-html body.app-authed #dashboard-hero.au-has-ora::after{ background:conic-gradient(from calc(180deg + var(--au-ang)), var(--ora1), var(--ora2) 35%, var(--ora3) 62%, var(--ora1)) !important; }
-@media(max-width:1179px){ html body.app-authed #dashboard-hero .au-ora{ display:none !important; } html body.app-authed #dashboard-hero.au-has-ora{ padding-bottom:24px !important; margin-bottom:0 !important; } }
+html body.app-authed #dashboard-hero .au-ora{ position:absolute; inset:0; z-index:4; pointer-events:none; border-radius:inherit; }
+/* the path = the card's border line (inset -0 with the card radius); she and her trail ride it */
+html body.app-authed #dashboard-hero .au-ora #sprout-fab,
+html body.app-authed #dashboard-hero .au-ora .au-ora-trail{
+  position:absolute !important; inset:auto !important; left:0 !important; top:0 !important; margin:0 !important; pointer-events:auto;
+  offset-path:inset(0 round 26px); offset-rotate:0deg; offset-distance:0%;
+  animation:au-travel 28s linear infinite, au-morph 6s ease-in-out infinite !important; }
+@keyframes au-travel{ from{ offset-distance:0%; } to{ offset-distance:100%; } }
+html body.app-authed #dashboard-hero .au-ora #sprout-fab{ width:58px !important; height:58px !important; display:block !important; z-index:3 !important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.1) inset, 0 0 24px rgba(51,230,255,.7), 0 0 46px rgba(122,92,255,.5) !important; cursor:pointer; }
+/* dissolving trail: smaller, fainter drops behind her on the same path */
+html body.app-authed #dashboard-hero .au-ora .au-ora-trail{ border-radius:62% 38% 44% 56%/58% 42% 58% 42%; pointer-events:none;
+  background:radial-gradient(circle at 34% 30%, #eaffff, var(--ora1) 40%, var(--ora2) 85%); }
+html body.app-authed #dashboard-hero .au-ora .au-ora-trail.t1{ width:40px; height:40px; opacity:.62; animation-delay:-.55s, 0s !important; box-shadow:0 0 18px rgba(51,230,255,.55); }
+html body.app-authed #dashboard-hero .au-ora .au-ora-trail.t2{ width:28px; height:28px; opacity:.42; animation-delay:-1.05s, -2s !important; box-shadow:0 0 14px rgba(122,92,255,.55); }
+html body.app-authed #dashboard-hero .au-ora .au-ora-trail.t3{ width:16px; height:16px; opacity:.26; animation-delay:-1.5s, -4s !important; box-shadow:0 0 10px rgba(122,92,255,.5); }
+html body.app-authed #dashboard-hero .au-ora .au-ora-trail.t4{ width:9px; height:9px; opacity:.16; animation-delay:-1.9s, -1s !important; }
+/* trail elements need the same anchor: centre on the path */
+html body.app-authed #dashboard-hero .au-ora .au-ora-trail, html body.app-authed #dashboard-hero .au-ora #sprout-fab{ offset-anchor:50% 50%; transform-origin:center; }
+html body.app-authed #dashboard-hero .au-ora #sprout-fab:hover{ animation-play-state:paused, running !important; transform:scale(1.1) !important; }
+@media(max-width:1179px){ html body.app-authed #dashboard-hero .au-ora{ display:none !important; } html body.app-authed #dashboard-hero.au-has-ora{ margin-bottom:0 !important; } }
 /* hero when the messages rail is open — tighter identity block, 3-up chips, name never clips */
 html body.app-authed #dashboard-hero .hero-name{ white-space:normal !important; overflow:visible !important; text-overflow:clip !important; max-width:none !important; }
 html body.app-authed.au-dock #dashboard-hero{ padding:26px 28px 24px !important; gap:14px 18px !important; }
@@ -34704,10 +34695,8 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
       var f=document.getElementById('msg-fab'); if(f) f.classList.toggle('active', !document.body.classList.contains('au-dock-hidden'));
       if (hero && !hero.__auClick){ hero.__auClick=true; hero.addEventListener('click', function(e){ if (e.target.closest('button,a,input,select,textarea,.hero-aside,#jmb-share,.au-ora')) return; try{ sproutToggle(); }catch(x){} }); }
       if (hero && fab && !hero.querySelector('.au-ora')){ var wrap=document.createElement('div'); wrap.className='au-ora'; wrap.appendChild(fab);
-        var ask=document.createElement('div'); ask.className='au-ora-ask'; ask.textContent='Ask Ora'; ask.onclick=function(){ try{ sproutToggle(); }catch(e){} }; wrap.appendChild(ask);
-        ['au-ora-cradle','au-ora-pulse'].forEach(function(c){ var d=document.createElement('span'); d.className=c; wrap.insertBefore(d, wrap.firstChild); });
-        [ 'au-ora-orbit', 'au-ora-orbit o2' ].forEach(function(c){ var d=document.createElement('span'); d.className=c; d.innerHTML='<i></i>'; wrap.appendChild(d); });
-        hero.appendChild(wrap); hero.classList.add('au-has-ora'); }
+        ['t1','t2','t3','t4'].forEach(function(c){ var d=document.createElement('span'); d.className='au-ora-trail '+c; wrap.appendChild(d); });
+        fab.title='Ask Ora'; hero.appendChild(wrap); hero.classList.add('au-has-ora'); }
     } else {
       if (document.body.classList.contains('au-dock')){ document.body.classList.remove('au-dock','au-dock-hidden'); try{ _cm(); }catch(e){} dockOpened=false; }
       if (fab && hero && hero.querySelector('.au-ora')){ document.body.appendChild(fab); hero.querySelector('.au-ora').remove(); hero.classList.remove('au-has-ora'); }
