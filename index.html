@@ -34498,20 +34498,25 @@ html body.app-authed [style*="border:1px solid #e8eaef"], html body.app-authed [
   html body.app-authed.au-dock #sprout-panel{ right:392px !important; bottom:auto !important; top:92px !important; max-height:min(72vh,640px) !important; }
 }
 
-/* ── ORA lives in the hero card (own grid column between identity and the clock) ─── */
-html body.app-authed #dashboard-hero.au-has-ora{ grid-template-columns:minmax(0,1fr) 96px 272px !important; grid-template-areas:"info ora aside" "stats ora aside" !important; }
-html body.app-authed #dashboard-hero .au-ora{ grid-area:ora; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; }
+/* ── ORA lives ON the hero card: bottom-centre, straddling the border, tethered to the aurora ring ── */
+html body.app-authed #dashboard-hero.au-has-ora{ overflow:visible !important; padding-bottom:40px !important; margin-bottom:46px !important; }
+html body.app-authed #dashboard-hero::before{ border-radius:inherit; }
+html body.app-authed #dashboard-hero .au-ora{ position:absolute; left:50%; bottom:-38px; transform:translateX(-50%); z-index:4; display:flex; flex-direction:column; align-items:center; gap:6px; width:120px; }
+/* the "pool" of light where she sits on the border — the ring seems to flow into her */
+html body.app-authed #dashboard-hero .au-ora::before{ content:''; position:absolute; left:50%; top:22px; width:260px; height:60px; transform:translateX(-50%); z-index:-1; pointer-events:none; border-radius:50%;
+  background:radial-gradient(50% 60% at 50% 55%, rgba(51,230,255,.45) 0%, rgba(122,92,255,.28) 40%, rgba(122,92,255,0) 72%); animation:au-pool 4.6s ease-in-out infinite; }
+@keyframes au-pool{ 0%,100%{ transform:translateX(-50%) scaleX(1); opacity:.75; } 50%{ transform:translateX(-50%) scaleX(1.18); opacity:1; } }
 html body.app-authed #dashboard-hero .au-ora #sprout-fab{
-  position:relative !important; inset:auto !important; display:block !important; z-index:3 !important; width:64px !important; height:64px !important;
-  box-shadow:0 0 0 1px rgba(255,255,255,.08) inset, 0 12px 30px -8px rgba(255,120,40,.8) !important; }
-html body.app-authed #dashboard-hero .au-ora-ask{ font-size:10.5px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; color:var(--au-ot); cursor:pointer; user-select:none; }
-@media(max-width:1179px){ html body.app-authed #dashboard-hero .au-ora{ display:none !important; } }
-@media(max-width:899px){ html body.app-authed #dashboard-hero.au-has-ora{ grid-template-columns:1fr !important; grid-template-areas:"info" "stats" "aside" "share" !important; } }
-
+  position:relative !important; inset:auto !important; display:block !important; z-index:3 !important; width:66px !important; height:66px !important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.08) inset, 0 0 26px rgba(51,230,255,.6), 0 0 44px rgba(122,92,255,.45), 0 14px 30px -10px rgba(0,0,0,.8) !important; }
+html body.app-authed #dashboard-hero .au-ora-ask{ font-size:10.5px; font-weight:800; letter-spacing:.2em; text-transform:uppercase; color:#bff0ff; cursor:pointer; user-select:none; text-shadow:0 0 12px rgba(51,230,255,.6); }
+/* the ring's brightest point starts at the bottom, where she sits */
+html body.app-authed #dashboard-hero.au-has-ora::after{ background:conic-gradient(from calc(180deg + var(--au-ang)), var(--ora1), var(--ora2) 35%, var(--ora3) 62%, var(--ora1)) !important; }
+@media(max-width:1179px){ html body.app-authed #dashboard-hero .au-ora{ display:none !important; } html body.app-authed #dashboard-hero.au-has-ora{ padding-bottom:24px !important; margin-bottom:0 !important; } }
 /* hero when the messages rail is open — tighter identity block, 3-up chips, name never clips */
 html body.app-authed #dashboard-hero .hero-name{ white-space:normal !important; overflow:visible !important; text-overflow:clip !important; max-width:none !important; }
 html body.app-authed.au-dock #dashboard-hero{ padding:26px 28px 24px !important; gap:14px 18px !important; }
-html body.app-authed.au-dock #dashboard-hero.au-has-ora{ grid-template-columns:minmax(0,1fr) 84px 236px !important; }
+
 html body.app-authed.au-dock #dashboard-hero .hero-name{ font-size:clamp(26px,2.3vw,36px) !important; }
 html body.app-authed.au-dock #dashboard-hero .hero-info{ padding-right:0 !important; }
 html body.app-authed.au-dock #dashboard-hero .hero-stats{ display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:8px !important; }
