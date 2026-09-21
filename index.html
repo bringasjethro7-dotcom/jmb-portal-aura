@@ -29442,6 +29442,7 @@ function chatBackToList(){
   var OPEN_CLASSES = ['open','show','msg-open'];   // the portal opens modals in all three ways
   function visible(el){
     if(!el) return false;
+    if(el.id==='tab-messages' && document.body.classList.contains('au-dock')) return false;   /* Aura: docked rail is not an overlay */
     if(el.classList && OPEN_CLASSES.some(function(c){ return el.classList.contains(c); })) return true;
     var d = el.style && el.style.display;
     if(d === 'flex' || d === 'block') return true;
@@ -34458,12 +34459,12 @@ html body.app-authed [style*="border:1px solid #e8eaef"], html body.app-authed [
   html body.app-authed.au-dock.au-dock-hidden #tab-messages{ transform:translateX(100%); }
   html body.app-authed.au-dock #tab-messages .chat-layout{
     width:100% !important; height:100% !important; max-width:none !important; margin:0 !important; display:grid !important;
-    grid-template-columns:1fr !important; grid-template-rows:minmax(0,44%) minmax(0,1fr) !important;
+    grid-template-columns:1fr !important; grid-template-rows:auto minmax(0,1fr) !important;
     background:transparent !important; border:none !important; border-radius:0 !important; box-shadow:none !important;
     animation:none !important; transform:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; overflow:hidden !important;
   }
   html body.app-authed.au-dock #tab-messages .chat-layout::before{ display:none !important; }
-  html body.app-authed.au-dock #tab-messages .chat-sidebar{ border-right:none !important; border-bottom:1px solid var(--au-line) !important; min-height:0 !important; height:auto !important; background:transparent !important; }
+  html body.app-authed.au-dock #tab-messages .chat-sidebar{ border-right:none !important; border-bottom:1px solid var(--au-line) !important; min-height:0 !important; height:auto !important; max-height:46% !important; background:transparent !important; }
   html body.app-authed.au-dock #tab-messages .chat-main{ min-height:0 !important; height:auto !important; background:transparent !important; }
   html body.app-authed.au-dock #tab-messages .chat-list-top{ display:flex !important; align-items:center; justify-content:space-between; padding:18px 16px 6px !important; }
   html body.app-authed.au-dock #tab-messages .chat-list-title{ font-size:11px !important; letter-spacing:.24em !important; text-transform:uppercase !important; color:var(--au-ink3) !important; font-weight:800 !important; }
@@ -34514,8 +34515,49 @@ html body.app-authed.au-dock #dashboard-hero .hero-aside .hero-clock{ font-size:
 html body.app-authed.au-dock #dashboard-hero .au-ora #sprout-fab{ width:58px !important; height:58px !important; }
 html body.app-authed.au-dock #dashboard-screen .main-content{ padding:22px 26px 60px !important; }
 
+/* career graph parked for now (Jeth: will find it a better home) */
+html body.app-authed #hero-scgraph{ display:none !important; }
+/* docked rail must never freeze the page */
+html body.app-authed.au-dock.scroll-locked{ position:static !important; overflow:auto !important; top:auto !important; }
 /* rail: one search box is enough */
 html body.app-authed.au-dock #tab-messages .chat-sidebar-header > .chat-search{ display:none !important; }
+
+/* ── ORA · identity (from the launch film): liquid blob, aurora cyan→violet, never a plain circle ── */
+html body.app-authed{ --ora1:#33e6ff; --ora2:#7a5cff; --ora3:#FF6B1A; }
+@property --au-ang{ syntax:'<angle>'; inherits:false; initial-value:0deg; }
+@keyframes au-morph{ 0%,100%{ border-radius:62% 38% 44% 56%/58% 42% 58% 42%; } 33%{ border-radius:42% 58% 62% 38%/58% 40% 60% 42%; } 66%{ border-radius:56% 44% 34% 66%/40% 62% 44% 56%; } }
+@keyframes au-breathe{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.05); } }
+@keyframes au-hue{ to{ --au-ang:360deg; } }
+html body.app-authed #sprout-fab{
+  background:radial-gradient(circle at 34% 30%, #eaffff, var(--ora1) 34%, var(--ora2) 74%, #241a5e 100%) !important;
+  border-radius:62% 38% 44% 56%/58% 42% 58% 42% !important; overflow:visible !important; isolation:auto !important;
+  box-shadow:0 0 22px rgba(51,230,255,.55), 0 0 36px rgba(122,92,255,.45), inset 0 0 16px rgba(255,255,255,.3) !important;
+  animation:au-morph 7s ease-in-out infinite, au-breathe 4.6s ease-in-out infinite !important; }
+html body.app-authed #sprout-fab::before, html body.app-authed #sprout-fab::after, html body.app-authed #sprout-fab .sp-ping{ display:none !important; }
+html body.app-authed #sprout-fab:hover{ transform:scale(1.08) !important; }
+html body.app-authed #sprout-fab.sp-alert{ box-shadow:0 0 26px rgba(255,138,61,.75), 0 0 40px rgba(255,107,26,.5), inset 0 0 16px rgba(255,255,255,.3) !important; }
+html body.app-authed #dashboard-hero .au-ora-ask{ color:#bff0ff; }
+/* Ora IS the hero card's border: a slow flowing aurora ring (mask trick — no filters, no blur layers) */
+html body.app-authed #dashboard-hero{ border-color:transparent !important; cursor:pointer;
+  box-shadow:0 18px 36px -24px rgba(0,0,0,.85), 0 0 28px -6px rgba(51,230,255,.28), 0 0 44px -10px rgba(122,92,255,.28) !important; }
+html body.app-authed #dashboard-hero::after{ content:''; position:absolute; inset:0; border-radius:inherit; padding:2px; pointer-events:none; z-index:2;
+  background:conic-gradient(from var(--au-ang), var(--ora1), var(--ora2) 35%, var(--ora3) 62%, var(--ora1));
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude;
+  animation:au-hue 7s linear infinite; }
+html body.app-authed #dashboard-hero.ora-thinking::after{ animation-duration:1.6s; }
+html body.app-authed #dashboard-hero.ora-alert::after{ background:conic-gradient(from var(--au-ang), #ffb547, #ff6b1a 40%, #ff5f8f 70%, #ffb547); }
+html body.app-authed #dashboard-hero.ora-alert{ box-shadow:0 18px 36px -24px rgba(0,0,0,.85), 0 0 34px -6px rgba(255,138,61,.45) !important; }
+/* Ora's conversation: aurora head, and in dock mode it takes over the right rail */
+html body.app-authed #sprout-panel{ background:#0f0e15 !important; border:1px solid rgba(51,230,255,.22) !important; box-shadow:0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.03) inset !important; }
+html body.app-authed .sp-head{ background:linear-gradient(135deg,#0d1728 0%,#141230 55%,#1c1330 100%) !important; border-bottom:1px solid rgba(51,230,255,.18) !important; }
+html body.app-authed .sp-head::after{ background:linear-gradient(90deg,transparent,var(--ora1),var(--ora2),transparent) !important; }
+html body.app-authed .sp-headorb{ background:radial-gradient(circle at 34% 30%, #eaffff, var(--ora1) 40%, var(--ora2) 90%) !important; border-radius:62% 38% 44% 56%/58% 42% 58% 42% !important; box-shadow:0 0 14px -2px rgba(51,230,255,.8) !important; animation:au-morph 6.5s ease-in-out infinite; overflow:visible !important; }
+html body.app-authed .sp-headorb::before{ display:none !important; }
+html body.app-authed #sp-msgs{ background:radial-gradient(120% 60% at 50% -10%, rgba(51,230,255,.07), transparent 60%) !important; }
+@media(min-width:1180px){
+  html body.app-authed.au-dock #sprout-panel{ position:fixed !important; inset:0 0 0 auto !important; width:372px !important; height:100% !important; max-height:none !important; border-radius:0 !important; z-index:46 !important; border:none !important; border-left:1px solid rgba(51,230,255,.22) !important; }
+}
+
 /* ── runtime-tagged light surfaces / dark text (see guard script) ──── */
 html body.app-authed #dashboard-screen [data-au-light]{ background-color:var(--au-s1) !important; background-image:none !important; border-color:var(--au-line) !important; color:var(--au-ink2); }
 html body.app-authed #dashboard-screen [data-au-light][data-au-ink], html body.app-authed #dashboard-screen [data-au-ink]{ color:var(--au-ink) !important; -webkit-text-fill-color:currentColor; }
@@ -34618,6 +34660,7 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
       if (!dockOpened){ try{ _cm(); }catch(e){} try{ window.openMessages && (function(){ var p=document.getElementById('tab-messages'); if(p&&!p.classList.contains('msg-open')) openMessages(); })(); }catch(e){} dockOpened=true; }
       document.body.style.overflow='';
       var f=document.getElementById('msg-fab'); if(f) f.classList.toggle('active', !document.body.classList.contains('au-dock-hidden'));
+      if (hero && !hero.__auClick){ hero.__auClick=true; hero.addEventListener('click', function(e){ if (e.target.closest('button,a,input,select,textarea,.hero-aside,#jmb-share,.au-ora')) return; try{ sproutToggle(); }catch(x){} }); }
       if (hero && fab && !hero.querySelector('.au-ora')){ var wrap=document.createElement('div'); wrap.className='au-ora'; wrap.appendChild(fab);
         var ask=document.createElement('div'); ask.className='au-ora-ask'; ask.textContent='Ask Ora'; ask.onclick=function(){ try{ sproutToggle(); }catch(e){} }; wrap.appendChild(ask); hero.appendChild(wrap); hero.classList.add('au-has-ora'); }
     } else {
