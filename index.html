@@ -34517,11 +34517,12 @@ html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-gone{ opacity:0; sca
 html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-back{ animation:au-morph-live 4.2s ease-in-out infinite, au-sway 5.8s ease-in-out infinite, au-beat 3.4s ease-in-out infinite, au-reform .7s cubic-bezier(.2,.8,.2,1) both !important; background-size:160% 160% !important; }
 /* livelier liquid: deeper morph, slow lean, inner light drifting — all inside her own shape */
 @keyframes au-morph-live{
-  0%,100%{ border-radius:62% 38% 44% 56%/58% 42% 58% 42%; background-position:30% 25%; }
-  20%{ border-radius:38% 62% 66% 34%/54% 34% 66% 46%; background-position:55% 35%; }
-  40%{ border-radius:58% 42% 32% 68%/38% 64% 36% 62%; background-position:45% 60%; }
-  60%{ border-radius:34% 66% 58% 42%/64% 40% 60% 36%; background-position:25% 50%; }
-  80%{ border-radius:66% 34% 40% 60%/44% 60% 40% 56%; background-position:40% 30%; }
+  0%,100%{ border-radius:62% 38% 44% 56%/58% 42% 58% 42%; background-position:20% 20%, 80% 25%, 75% 80%, 20% 80%, 0 0; }
+  20%{ border-radius:38% 62% 66% 34%/54% 34% 66% 46%; background-position:45% 30%, 60% 70%, 30% 70%, 70% 20%, 0 0; }
+  40%{ border-radius:58% 42% 32% 68%/38% 64% 36% 62%; background-position:70% 60%, 25% 75%, 20% 25%, 80% 60%, 0 0; }
+  60%{ border-radius:34% 66% 58% 42%/64% 40% 60% 36%; background-position:30% 75%, 20% 30%, 70% 30%, 60% 80%, 0 0; }
+  80%{ border-radius:66% 34% 40% 60%/44% 60% 40% 56%; background-position:15% 40%, 75% 45%, 55% 75%, 30% 15%, 0 0; }
+}
 }
 /* heartbeat: she goes translucent on the out-breath and solid again on the in-breath */
 @keyframes au-beat{ 0%,100%{ opacity:1; } 50%{ opacity:.38; } }
@@ -34841,6 +34842,27 @@ html body.app-authed.au-dock #dashboard-hero.au-has-ora #jmb-share{ top:18px !im
   html body.app-authed #dashboard-hero .hero-stats{ flex-wrap:wrap !important; }
   html body.app-authed .hstat{ flex:1 1 45% !important; border-right:0 !important; padding:8px 0 !important; margin:0 !important; }
 }
+</style>
+
+<style id="aura-ora-siri">
+/* ── ORA · Siri-style colour mix: cyan-green, purple and orange as separate drifting pools inside her ── */
+html body.app-authed #sprout-fab, html body.app-authed #dashboard-hero .au-ora #sprout-fab, html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-back{
+  background-image:
+    radial-gradient(circle, #f2ffff 0%, rgba(51,230,255,.92) 13%, rgba(51,230,255,0) 40%),
+    radial-gradient(circle, rgba(255,130,50,1) 0%, rgba(255,107,26,.9) 22%, rgba(255,107,26,0) 52%),
+    radial-gradient(circle, rgba(150,120,255,1) 0%, rgba(122,92,255,.85) 22%, rgba(122,92,255,0) 52%),
+    radial-gradient(circle, rgba(40,230,190,1) 0%, rgba(20,200,170,.7) 20%, rgba(20,200,170,0) 48%),
+    linear-gradient(135deg, #2b1f74 0%, #1a1440 55%, #0e1a2e 100%) !important;
+  background-size:150% 150%, 140% 140%, 160% 160%, 140% 140%, 100% 100% !important;
+  background-repeat:no-repeat !important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.12) inset, 0 0 26px rgba(51,230,255,.55), 0 0 44px rgba(122,92,255,.4), 0 0 70px -10px rgba(255,107,26,.45) !important; }
+html body.app-authed .sp-headorb{
+  background-image:
+    radial-gradient(circle at 30% 30%, #f2ffff 0%, rgba(51,230,255,.95) 20%, rgba(51,230,255,0) 55%),
+    radial-gradient(circle at 78% 30%, rgba(255,107,26,.9) 0%, rgba(255,107,26,0) 50%),
+    radial-gradient(circle at 70% 78%, rgba(122,92,255,1) 0%, rgba(122,92,255,0) 55%),
+    radial-gradient(circle at 25% 78%, rgba(40,225,190,.9) 0%, rgba(40,225,190,0) 50%),
+    linear-gradient(135deg, #2b1f74, #0e1a2e) !important; }
 </style>
 
 </body>
