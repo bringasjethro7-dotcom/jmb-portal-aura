@@ -34517,15 +34517,15 @@ html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-gone{ opacity:0; sca
 html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-back{ animation:au-morph-live 4.2s ease-in-out infinite, au-sway 5.8s ease-in-out infinite, au-beat 3.4s ease-in-out infinite, au-reform .7s cubic-bezier(.2,.8,.2,1) both !important; background-size:160% 160% !important; }
 /* livelier liquid: deeper morph, slow lean, inner light drifting — all inside her own shape */
 @keyframes au-morph-live{
-  0%,100%{ border-radius:62% 38% 44% 56%/58% 42% 58% 42%; background-position:20% 20%, 80% 25%, 75% 80%, 20% 80%, 0 0; }
-  20%{ border-radius:38% 62% 66% 34%/54% 34% 66% 46%; background-position:45% 30%, 60% 70%, 30% 70%, 70% 20%, 0 0; }
-  40%{ border-radius:58% 42% 32% 68%/38% 64% 36% 62%; background-position:70% 60%, 25% 75%, 20% 25%, 80% 60%, 0 0; }
-  60%{ border-radius:34% 66% 58% 42%/64% 40% 60% 36%; background-position:30% 75%, 20% 30%, 70% 30%, 60% 80%, 0 0; }
-  80%{ border-radius:66% 34% 40% 60%/44% 60% 40% 56%; background-position:15% 40%, 75% 45%, 55% 75%, 30% 15%, 0 0; }
+  0%,100%{ border-radius:62% 38% 44% 56%/58% 42% 58% 42%; }
+  20%{ border-radius:38% 62% 66% 34%/54% 34% 66% 46%; }
+  40%{ border-radius:58% 42% 32% 68%/38% 64% 36% 62%; }
+  60%{ border-radius:34% 66% 58% 42%/64% 40% 60% 36%; }
+  80%{ border-radius:66% 34% 40% 60%/44% 60% 40% 56%; }
 }
 }
 /* heartbeat: she goes translucent on the out-breath and solid again on the in-breath */
-@keyframes au-beat{ 0%,100%{ opacity:1; } 50%{ opacity:.38; } }
+@keyframes au-beat{ 0%,100%{ opacity:1; } 50%{ opacity:.58; } }
 @keyframes au-sway{ 0%,100%{ transform:rotate(-5deg) scale(1); } 30%{ transform:rotate(4deg) scale(1.06); } 55%{ transform:rotate(-2deg) scale(.97); } 80%{ transform:rotate(5deg) scale(1.04); } }
 @keyframes au-reform{ from{ opacity:0; scale:.4; } to{ opacity:1; scale:1; } }
 html body.app-authed #dashboard-hero .au-ora-fx{ position:absolute; inset:-30px; width:calc(100% + 60px); height:calc(100% + 60px); pointer-events:none; z-index:5; border-radius:inherit; }
@@ -34702,6 +34702,7 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
       document.body.style.overflow='';
       var f=document.getElementById('msg-fab'); if(f) f.classList.toggle('active', !document.body.classList.contains('au-dock-hidden'));
       if (hero && !hero.__auClick){ hero.__auClick=true; hero.addEventListener('click', function(e){ if (e.target.closest('button,a,input,select,textarea,.hero-aside,#jmb-share,.au-ora')) return; try{ sproutToggle(); }catch(x){} }); }
+      if (fab && !fab.querySelector('.au-blob')){ ['b1','b2','b3','b4'].forEach(function(k){ var i=document.createElement('i'); i.className='au-blob '+k; fab.appendChild(i); }); var sp=document.createElement('i'); sp.className='au-spec'; fab.appendChild(sp); }
       if (hero && fab && !hero.querySelector('.au-ora')){ var wrap=document.createElement('div'); wrap.className='au-ora'; wrap.appendChild(fab);
         var ask=document.createElement('div'); ask.className='au-ora-ask'; ask.textContent='Ask Ora'; ask.onclick=function(){ try{ sproutToggle(); }catch(e){} }; wrap.appendChild(ask);
         fab.title='Ask Ora'; fab.classList.add('au-back'); hero.appendChild(wrap); hero.classList.add('au-has-ora'); auOraFx(hero, wrap, fab); }
@@ -34845,17 +34846,22 @@ html body.app-authed.au-dock #dashboard-hero.au-has-ora #jmb-share{ top:18px !im
 </style>
 
 <style id="aura-ora-siri">
-/* ── ORA · Siri-style colour mix: cyan-green, purple and orange as separate drifting pools inside her ── */
+/* ── ORA · Siri-style interior: soft colour clouds (cyan · orange · purple · teal) drifting under a glassy skin ── */
 html body.app-authed #sprout-fab, html body.app-authed #dashboard-hero .au-ora #sprout-fab, html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-back{
-  background-image:
-    radial-gradient(circle, #f2ffff 0%, rgba(51,230,255,.92) 13%, rgba(51,230,255,0) 40%),
-    radial-gradient(circle, rgba(255,130,50,1) 0%, rgba(255,107,26,.9) 22%, rgba(255,107,26,0) 52%),
-    radial-gradient(circle, rgba(150,120,255,1) 0%, rgba(122,92,255,.85) 22%, rgba(122,92,255,0) 52%),
-    radial-gradient(circle, rgba(40,230,190,1) 0%, rgba(20,200,170,.7) 20%, rgba(20,200,170,0) 48%),
-    linear-gradient(135deg, #2b1f74 0%, #1a1440 55%, #0e1a2e 100%) !important;
-  background-size:150% 150%, 140% 140%, 160% 160%, 140% 140%, 100% 100% !important;
-  background-repeat:no-repeat !important;
-  box-shadow:0 0 0 1px rgba(255,255,255,.12) inset, 0 0 26px rgba(51,230,255,.55), 0 0 44px rgba(122,92,255,.4), 0 0 70px -10px rgba(255,107,26,.45) !important; }
+  overflow:hidden !important; isolation:isolate !important; background-image:none !important; background-color:#120f2a !important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.22) inset, inset 0 -14px 26px rgba(10,6,30,.55), inset 0 8px 16px rgba(255,255,255,.10),
+             0 0 24px rgba(51,230,255,.4), 0 0 46px rgba(122,92,255,.36), 0 0 60px -8px rgba(255,107,26,.45) !important; }
+html body.app-authed #sprout-fab .au-blob{ position:absolute; width:74%; height:74%; border-radius:50%; filter:blur(7px) saturate(1.75); will-change:transform; pointer-events:none; }
+html body.app-authed #sprout-fab .au-blob.b1{ background:radial-gradient(circle, #8ff4ff 0%, #22d8f5 40%, rgba(34,216,245,0) 70%); left:-10%; top:-8%; animation:au-orb1 7.5s ease-in-out infinite; }
+html body.app-authed #sprout-fab .au-blob.b2{ background:radial-gradient(circle, #ffa25c 0%, #ff6b1a 42%, rgba(255,107,26,0) 70%); right:-14%; top:6%; animation:au-orb2 9.5s ease-in-out infinite; }
+html body.app-authed #sprout-fab .au-blob.b3{ background:radial-gradient(circle, #b9a6ff 0%, #7a5cff 42%, rgba(122,92,255,0) 70%); left:6%; bottom:-16%; animation:au-orb3 11s ease-in-out infinite; }
+html body.app-authed #sprout-fab .au-blob.b4{ background:radial-gradient(circle, #9dffe6 0%, #14d8b4 40%, rgba(20,216,180,0) 70%); right:0; bottom:-4%; width:64%; height:64%; animation:au-orb4 8.5s ease-in-out infinite; }
+html body.app-authed #sprout-fab .au-spec{ position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:2;
+  background:radial-gradient(42% 28% at 30% 18%, rgba(255,255,255,.7) 0%, rgba(255,255,255,.15) 45%, rgba(255,255,255,0) 70%); }
+@keyframes au-orb1{ 0%,100%{ transform:translate(0,0) scale(1); } 30%{ transform:translate(34%,22%) scale(1.18); } 65%{ transform:translate(8%,46%) scale(.88); } }
+@keyframes au-orb2{ 0%,100%{ transform:translate(0,0) scale(1); } 35%{ transform:translate(-40%,30%) scale(1.12); } 70%{ transform:translate(-14%,-12%) scale(.9); } }
+@keyframes au-orb3{ 0%,100%{ transform:translate(0,0) scale(1); } 28%{ transform:translate(26%,-42%) scale(1.15); } 62%{ transform:translate(44%,-8%) scale(.92); } }
+@keyframes au-orb4{ 0%,100%{ transform:translate(0,0) scale(1); } 40%{ transform:translate(-46%,-36%) scale(1.2); } 75%{ transform:translate(-20%,6%) scale(.85); } }
 html body.app-authed .sp-headorb{
   background-image:
     radial-gradient(circle at 30% 30%, #f2ffff 0%, rgba(51,230,255,.95) 20%, rgba(51,230,255,0) 55%),
