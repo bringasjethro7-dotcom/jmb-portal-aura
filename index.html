@@ -34513,7 +34513,7 @@ html body.app-authed #dashboard-hero .au-ora #sprout-fab{
   position:relative !important; inset:auto !important; margin:0 !important; display:block !important; width:76px !important; height:76px !important; z-index:3 !important; cursor:pointer;
   box-shadow:0 0 0 1px rgba(255,255,255,.1) inset, 0 0 30px rgba(51,230,255,.7), 0 0 60px rgba(122,92,255,.5) !important;
   transition:opacity .4s ease, scale .5s cubic-bezier(.2,.8,.2,1); }
-html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-gone{ opacity:0; scale:1.5; pointer-events:none; }
+html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-gone{ opacity:0; scale:1.12; pointer-events:none; transition:opacity 1.9s cubic-bezier(.4,0,.6,1), scale 2.4s ease-in-out; }
 html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-back{ animation:au-morph-live 4.2s ease-in-out infinite, au-sway 5.8s ease-in-out infinite, au-reform .7s cubic-bezier(.2,.8,.2,1) both !important; background-size:160% 160% !important; }
 /* livelier liquid: deeper morph, slow lean, inner light drifting — all inside her own shape */
 @keyframes au-morph-live{
@@ -34574,6 +34574,12 @@ html body.app-authed #sprout-fab::before, html body.app-authed #sprout-fab::afte
 html body.app-authed #sprout-fab:hover{ transform:scale(1.08) !important; }
 html body.app-authed #sprout-fab.sp-alert{ box-shadow:0 0 26px rgba(255,138,61,.75), 0 0 40px rgba(255,107,26,.5), inset 0 0 16px rgba(255,255,255,.3) !important; }
 html body.app-authed #dashboard-hero .au-ora-ask{ color:#bff0ff; }
+html body.app-authed #dashboard-hero .au-ora-mic{ position:absolute; left:50%; bottom:-24px; transform:translateX(-50%); display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:999px; border:1px solid rgba(191,240,255,.18); background:rgba(15,14,21,.7); color:#8fb9c9; font:800 9px/1 inherit; letter-spacing:.16em; text-transform:uppercase; cursor:pointer; white-space:nowrap; z-index:6; transition:color .25s, border-color .25s, box-shadow .25s; }
+html body.app-authed #dashboard-hero .au-ora-mic .au-mic-dot{ width:6px; height:6px; border-radius:50%; background:#4a5a66; transition:background .25s, box-shadow .25s; }
+html body.app-authed #dashboard-hero .au-ora-mic:hover{ color:#dff8ff; border-color:rgba(51,230,255,.45); }
+html body.app-authed #dashboard-hero .au-ora-mic.on{ color:#dff8ff; border-color:rgba(51,230,255,.55); box-shadow:0 0 14px -4px rgba(51,230,255,.7); }
+html body.app-authed #dashboard-hero .au-ora-mic.on .au-mic-dot{ background:#33e6ff; box-shadow:0 0 8px #33e6ff; animation:au-micpulse 1.4s ease-in-out infinite; }
+@keyframes au-micpulse{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
 /* Ora IS the hero card's border: a slow flowing aurora ring (mask trick — no filters, no blur layers) */
 html body.app-authed #dashboard-hero{ border-color:transparent !important; cursor:pointer;
   box-shadow:0 18px 36px -24px rgba(0,0,0,.85), 0 0 28px -6px rgba(51,230,255,.28), 0 0 44px -10px rgba(122,92,255,.28) !important; }
@@ -34701,6 +34707,7 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
       if (hero && !hero.__auClick){ hero.__auClick=true; hero.addEventListener('click', function(e){ if (e.target.closest('button,a,input,select,textarea,.hero-aside,#jmb-share,.au-ora')) return; try{ sproutToggle(); }catch(x){} }); }
       if (hero && fab && !hero.querySelector('.au-ora')){ var wrap=document.createElement('div'); wrap.className='au-ora'; wrap.appendChild(fab);
         var ask=document.createElement('div'); ask.className='au-ora-ask'; ask.textContent='Ask Ora'; ask.onclick=function(){ try{ sproutToggle(); }catch(e){} }; wrap.appendChild(ask);
+        auWake.mount(wrap, hero);
         fab.title='Ask Ora'; fab.classList.add('au-back'); hero.appendChild(wrap); hero.classList.add('au-has-ora'); auOraFx(hero, wrap, fab); }
     } else {
       if (document.body.classList.contains('au-dock')){ document.body.classList.remove('au-dock','au-dock-hidden'); try{ _cm(); }catch(e){} dockOpened=false; }
@@ -34709,12 +34716,40 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
   }
 
   /* ── ORA particle life-cycle: idle orb → dissolve to the borders → border charged → reform ── */
+  /* ── "Hey Ora" wake word · opt-in, Web Speech API (Chrome/Edge). Mic stays off until the VA switches it on. ── */
+  var auWake=(function(){
+    var SR=window.SpeechRecognition||window.webkitSpeechRecognition, rec=null, on=false, btn=null, heroEl=null, restartT=null;
+    var WAKE=/\b(hey|hi|hello|ok|okay)[,\s]+(ora|aura|aurora|laura|nora|ara)\b/i;
+    function say(t){ try{ if(typeof showToast==='function') showToast(t); }catch(e){} }
+    function wakeUp(rest){
+      try{ heroEl.classList.add('ora-alert'); setTimeout(function(){ heroEl.classList.remove('ora-alert'); },1600); }catch(e){}
+      try{ var pnl=document.getElementById('sprout-panel'); if(pnl && !pnl.classList.contains('open')) sproutToggle(); }catch(e){}
+      var inp=document.getElementById('sp-in'); if(!inp) return;
+      rest=(rest||'').trim();
+      if(rest.length>2){ inp.value=rest; try{ sproutSend(); }catch(e){} } else { inp.value=''; inp.placeholder='Listening… what do you need?'; inp.focus(); }
+    }
+    function handle(ev){
+      for(var i=ev.resultIndex;i<ev.results.length;i++){ var res=ev.results[i]; if(!res.isFinal) continue; var txt=res[0].transcript||''; var m=txt.match(WAKE);
+        if(m){ wakeUp(txt.slice(m.index+m[0].length)); } }
+    }
+    function start(){ if(!SR||rec) return; rec=new SR(); rec.continuous=true; rec.interimResults=false; rec.lang='en-US';
+      rec.onresult=handle; rec.onerror=function(e){ if(e.error==='not-allowed'||e.error==='service-not-allowed'){ say('Mic blocked — allow the microphone for this site to use "Hey Ora".'); stop(true); } };
+      rec.onend=function(){ if(on){ clearTimeout(restartT); restartT=setTimeout(function(){ try{ rec.start(); }catch(e){} },300); } };
+      try{ rec.start(); }catch(e){} }
+    function stop(silent){ on=false; clearTimeout(restartT); if(rec){ try{ rec.onend=null; rec.stop(); }catch(e){} rec=null; } paint(); try{ localStorage.setItem('au_wake','0'); }catch(e){} if(!silent) say('"Hey Ora" is off.'); }
+    function go(){ if(!SR){ say('Voice wake-up needs Chrome or Edge.'); return; } on=true; paint(); try{ localStorage.setItem('au_wake','1'); }catch(e){} start(); say('Listening for "Hey Ora"…'); }
+    function paint(){ if(!btn) return; btn.classList.toggle('on',on); btn.title=on?'Listening for "Hey Ora" — click to turn off':'Turn on "Hey Ora" voice wake-up (uses your mic)'; }
+    function mount(wrap, hero){ if(btn) return; heroEl=hero; btn=document.createElement('button'); btn.type='button'; btn.className='au-ora-mic'; btn.innerHTML='<span class="au-mic-dot"></span>Hey Ora';
+      btn.onclick=function(e){ e.stopPropagation(); on?stop():go(); }; wrap.appendChild(btn); paint();
+      var want=false; try{ want=localStorage.getItem('au_wake')==='1'; }catch(e){} if(want && SR){ on=true; paint(); start(); } }
+    return { mount:mount };
+  })();
   function auOraFx(hero, wrap, fab){
     if (hero.__auFx) return; hero.__auFx=true;
     var cv=document.createElement('canvas'); cv.className='au-ora-fx'; hero.appendChild(cv);
     var x=cv.getContext('2d'), DPR=Math.min(2,devicePixelRatio||1), W=0,H=0, PAD=30;
     var P=[], phase='idle', tPhase=performance.now(), charge=0;
-    var IDLE=5200, DISSOLVE=1500, CHARGED=2300, REFORM=1200;
+    var IDLE=5200, DISSOLVE=2600, CHARGED=2300, REFORM=1200;
     function size(){ var r=hero.getBoundingClientRect(); var w=r.width+PAD*2, h=r.height+PAD*2; if(Math.abs(w*DPR-W)>1||Math.abs(h*DPR-H)>1){ W=cv.width=Math.round(w*DPR); H=cv.height=Math.round(h*DPR); } return r; }
     function centre(r){ var f=fab.getBoundingClientRect(); return { x:(f.left-r.left+f.width/2+PAD)*DPR, y:(f.top-r.top+f.height/2+PAD)*DPR }; }
     function rimPoint(r){ /* random point on the card's border line (rounded rect, radius 26) */
@@ -34726,11 +34761,13 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
       return { x:(px+PAD)*DPR, y:(py+PAD)*DPR };
     }
     var COLS=['51,230,255','122,92,255','160,240,255','200,180,255','255,255,255'];
-    function spawnOut(r){ var c=centre(r); P=[]; for(var i=0;i<170;i++){ var t=rimPoint(r); var a=Math.random()*6.283, s=Math.random()*14*DPR;
-        P.push({ x0:c.x+Math.cos(a)*s, y0:c.y+Math.sin(a)*s, x1:t.x, y1:t.y, t0:performance.now()+Math.random()*420, dur:900+Math.random()*700, sz:(1.2+Math.random()*2.6)*DPR, c:COLS[i%COLS.length], curl:(Math.random()-.5)*60*DPR, ph:Math.random()*6.283, dir:1 }); } }
+    function spawnOut(r){ /* ash: fine dust peels off her surface a little at a time, lifts, then drifts to the border */
+      var c=centre(r); P=[]; var n=300; for(var i=0;i<n;i++){ var t=rimPoint(r); var a=Math.random()*6.283, s=(10+Math.random()*26)*DPR;
+        var delay=Math.pow(i/n,0.85)*1500+Math.random()*120; /* staggered: surface goes first, core last */
+        P.push({ x0:c.x+Math.cos(a)*s, y0:c.y+Math.sin(a)*s*0.9, x1:t.x, y1:t.y, t0:performance.now()+delay, dur:1400+Math.random()*900, sz:(0.7+Math.random()*1.9)*DPR, c:COLS[i%COLS.length], curl:(Math.random()-.5)*34*DPR, ph:Math.random()*6.283, dir:1 }); } }
     function spawnIn(r){ var c=centre(r); P=[]; for(var i=0;i<140;i++){ var t=rimPoint(r);
         P.push({ x0:t.x, y0:t.y, x1:c.x+(Math.random()-.5)*10*DPR, y1:c.y+(Math.random()-.5)*10*DPR, t0:performance.now()+Math.random()*350, dur:700+Math.random()*500, sz:(1+Math.random()*2.2)*DPR, c:COLS[i%COLS.length], curl:(Math.random()-.5)*40*DPR, ph:Math.random()*6.283, dir:-1 }); } }
-    function easeOut(p){ return 1-Math.pow(1-p,3); } function easeIn(p){ return p*p*p; }
+    function easeOut(p){ return p<.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2; } /* ease-in-out: lifts off softly, glides, settles */ function easeIn(p){ return p*p*p; }
     function rim(r, k){ if(k<=0) return; var w=(r.width)*DPR, h=(r.height)*DPR, o=PAD*DPR, rad=26*DPR;
       x.globalCompositeOperation='lighter'; x.lineJoin='round';
       [[26,.10],[12,.22],[4,.55]].forEach(function(L){ x.lineWidth=L[0]*DPR*(0.6+0.4*k); x.strokeStyle='rgba(51,230,255,'+(L[1]*k)+')'; x.beginPath(); x.roundRect(o,o,w,h,rad); x.stroke(); });
@@ -34749,7 +34786,7 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
         var e = q.dir>0 ? easeOut(p) : easeIn(p);
         var px=q.x0+(q.x1-q.x0)*e, py=q.y0+(q.y1-q.y0)*e;
         var sw=Math.sin(p*3.1416)*q.curl; px+=Math.cos(q.ph)*sw; py+=Math.sin(q.ph)*sw;      /* gentle curl so it reads as vapour, not lines */
-        var a = q.dir>0 ? (1-p)*(0.35+0.65*Math.min(1,p*4)) : (0.25+0.75*p);
+        var a = q.dir>0 ? Math.min(1,p*6)*(p<0.7 ? 1 : (1-p)/0.3)*0.85 : (0.25+0.75*p); /* fade in fast, hold, fade out over the last third */
         var sz = q.dir>0 ? q.sz*(1-p*0.6) : q.sz*(0.5+p*0.7);
         x.fillStyle='rgba('+q.c+','+(a*0.16)+')'; x.beginPath(); x.arc(px,py,sz*3.2,0,6.283); x.fill();
         x.fillStyle='rgba('+q.c+','+(a*0.9)+')'; x.beginPath(); x.arc(px,py,sz,0,6.283); x.fill();
