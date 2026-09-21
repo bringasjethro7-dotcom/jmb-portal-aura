@@ -4039,6 +4039,8 @@
     --au-ink:#F6F7FC; --au-ink2:#c2c6da; --au-ink3:#8a90a8;
   }
   #login-screen{ opacity:1 !important; }
+  body.au-restoring #dashboard-screen{ visibility:hidden; }
+  body.au-restoring{ background:#0a0a10 !important; }
   /* the app hides the login with an inline display:none — that must always win over the grid layout below */
   #login-screen[style*="display: none"], #login-screen[style*="display:none"], body.app-authed #login-screen{ display:none !important; }
   #login-screen{
@@ -4483,6 +4485,10 @@ body.light .glass,body.light [class*="glass"]{background:#ffffff !important;back
 </style>
 </head>
 <body>
+<script>
+/* Signed-in already? Mark the page before first paint so the login never flashes on refresh. */
+try{ if (sessionStorage.getItem('emp_data')) document.body.classList.add('app-authed','au-restoring'); }catch(e){}
+</script>
 
 <!-- ══════════ LOGIN ══════════ -->
 
@@ -6390,11 +6396,12 @@ document.addEventListener('DOMContentLoaded', () => {
     var _la = parseInt(sessionStorage.getItem('jmb_last_active') || '0', 10);
     if (_la && (Date.now() - _la) > SESSION_STALE_MS) {
       sessionStorage.removeItem('emp_data');            // stale → back to the login screen
+      document.body.classList.remove('app-authed','au-restoring');
     } else {
       /* session restore: show the welcome reveal (logo) but skip the chime — browsers block audio before the first click */
       try { window.__AURA_SILENT_REVEAL__ = true; renderDashboard(JSON.parse(saved)); sessionStorage.setItem('jmb_last_active', String(Date.now())); }
-      catch(e) { sessionStorage.removeItem('emp_data'); }
-      finally { window.__AURA_SILENT_REVEAL__ = false; }
+      catch(e) { sessionStorage.removeItem('emp_data'); document.body.classList.remove('app-authed'); }
+      finally { window.__AURA_SILENT_REVEAL__ = false; document.body.classList.remove('au-restoring'); }
     }
   }
 });
