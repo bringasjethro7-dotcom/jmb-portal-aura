@@ -34506,33 +34506,28 @@ html body.app-authed [style*="border:1px solid #e8eaef"], html body.app-authed [
   html body.app-authed.au-dock #sprout-panel{ right:392px !important; bottom:auto !important; top:92px !important; max-height:min(72vh,640px) !important; }
 }
 
-/* ── ORA · liquid light travelling around the hero card's border, dissolving behind her ── */
-html body.app-authed #dashboard-hero.au-has-ora{ overflow:visible !important; margin-bottom:36px !important; }
-html body.app-authed #dashboard-hero::before{ border-radius:inherit; }
-html body.app-authed #dashboard-hero .au-ora{ position:absolute; inset:0; z-index:4; pointer-events:none; border-radius:inherit; }
-/* the path = the card's border line (inset -0 with the card radius); she and her trail ride it */
-html body.app-authed #dashboard-hero .au-ora #sprout-fab,
-html body.app-authed #dashboard-hero .au-ora .au-ora-trail{
-  position:absolute !important; inset:auto !important; left:0 !important; top:0 !important; margin:0 !important; pointer-events:auto;
-  offset-path:inset(0 round 26px); offset-rotate:0deg; offset-distance:0%;
-  animation:au-travel 28s linear infinite, au-morph 6s ease-in-out infinite !important; }
-@keyframes au-travel{ from{ offset-distance:0%; } to{ offset-distance:100%; } }
-html body.app-authed #dashboard-hero .au-ora #sprout-fab{ width:58px !important; height:58px !important; display:block !important; z-index:3 !important;
-  box-shadow:0 0 0 1px rgba(255,255,255,.1) inset, 0 0 24px rgba(51,230,255,.7), 0 0 46px rgba(122,92,255,.5) !important; cursor:pointer; }
-/* dissolving trail: smaller, fainter drops behind her on the same path */
-html body.app-authed #dashboard-hero .au-ora .au-ora-trail{ border-radius:62% 38% 44% 56%/58% 42% 58% 42%; pointer-events:none;
-  background:radial-gradient(circle at 34% 30%, #eaffff, var(--ora1) 40%, var(--ora2) 85%); }
-html body.app-authed #dashboard-hero .au-ora .au-ora-trail.t1{ width:40px; height:40px; opacity:.62; animation-delay:-.55s, 0s !important; box-shadow:0 0 18px rgba(51,230,255,.55); }
-html body.app-authed #dashboard-hero .au-ora .au-ora-trail.t2{ width:28px; height:28px; opacity:.42; animation-delay:-1.05s, -2s !important; box-shadow:0 0 14px rgba(122,92,255,.55); }
-html body.app-authed #dashboard-hero .au-ora .au-ora-trail.t3{ width:16px; height:16px; opacity:.26; animation-delay:-1.5s, -4s !important; box-shadow:0 0 10px rgba(122,92,255,.5); }
-html body.app-authed #dashboard-hero .au-ora .au-ora-trail.t4{ width:9px; height:9px; opacity:.16; animation-delay:-1.9s, -1s !important; }
-/* trail elements need the same anchor: centre on the path */
-html body.app-authed #dashboard-hero .au-ora .au-ora-trail, html body.app-authed #dashboard-hero .au-ora #sprout-fab{ offset-anchor:50% 50%; transform-origin:center; }
-html body.app-authed #dashboard-hero .au-ora #sprout-fab:hover{ animation-play-state:paused, running !important; transform:scale(1.1) !important; }
-@media(max-width:1179px){ html body.app-authed #dashboard-hero .au-ora{ display:none !important; } html body.app-authed #dashboard-hero.au-has-ora{ margin-bottom:0 !important; } }
+/* ── ORA · centre orb that dissolves into particles, possesses the border, and reforms ── */
+html body.app-authed #dashboard-hero.au-has-ora{ grid-template-columns:minmax(0,1fr) 150px 272px !important; grid-template-areas:"info ora aside" "stats ora aside" !important; overflow:visible !important; }
+html body.app-authed #dashboard-hero .au-ora{ grid-area:ora; position:relative; display:flex; align-items:center; justify-content:center; z-index:3; min-height:120px; }
+html body.app-authed #dashboard-hero .au-ora #sprout-fab{
+  position:relative !important; inset:auto !important; margin:0 !important; display:block !important; width:76px !important; height:76px !important; z-index:3 !important; cursor:pointer;
+  box-shadow:0 0 0 1px rgba(255,255,255,.1) inset, 0 0 30px rgba(51,230,255,.7), 0 0 60px rgba(122,92,255,.5) !important;
+  transition:opacity .4s ease, scale .5s cubic-bezier(.2,.8,.2,1); }
+html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-gone{ opacity:0; scale:1.5; pointer-events:none; }
+html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-back{ animation:au-morph 7s ease-in-out infinite, au-breathe 4.6s ease-in-out infinite, au-reform .7s cubic-bezier(.2,.8,.2,1) both !important; }
+@keyframes au-reform{ from{ opacity:0; scale:.4; } to{ opacity:1; scale:1; } }
+html body.app-authed #dashboard-hero .au-ora-fx{ position:absolute; inset:-30px; width:calc(100% + 60px); height:calc(100% + 60px); pointer-events:none; z-index:5; border-radius:inherit; }
+/* border "possessed": the ring thickens and glows while she's in it, then settles */
+html body.app-authed #dashboard-hero{ transition:box-shadow .6s ease; }
+html body.app-authed #dashboard-hero.ora-charged{ box-shadow:0 18px 36px -24px rgba(0,0,0,.85), 0 0 34px -2px rgba(51,230,255,.55), 0 0 70px -6px rgba(122,92,255,.5) !important; }
+html body.app-authed #dashboard-hero.ora-charged::after{ padding:3px !important; animation-duration:2.2s !important; }
+html body.app-authed #dashboard-hero .au-ora-ask{ position:absolute; left:50%; bottom:-2px; transform:translateX(-50%); font-size:10px; font-weight:800; letter-spacing:.2em; text-transform:uppercase; color:#bff0ff; opacity:.8; cursor:pointer; user-select:none; white-space:nowrap; }
+@media(max-width:1179px){ html body.app-authed #dashboard-hero .au-ora{ display:none !important; } }
+@media(max-width:899px){ html body.app-authed #dashboard-hero.au-has-ora{ grid-template-columns:1fr !important; grid-template-areas:"info" "stats" "aside" "share" !important; } }
 /* hero when the messages rail is open — tighter identity block, 3-up chips, name never clips */
 html body.app-authed #dashboard-hero .hero-name{ white-space:normal !important; overflow:visible !important; text-overflow:clip !important; max-width:none !important; }
 html body.app-authed.au-dock #dashboard-hero{ padding:26px 28px 24px !important; gap:14px 18px !important; }
+html body.app-authed.au-dock #dashboard-hero.au-has-ora{ grid-template-columns:minmax(0,1fr) 120px 236px !important; }
 
 html body.app-authed.au-dock #dashboard-hero .hero-name{ font-size:clamp(26px,2.3vw,36px) !important; }
 html body.app-authed.au-dock #dashboard-hero .hero-info{ padding-right:0 !important; }
@@ -34695,13 +34690,68 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
       var f=document.getElementById('msg-fab'); if(f) f.classList.toggle('active', !document.body.classList.contains('au-dock-hidden'));
       if (hero && !hero.__auClick){ hero.__auClick=true; hero.addEventListener('click', function(e){ if (e.target.closest('button,a,input,select,textarea,.hero-aside,#jmb-share,.au-ora')) return; try{ sproutToggle(); }catch(x){} }); }
       if (hero && fab && !hero.querySelector('.au-ora')){ var wrap=document.createElement('div'); wrap.className='au-ora'; wrap.appendChild(fab);
-        ['t1','t2','t3','t4'].forEach(function(c){ var d=document.createElement('span'); d.className='au-ora-trail '+c; wrap.appendChild(d); });
-        fab.title='Ask Ora'; hero.appendChild(wrap); hero.classList.add('au-has-ora'); }
+        var ask=document.createElement('div'); ask.className='au-ora-ask'; ask.textContent='Ask Ora'; ask.onclick=function(){ try{ sproutToggle(); }catch(e){} }; wrap.appendChild(ask);
+        fab.title='Ask Ora'; fab.classList.add('au-back'); hero.appendChild(wrap); hero.classList.add('au-has-ora'); auOraFx(hero, wrap, fab); }
     } else {
       if (document.body.classList.contains('au-dock')){ document.body.classList.remove('au-dock','au-dock-hidden'); try{ _cm(); }catch(e){} dockOpened=false; }
       if (fab && hero && hero.querySelector('.au-ora')){ document.body.appendChild(fab); hero.querySelector('.au-ora').remove(); hero.classList.remove('au-has-ora'); }
     }
   }
+
+  /* ── ORA particle life-cycle: idle orb → dissolve to the borders → border charged → reform ── */
+  function auOraFx(hero, wrap, fab){
+    if (hero.__auFx) return; hero.__auFx=true;
+    var cv=document.createElement('canvas'); cv.className='au-ora-fx'; hero.appendChild(cv);
+    var x=cv.getContext('2d'), DPR=Math.min(2,devicePixelRatio||1), W=0,H=0, PAD=30;
+    var P=[], phase='idle', tPhase=performance.now(), charge=0;
+    var IDLE=5200, DISSOLVE=1500, CHARGED=2300, REFORM=1200;
+    function size(){ var r=hero.getBoundingClientRect(); var w=r.width+PAD*2, h=r.height+PAD*2; if(Math.abs(w*DPR-W)>1||Math.abs(h*DPR-H)>1){ W=cv.width=Math.round(w*DPR); H=cv.height=Math.round(h*DPR); } return r; }
+    function centre(r){ var f=fab.getBoundingClientRect(); return { x:(f.left-r.left+f.width/2+PAD)*DPR, y:(f.top-r.top+f.height/2+PAD)*DPR }; }
+    function rimPoint(r){ /* random point on the card's border line (rounded rect, radius 26) */
+      var w=r.width, h=r.height, rad=26, per=2*(w+h); var d=Math.random()*per, px,py;
+      if(d<w){ px=d; py=0; } else if(d<w+h){ px=w; py=d-w; } else if(d<2*w+h){ px=w-(d-w-h); py=h; } else { px=0; py=h-(d-2*w-h); }
+      // pull corners onto the rounded curve
+      var cx=Math.min(Math.max(px,rad),w-rad), cy=Math.min(Math.max(py,rad),h-rad); var dx=px-cx, dy=py-cy, L=Math.hypot(dx,dy)||1;
+      if(L>rad){ px=cx+dx/L*rad; py=cy+dy/L*rad; }
+      return { x:(px+PAD)*DPR, y:(py+PAD)*DPR };
+    }
+    var COLS=['51,230,255','122,92,255','160,240,255','200,180,255','255,255,255'];
+    function spawnOut(r){ var c=centre(r); P=[]; for(var i=0;i<170;i++){ var t=rimPoint(r); var a=Math.random()*6.283, s=Math.random()*14*DPR;
+        P.push({ x0:c.x+Math.cos(a)*s, y0:c.y+Math.sin(a)*s, x1:t.x, y1:t.y, t0:performance.now()+Math.random()*420, dur:900+Math.random()*700, sz:(1.2+Math.random()*2.6)*DPR, c:COLS[i%COLS.length], curl:(Math.random()-.5)*60*DPR, ph:Math.random()*6.283, dir:1 }); } }
+    function spawnIn(r){ var c=centre(r); P=[]; for(var i=0;i<140;i++){ var t=rimPoint(r);
+        P.push({ x0:t.x, y0:t.y, x1:c.x+(Math.random()-.5)*10*DPR, y1:c.y+(Math.random()-.5)*10*DPR, t0:performance.now()+Math.random()*350, dur:700+Math.random()*500, sz:(1+Math.random()*2.2)*DPR, c:COLS[i%COLS.length], curl:(Math.random()-.5)*40*DPR, ph:Math.random()*6.283, dir:-1 }); } }
+    function easeOut(p){ return 1-Math.pow(1-p,3); } function easeIn(p){ return p*p*p; }
+    function rim(r, k){ if(k<=0) return; var w=(r.width)*DPR, h=(r.height)*DPR, o=PAD*DPR, rad=26*DPR;
+      x.globalCompositeOperation='lighter'; x.lineJoin='round';
+      [[26,.10],[12,.22],[4,.55]].forEach(function(L){ x.lineWidth=L[0]*DPR*(0.6+0.4*k); x.strokeStyle='rgba(51,230,255,'+(L[1]*k)+')'; x.beginPath(); x.roundRect(o,o,w,h,rad); x.stroke(); });
+      x.lineWidth=2*DPR; x.strokeStyle='rgba(200,180,255,'+(0.5*k)+')'; x.beginPath(); x.roundRect(o,o,w,h,rad); x.stroke(); }
+    function draw(){
+      if(!document.body.classList.contains('app-authed') || !hero.isConnected){ requestAnimationFrame(draw); return; }
+      var r=size(); var now=performance.now(), el=now-tPhase;
+      if(phase==='idle' && el>IDLE){ phase='dissolve'; tPhase=now; spawnOut(r); fab.classList.remove('au-back'); fab.classList.add('au-gone'); }
+      else if(phase==='dissolve' && el>DISSOLVE){ phase='charged'; tPhase=now; hero.classList.add('ora-charged'); }
+      else if(phase==='charged' && el>CHARGED){ phase='reform'; tPhase=now; spawnIn(r); hero.classList.remove('ora-charged'); }
+      else if(phase==='reform' && el>REFORM){ phase='idle'; tPhase=now; P=[]; fab.classList.remove('au-gone'); fab.classList.add('au-back'); }
+      var target = phase==='charged' ? 1 : (phase==='dissolve' ? Math.min(1, el/DISSOLVE)*0.6 : 0);
+      charge += (target-charge)*0.08;
+      x.clearRect(0,0,W,H); x.globalCompositeOperation='lighter';
+      for(var i=0;i<P.length;i++){ var q=P[i]; var p=(now-q.t0)/q.dur; if(p<0||p>1) continue;
+        var e = q.dir>0 ? easeOut(p) : easeIn(p);
+        var px=q.x0+(q.x1-q.x0)*e, py=q.y0+(q.y1-q.y0)*e;
+        var sw=Math.sin(p*3.1416)*q.curl; px+=Math.cos(q.ph)*sw; py+=Math.sin(q.ph)*sw;      /* gentle curl so it reads as vapour, not lines */
+        var a = q.dir>0 ? (1-p)*(0.35+0.65*Math.min(1,p*4)) : (0.25+0.75*p);
+        var sz = q.dir>0 ? q.sz*(1-p*0.6) : q.sz*(0.5+p*0.7);
+        x.fillStyle='rgba('+q.c+','+(a*0.16)+')'; x.beginPath(); x.arc(px,py,sz*3.2,0,6.283); x.fill();
+        x.fillStyle='rgba('+q.c+','+(a*0.9)+')'; x.beginPath(); x.arc(px,py,sz,0,6.283); x.fill();
+        if(q.dir>0 && p>0.85){ /* landing spark on the border */ x.fillStyle='rgba(255,255,255,'+((1-p)*4*a)+')'; x.beginPath(); x.arc(q.x1,q.y1,sz*1.6,0,6.283); x.fill(); }
+      }
+      rim(r, charge);
+      x.globalCompositeOperation='source-over';
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+
   setInterval(dock, 900); addEventListener('resize', dock); dock();
 })();
 /* AURA · ambient strands behind the workspace (subtle, no filters, pauses when not signed in) */
