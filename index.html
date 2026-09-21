@@ -34514,7 +34514,7 @@ html body.app-authed #dashboard-hero .au-ora #sprout-fab{
   box-shadow:0 0 0 1px rgba(255,255,255,.1) inset, 0 0 30px rgba(51,230,255,.7), 0 0 60px rgba(122,92,255,.5) !important;
   transition:opacity .4s ease, scale .5s cubic-bezier(.2,.8,.2,1); }
 html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-gone{ opacity:0; scale:1.12; pointer-events:none; transition:opacity 1.9s cubic-bezier(.4,0,.6,1), scale 2.4s ease-in-out; }
-html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-back{ animation:au-morph-live 4.2s ease-in-out infinite, au-sway 5.8s ease-in-out infinite, au-reform .7s cubic-bezier(.2,.8,.2,1) both !important; background-size:160% 160% !important; }
+html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-back{ animation:au-morph-live 4.2s ease-in-out infinite, au-sway 5.8s ease-in-out infinite, au-beat 3.4s ease-in-out infinite, au-reform .7s cubic-bezier(.2,.8,.2,1) both !important; background-size:160% 160% !important; }
 /* livelier liquid: deeper morph, slow lean, inner light drifting — all inside her own shape */
 @keyframes au-morph-live{
   0%,100%{ border-radius:62% 38% 44% 56%/58% 42% 58% 42%; background-position:30% 25%; }
@@ -34523,6 +34523,8 @@ html body.app-authed #dashboard-hero .au-ora #sprout-fab.au-back{ animation:au-m
   60%{ border-radius:34% 66% 58% 42%/64% 40% 60% 36%; background-position:25% 50%; }
   80%{ border-radius:66% 34% 40% 60%/44% 60% 40% 56%; background-position:40% 30%; }
 }
+/* heartbeat: she goes translucent on the out-breath and solid again on the in-breath */
+@keyframes au-beat{ 0%,100%{ opacity:1; } 50%{ opacity:.38; } }
 @keyframes au-sway{ 0%,100%{ transform:rotate(-5deg) scale(1); } 30%{ transform:rotate(4deg) scale(1.06); } 55%{ transform:rotate(-2deg) scale(.97); } 80%{ transform:rotate(5deg) scale(1.04); } }
 @keyframes au-reform{ from{ opacity:0; scale:.4; } to{ opacity:1; scale:1; } }
 html body.app-authed #dashboard-hero .au-ora-fx{ position:absolute; inset:-30px; width:calc(100% + 60px); height:calc(100% + 60px); pointer-events:none; z-index:5; border-radius:inherit; }
