@@ -34444,6 +34444,63 @@ html body.app-authed [style*="color:#98a1b0"], html body.app-authed [style*="col
 html body.app-authed [style*="border:1px solid #e8eaef"], html body.app-authed [style*="border:1px solid #eef0f4"], html body.app-authed [style*="border:1px solid #e5e7eb"]{ border-color:var(--au-line) !important; }
 
 
+
+/* ── MESSAGES RAIL — chat lives on the right, always open (desktop) ───── */
+@media(min-width:1180px){
+  html body.app-authed.au-dock{ overflow:auto !important; }
+  html body.app-authed.au-dock #dashboard-screen{ padding-right:372px !important; transition:padding-right .25s ease; }
+  html body.app-authed.au-dock.au-dock-hidden #dashboard-screen{ padding-right:0 !important; }
+  html body.app-authed.au-dock #tab-messages{
+    display:flex !important; position:fixed !important; inset:0 0 0 auto !important; width:372px !important; z-index:45 !important;
+    padding:0 !important; margin:0 !important; background:#0f0e15 !important; border-left:1px solid var(--au-line) !important;
+    -webkit-backdrop-filter:none !important; backdrop-filter:none !important; animation:none !important; transition:transform .25s ease;
+  }
+  html body.app-authed.au-dock.au-dock-hidden #tab-messages{ transform:translateX(100%); }
+  html body.app-authed.au-dock #tab-messages .chat-layout{
+    width:100% !important; height:100% !important; max-width:none !important; margin:0 !important; display:grid !important;
+    grid-template-columns:1fr !important; grid-template-rows:minmax(0,44%) minmax(0,1fr) !important;
+    background:transparent !important; border:none !important; border-radius:0 !important; box-shadow:none !important;
+    animation:none !important; transform:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; overflow:hidden !important;
+  }
+  html body.app-authed.au-dock #tab-messages .chat-layout::before{ display:none !important; }
+  html body.app-authed.au-dock #tab-messages .chat-sidebar{ border-right:none !important; border-bottom:1px solid var(--au-line) !important; min-height:0 !important; height:auto !important; background:transparent !important; }
+  html body.app-authed.au-dock #tab-messages .chat-main{ min-height:0 !important; height:auto !important; background:transparent !important; }
+  html body.app-authed.au-dock #tab-messages .chat-list-top{ display:flex !important; align-items:center; justify-content:space-between; padding:18px 16px 6px !important; }
+  html body.app-authed.au-dock #tab-messages .chat-list-title{ font-size:11px !important; letter-spacing:.24em !important; text-transform:uppercase !important; color:var(--au-ink3) !important; font-weight:800 !important; }
+  html body.app-authed.au-dock #tab-messages .chat-close-btn{ display:none !important; }
+  html body.app-authed.au-dock #tab-messages .chat-sidebar-header{ background:transparent !important; border:none !important; }
+  html body.app-authed.au-dock #tab-messages .chat-search{ background:rgba(255,255,255,.05) !important; border:1px solid var(--au-line) !important; color:var(--au-ink) !important; border-radius:999px !important; }
+  html body.app-authed.au-dock #tab-messages .chat-contact{ border-radius:12px !important; margin:0 8px !important; }
+  html body.app-authed.au-dock #tab-messages .chat-contact.active{ background:rgba(255,107,26,.12) !important; }
+  html body.app-authed.au-dock #tab-messages .chat-contact-name{ color:var(--au-ink) !important; }
+  html body.app-authed.au-dock #tab-messages .chat-contact-sub{ color:var(--au-ink3) !important; }
+  html body.app-authed.au-dock #tab-messages .chat-header{ background:transparent !important; border-bottom:1px solid var(--au-line) !important; }
+  html body.app-authed.au-dock #tab-messages .chat-header-name{ color:var(--au-ink) !important; }
+  html body.app-authed.au-dock #tab-messages .chat-header-status{ color:var(--au-ink3) !important; }
+  html body.app-authed.au-dock #tab-messages .chat-input-wrap{ background:transparent !important; border-top:1px solid var(--au-line) !important; }
+  html body.app-authed.au-dock #tab-messages .chat-input{ background:rgba(255,255,255,.05) !important; border:1px solid var(--au-line2) !important; color:var(--au-ink) !important; border-radius:999px !important; }
+  html body.app-authed.au-dock #tab-messages .chat-messages{ background:transparent !important; }
+  html body.app-authed.au-dock #tab-messages .chat-min-btn, html body.app-authed.au-dock #tab-messages .chat-call-btn{ background:rgba(255,255,255,.05) !important; border:1px solid var(--au-line) !important; color:var(--au-ink2) !important; border-radius:999px !important; }
+  /* the header message icon now collapses / expands the rail */
+  html body.app-authed.au-dock #msg-fab.active{ border-color:rgba(255,130,50,.6) !important; color:var(--au-ot) !important; }
+  /* Ora's chat opens beside the rail, not under it */
+  html body.app-authed.au-dock #sprout-panel{ right:392px !important; bottom:auto !important; top:92px !important; max-height:min(72vh,640px) !important; }
+}
+
+/* ── ORA lives in the hero card ─────────────────────────────────────── */
+html body.app-authed #dashboard-hero #sprout-fab{
+  position:absolute !important; right:auto !important; left:auto !important; bottom:auto !important; display:block !important; z-index:3 !important;
+  width:60px !important; height:60px !important; top:28px !important; right:324px !important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.08) inset, 0 10px 28px -8px rgba(255,120,40,.75) !important;
+}
+html body.app-authed #dashboard-hero .au-ora-ask{
+  position:absolute; right:324px; top:96px; z-index:3; width:60px; text-align:center; font-size:10.5px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--au-ot); cursor:pointer; user-select:none;
+}
+html body.app-authed #dashboard-hero .hero-info{ padding-right:96px !important; }
+@media(max-width:1179px){
+  html body.app-authed #dashboard-hero #sprout-fab, html body.app-authed #dashboard-hero .au-ora-ask{ display:none !important; }
+}
+
 /* ── runtime-tagged light surfaces / dark text (see guard script) ──── */
 html body.app-authed #dashboard-screen [data-au-light]{ background-color:var(--au-s1) !important; background-image:none !important; border-color:var(--au-line) !important; color:var(--au-ink2); }
 html body.app-authed #dashboard-screen [data-au-light][data-au-ink], html body.app-authed #dashboard-screen [data-au-ink]{ color:var(--au-ink) !important; -webkit-text-fill-color:currentColor; }
@@ -34532,6 +34589,28 @@ html body.app-authed ::-webkit-scrollbar-track{ background:transparent; }
     var a=document.getElementById('au-sf-av'); if(a && av){ if(av.querySelector('img')){ if(!a.querySelector('img')) a.innerHTML='<img src="'+av.querySelector('img').src+'" alt="">'; } else if(a.textContent!==av.textContent) a.textContent=av.textContent; }
   }
   setInterval(foot,1200); foot();
+
+  /* ── messages rail + Ora-in-hero (desktop) ────────────────────────── */
+  var _tm = window.toggleMessages, _cm = window.closeMessages;
+  window.toggleMessages = function(){ if (document.body.classList.contains('au-dock')){ document.body.classList.toggle('au-dock-hidden'); var f=document.getElementById('msg-fab'); if(f) f.classList.toggle('active', !document.body.classList.contains('au-dock-hidden')); return; } return _tm.apply(this, arguments); };
+  window.closeMessages  = function(){ if (document.body.classList.contains('au-dock')) return; return _cm.apply(this, arguments); };
+  var dockOpened=false;
+  function dock(){
+    var authed=document.body.classList.contains('app-authed'), wide=innerWidth>=1180;
+    var hero=document.getElementById('dashboard-hero'), fab=document.getElementById('sprout-fab');
+    if (authed && wide){
+      if (!document.body.classList.contains('au-dock')){ document.body.classList.add('au-dock'); }
+      if (!dockOpened){ try{ _cm(); }catch(e){} try{ window.openMessages && (function(){ var p=document.getElementById('tab-messages'); if(p&&!p.classList.contains('msg-open')) openMessages(); })(); }catch(e){} dockOpened=true; }
+      document.body.style.overflow='';
+      var f=document.getElementById('msg-fab'); if(f) f.classList.toggle('active', !document.body.classList.contains('au-dock-hidden'));
+      if (hero && fab && fab.parentElement!==hero){ hero.appendChild(fab);
+        var ask=document.createElement('div'); ask.className='au-ora-ask'; ask.textContent='Ask Ora'; ask.onclick=function(){ try{ sproutToggle(); }catch(e){} }; hero.appendChild(ask); }
+    } else {
+      if (document.body.classList.contains('au-dock')){ document.body.classList.remove('au-dock','au-dock-hidden'); try{ _cm(); }catch(e){} dockOpened=false; }
+      if (fab && hero && fab.parentElement===hero){ document.body.appendChild(fab); var a=hero.querySelector('.au-ora-ask'); if(a) a.remove(); }
+    }
+  }
+  setInterval(dock, 900); addEventListener('resize', dock); dock();
 })();
 /* AURA · ambient strands behind the workspace (subtle, no filters, pauses when not signed in) */
 (function(){
